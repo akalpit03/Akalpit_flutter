@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:penverse/core/constants/app_colors.dart';
 
 class AppTheme {
-  static const Color primaryColor = Color(0xFF0D0D25);
-  static const Color darkBackground = Color(0xFF3F3F7D);
+  static const Color primaryColor = AppColors.cardBackground;
+  static const Color darkBackground = AppColors.scaffoldBackground;
   
   static ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,

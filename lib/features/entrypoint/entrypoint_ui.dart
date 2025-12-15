@@ -1,16 +1,15 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:penverse/features/home/sample.dart';
+import 'package:penverse/features/Feed/sample.dart';
+import 'package:penverse/features/Feed/sample2.dart';
+import 'package:penverse/features/Feed/ui/feed.dart';
+ 
+import 'package:penverse/features/clubs/ui/clubpage.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';
+import 'component/app_navigation_bar.dart';
 
- 
-import './component/app_navigation_bar.dart';
-
- 
-
-/// This page will contain all the bottom navigation tabs
 class EntryPointUI extends StatefulWidget {
   const EntryPointUI({super.key});
 
@@ -19,67 +18,38 @@ class EntryPointUI extends StatefulWidget {
 }
 
 class _EntryPointUIState extends State<EntryPointUI> {
-  /// Current Page
   int currentIndex = 0;
 
-  /// On labelLarge navigation tap
-  void onBottomNavigationTap(int index) {
-    if (index == 2) {
-      // 👇 Replace first nav with second nav
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => SimplePage()),
-      );
-    } else {
-      setState(() => currentIndex = index);
-    }
-    if (index == 3) {
-      // 👇 Replace first nav with second nav
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) =>  SimplePage()),
-      );
-    } else {
-      setState(() => currentIndex = index);
-    }
-    if (index == 4) {
-      // 👇 Replace first nav with second nav
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) =>  SimplePage()),
-      );
-    } else {
-      setState(() => currentIndex = index);
-    }
-    currentIndex = index;
-    setState(() {});
-  }
-
-  List<Widget> pages = [
-  const SimplePage(),
-  const SimplePage(),
-  const SimplePage(),
-  const SimplePage(),
-  const SimplePage(),
+  final List<Widget> pages = const [
+    FeedPage(), // Home
+    ClubPage(),
+    SimplePage1(), // Events
+    SimplePage2(), // Services
+    SimplePage1(), // Profile
   ];
+
+  void onBottomNavigationTap(int index) {
+    if (index == currentIndex) return;
+
+    setState(() => currentIndex = index);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+        duration: AppDefaults.duration,
+        transitionBuilder: (child, animation, secondaryAnimation) {
           return SharedAxisTransition(
-            animation: primaryAnimation,
+            animation: animation,
             secondaryAnimation: secondaryAnimation,
             transitionType: SharedAxisTransitionType.horizontal,
-            fillColor: AppColors.scaffoldBackground,
+            fillColor: AppColors.cardBackground,
             child: child,
           );
         },
-        duration: AppDefaults.duration,
         child: pages[currentIndex],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: currentIndex,
         onNavTap: onBottomNavigationTap,

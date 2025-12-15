@@ -1,63 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../../../core/constants/constants.dart';
+import '../../../core/constants/app_colors.dart';
 
-class BottomAppBarItem extends StatelessWidget {
-  const BottomAppBarItem({
+class BottomNavItem {
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+
+  const BottomNavItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+  });
+}
+
+class CustomBottomAppBar extends StatelessWidget {
+  final List<BottomNavItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  const CustomBottomAppBar({
     super.key,
-    this.icon,
-    this.iconLocation,
-    required this.name,
-    required this.isActive,
+    required this.items,
+    required this.currentIndex,
     required this.onTap,
-  }) : assert(
-          icon != null || iconLocation != null,
-          'Either icon or iconLocation must be provided',
-        );
-
-  /// If using Flutter built-in icons
-  final IconData? icon;
-
-  /// If using custom SVG icons
-  final String? iconLocation;
-
-  final String name;
-  final bool isActive;
-  final VoidCallback onTap;
+  });
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? Colors.tealAccent : AppColors.cardBackground;
+    return BottomAppBar(
+      color: AppColors.cardBackground,
+      elevation: 8,
+      child: SizedBox(
+        height: 64,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(items.length, (index) {
+            final item = items[index];
+            final isActive = index == currentIndex;
 
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          /// Decide which type of icon to render
-          if (icon != null)
-            Icon(
-              icon,
-              size: 28,
-              color: color,
-            )
-          else
-            SvgPicture.asset(
-              iconLocation!,
-              width: 28,
-              height: 28,
-              colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
-            ),
-
-          const SizedBox(height: 4),
-
-          Text(
-            name,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: color,
+            return InkWell(
+              onTap: () => onTap(index),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      isActive ? item.activeIcon : item.icon,
+                      color: isActive
+                          ? Colors.white
+                          : Colors.grey,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      item.label,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight:
+                            isActive ? FontWeight.w600 : FontWeight.w400,
+                        color: isActive
+                            ? Colors.white
+                            : Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
-          ),
-        ],
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

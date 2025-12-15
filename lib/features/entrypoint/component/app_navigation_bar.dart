@@ -1,64 +1,50 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/constants/constants.dart';
-import './bottom_app_bar_item.dart';
+import 'package:penverse/features/entrypoint/component/bottom_app_bar_item.dart';
+import '../../../core/constants/app_colors.dart';
+ 
 
 class AppBottomNavigationBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged<int> onNavTap;
+
   const AppBottomNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onNavTap,
   });
 
-  final int currentIndex;
-  final void Function(int) onNavTap;
-
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: AppDefaults.margin,
-      color: AppColors.cardBackground,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-       children: [
-  BottomAppBarItem(
-    name: 'Home',
-    icon: Icons.home,
-    isActive: currentIndex == 0,
-    onTap: () => onNavTap(0),
-  ),
-
-  BottomAppBarItem(
-    name: 'My Library',
-    icon: Icons.menu_book,
-    isActive: currentIndex == 1,
-    onTap: () => onNavTap(1),
-  ),
-
-  BottomAppBarItem(
-    name: 'Wordly',
-    icon: Icons.edit_note,
-    isActive: currentIndex == 2,
-    onTap: () => onNavTap(2),
-  ),
-
-  BottomAppBarItem(
-    name: 'News',
-    icon: Icons.article,
-    isActive: currentIndex == 3,
-    onTap: () => onNavTap(3),
-  ),
-
-  BottomAppBarItem(
-    name: 'Quiz',
-    icon: Icons.quiz,
-    isActive: currentIndex == 4,
-    onTap: () => onNavTap(4),
-  ),
-]
-
-      ),
+    return CustomBottomAppBar(
+      currentIndex: currentIndex,
+      onTap: onNavTap,
+      items: const [
+        BottomNavItem(
+          icon: Icons.newspaper_outlined,
+          activeIcon: Icons.newspaper,
+          label: 'Feed',
+        ),
+        BottomNavItem(
+          icon: Icons.groups_outlined,
+          activeIcon: Icons.groups,
+          label: 'Clubs',
+        ),
+        BottomNavItem(
+          icon: Icons.event_outlined,
+          activeIcon: Icons.event,
+          label: 'Events',
+        ),
+        BottomNavItem(
+          icon: Icons.handshake_outlined,
+          activeIcon: Icons.handshake,
+          label: 'Services',
+        ),
+        BottomNavItem(
+          icon: Icons.person_outline,
+          activeIcon: Icons.person,
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SimplePage extends StatelessWidget {
-  const SimplePage({super.key});
+class SimplePage2 extends StatelessWidget {
+  const SimplePage2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class SimplePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: const [
             Text(
-              'Hello Flutter 👋',
+              'Hello Flutter 2',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
