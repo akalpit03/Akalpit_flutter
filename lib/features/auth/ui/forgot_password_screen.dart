@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/app_colors.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
 import '../../../../core/utils/responsive_utils.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../ui/widgets/custom_text_field.dart';
@@ -28,7 +28,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ResetPasswordScreen(email: _emailController.text),
+          builder: (context) =>
+              ResetPasswordScreen(email: _emailController.text),
         ),
       );
     }

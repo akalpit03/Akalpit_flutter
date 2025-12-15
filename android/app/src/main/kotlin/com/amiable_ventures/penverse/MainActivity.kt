@@ -1,4 +1,4 @@
-package com.amiable_ventures.penverse
+package com.amiable_ventures.akalpit
 
 import io.flutter.embedding.android.FlutterActivity
 

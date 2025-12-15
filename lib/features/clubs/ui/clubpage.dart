@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/features/clubs/ui/clubbody.dart';
-import 'package:penverse/features/clubs/ui/sidedrawer/sidedrawer.dart';
-import 'package:penverse/features/clubs/ui/widget/appbar.dart';
+import 'package:akalpit/features/clubs/ui/clubbody.dart';
+import 'package:akalpit/features/clubs/ui/sidedrawer/sidedrawer.dart';
+import 'package:akalpit/features/clubs/ui/widget/appbar.dart';
 
 class ClubPage extends StatelessWidget {
   const ClubPage({super.key});

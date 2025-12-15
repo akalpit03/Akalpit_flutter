@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.amiable_ventures.penverse">
+    package="com.amiable_ventures.akalpit">
 
     <!-- Internet permission must go here, not inside <application> -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="Penverse"
+        android:label="akalpit"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

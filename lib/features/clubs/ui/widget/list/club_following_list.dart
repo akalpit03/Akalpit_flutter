@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/features/clubs/ui/widget/cards/following_club_card.dart';
- 
+import 'package:akalpit/features/clubs/ui/widget/cards/following_club_card.dart';
 
 class ChatList extends StatelessWidget {
   const ChatList({super.key});

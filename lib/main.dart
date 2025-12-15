@@ -12,7 +12,6 @@ import 'core/store/app_store.dart';
 import 'features/auth/ui/login_screen.dart';
 import 'features/entrypoint/entrypoint_ui.dart';
 import 'features/onboarding/presentation/screens/splash_screen.dart';
- 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,14 +54,13 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        title: 'Penverse',
+        title: 'akalpit',
         theme: AppTheme.lightTheme,
         initialRoute: '/',
         routes: {
           '/': (context) => AuthWrapper(savedToken: savedToken),
           '/login': (context) => const LoginScreen(),
-        
-         },
+        },
       ),
     );
   }

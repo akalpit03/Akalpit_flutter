@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/app_colors.dart';
-import 'package:penverse/features/profile/ui/user_profile.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/profile/ui/user_profile.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   const UserDetailsScreen({super.key});
@@ -75,55 +75,68 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                         final fullName = fullNameController.text.trim();
                         final role = selectedRole;
                         Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => UserProfilePage(
-      avatarUrl: "https://m.media-amazon.com/images/I/81-QB7nDh4L._SY466_.jpg",
-      name: "Vivek Raj",
-      role: "Author",
-      readers: 1250,
-      purchased: 320,
-      subscribers: 180,
-      description:
-          "Author of fiction, self-help and motivational books. Passionate about storytelling.",
-      tags: ["Fiction", "Self-help", "Motivation", "Writing"],
-      works: [
-        {
-          "title": "The Rising Dawn",
-          "cover": "https://example.com/book1.jpg",
-        },
-        {
-          "title": "Broken Shadows",
-          "cover": "https://example.com/book2.jpg",
-        },
-        {
-          "title": "Mindset Mastery",
-          "cover": "https://example.com/book3.jpg",
-        },{
-          "title": "The Rising Dawn",
-          "cover": "https://example.com/book1.jpg",
-        },
-        {
-          "title": "Broken Shadows",
-          "cover": "https://example.com/book2.jpg",
-        },{
-          "title": "The Rising Dawn",
-          "cover": "https://example.com/book1.jpg",
-        },
-        {
-          "title": "Broken Shadows",
-          "cover": "https://example.com/book2.jpg",
-        },
-        {
-          "title": "Mindset Mastery",
-          "cover": "https://example.com/book3.jpg",
-        },
-      ],
-      titles: ["All", "Books", "Articles", "Stories", "Poems"],
-    ),
-  ),
-);
-
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfilePage(
+                              avatarUrl:
+                                  "https://m.media-amazon.com/images/I/81-QB7nDh4L._SY466_.jpg",
+                              name: "Vivek Raj",
+                              role: "Author",
+                              readers: 1250,
+                              purchased: 320,
+                              subscribers: 180,
+                              description:
+                                  "Author of fiction, self-help and motivational books. Passionate about storytelling.",
+                              tags: [
+                                "Fiction",
+                                "Self-help",
+                                "Motivation",
+                                "Writing"
+                              ],
+                              works: [
+                                {
+                                  "title": "The Rising Dawn",
+                                  "cover": "https://example.com/book1.jpg",
+                                },
+                                {
+                                  "title": "Broken Shadows",
+                                  "cover": "https://example.com/book2.jpg",
+                                },
+                                {
+                                  "title": "Mindset Mastery",
+                                  "cover": "https://example.com/book3.jpg",
+                                },
+                                {
+                                  "title": "The Rising Dawn",
+                                  "cover": "https://example.com/book1.jpg",
+                                },
+                                {
+                                  "title": "Broken Shadows",
+                                  "cover": "https://example.com/book2.jpg",
+                                },
+                                {
+                                  "title": "The Rising Dawn",
+                                  "cover": "https://example.com/book1.jpg",
+                                },
+                                {
+                                  "title": "Broken Shadows",
+                                  "cover": "https://example.com/book2.jpg",
+                                },
+                                {
+                                  "title": "Mindset Mastery",
+                                  "cover": "https://example.com/book3.jpg",
+                                },
+                              ],
+                              titles: [
+                                "All",
+                                "Books",
+                                "Articles",
+                                "Stories",
+                                "Poems"
+                              ],
+                            ),
+                          ),
+                        );
 
                         // ---------- API CALL ----------
                         // final response = await Future.delayed(

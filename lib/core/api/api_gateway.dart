@@ -1,4 +1,4 @@
-import 'package:penverse/features/auth/services/auth_service.dart';
+import 'package:akalpit/features/auth/services/auth_service.dart';
 
 import 'api_client.dart';
 

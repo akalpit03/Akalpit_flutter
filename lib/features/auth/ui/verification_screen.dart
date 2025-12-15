@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/app_colors.dart';
-import 'package:penverse/features/auth/ui/role.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/auth/ui/role.dart';
 
 import '../../../../core/utils/responsive_utils.dart';
 

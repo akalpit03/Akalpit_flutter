@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = penverse
+PRODUCT_NAME = akalpit
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.amiable_ventures.penverse
+PRODUCT_BUNDLE_IDENTIFIER = com.amiable_ventures.akalpit
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.amiable_ventures. All rights reserved.

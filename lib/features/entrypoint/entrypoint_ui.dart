@@ -1,10 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:penverse/features/Feed/sample.dart';
-import 'package:penverse/features/Feed/sample2.dart';
-import 'package:penverse/features/Feed/ui/feed.dart';
- 
-import 'package:penverse/features/clubs/ui/clubpage.dart';
+import 'package:akalpit/features/Events/ui/events.dart';
+import 'package:akalpit/features/Feed/sample.dart';
+import 'package:akalpit/features/Feed/sample2.dart';
+import 'package:akalpit/features/Feed/ui/feed.dart';
+
+import 'package:akalpit/features/clubs/ui/clubpage.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';
@@ -23,7 +24,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
   final List<Widget> pages = const [
     FeedPage(), // Home
     ClubPage(),
-    SimplePage1(), // Events
+    EventPage(), // Events
     SimplePage2(), // Services
     SimplePage1(), // Profile
   ];

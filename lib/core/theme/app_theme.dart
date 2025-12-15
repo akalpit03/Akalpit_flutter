@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/app_colors.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
 
 class AppTheme {
   static const Color primaryColor = AppColors.cardBackground;
   static const Color darkBackground = AppColors.scaffoldBackground;
-  
+
   static ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,
     scaffoldBackgroundColor: darkBackground,

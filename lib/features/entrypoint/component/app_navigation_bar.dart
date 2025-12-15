@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/features/entrypoint/component/bottom_app_bar_item.dart';
+import 'package:akalpit/features/entrypoint/component/bottom_app_bar_item.dart';
 import '../../../core/constants/app_colors.dart';
- 
 
 class AppBottomNavigationBar extends StatelessWidget {
   final int currentIndex;

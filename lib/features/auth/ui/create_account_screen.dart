@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:penverse/core/constants/app_colors.dart';
-import 'package:penverse/core/store/app_state.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/core/store/app_state.dart';
 import '../../../../core/utils/responsive_utils.dart';
 // import '../../../../core/widgets/custom_button.dart';
 import '../ui/widgets/custom_text_field.dart';

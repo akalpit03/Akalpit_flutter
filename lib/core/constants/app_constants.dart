@@ -1,16 +1,18 @@
 class AppConstants {
-  static const String appName = 'Penverse';
-  
+  static const String appName = 'akalpit';
+
   // Onboarding Screen Constants
   static const List<OnboardingItem> onboardingItems = [
     OnboardingItem(
-      title: 'PENVERSE ',
-      description: 'Explore daily vocab from the editorials like The Hindu, The Indian times ',
+      title: 'akalpit ',
+      description:
+          'Explore daily vocab from the editorials like The Hindu, The Indian times ',
       imagePath: 'assets/images/onboarding1.png',
     ),
     OnboardingItem(
       title: 'Grammer and Translation',
-      description: 'Learn Grammer with ease and practise in a well mannered way',
+      description:
+          'Learn Grammer with ease and practise in a well mannered way',
       imagePath: 'assets/images/onboarding2.png',
     ),
     OnboardingItem(

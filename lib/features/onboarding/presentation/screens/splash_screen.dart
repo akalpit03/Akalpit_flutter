@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:penverse/core/constants/app_colors.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import 'onboarding_screen.dart';
 

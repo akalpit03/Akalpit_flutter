@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/app_colors.dart';
+import 'package:akalpit/core/constants/app_colors.dart';
 
 class AuthorBooksWidget extends StatelessWidget {
   final List<Map<String, String>> books;
@@ -8,7 +8,7 @@ class AuthorBooksWidget extends StatelessWidget {
     super.key,
     required this.books,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     if (books.isEmpty) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/core/constants/constants.dart';
+import 'package:akalpit/core/constants/constants.dart';
 
 class UserProfilePage extends StatefulWidget {
   final String avatarUrl;
@@ -10,7 +10,7 @@ class UserProfilePage extends StatefulWidget {
   final int subscribers;
   final String description;
   final List<String> tags;
-  final List<   String> titles; // { title, cover }
+  final List<String> titles; // { title, cover }
   final List<Map<String, String>> works; // { title, cover }
 
   const UserProfilePage({
@@ -43,7 +43,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
         backgroundColor: AppColors.cardBackground,
         elevation: 0,
         foregroundColor: Colors.white70,
-        
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

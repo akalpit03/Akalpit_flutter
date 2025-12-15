@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:penverse/features/Feed/ui/widgets/feedcard.dart';
+import 'package:akalpit/features/Feed/ui/widgets/feedcard.dart';
 
-import 'package:penverse/features/Feed/ui/widgets/storylist.dart';
+import 'package:akalpit/features/Feed/ui/widgets/storylist.dart';
 
 class FeedBody extends StatelessWidget {
   const FeedBody({super.key});
@@ -16,7 +16,6 @@ class FeedBody extends StatelessWidget {
         FeedCard(),
         FeedCard(),
         FeedCard(),
-     
       ],
     );
   }
