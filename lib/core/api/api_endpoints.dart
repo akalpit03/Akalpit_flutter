@@ -1,4 +1,5 @@
 import 'package:akalpit/core/api/domain_wise/api_endpoints_section.dart';
+import 'package:akalpit/features/posts/story/redux/story_viewmodel.dart';
 
 class ApiEndpoints {
   // Base URL
@@ -56,7 +57,8 @@ class ApiEndpoints {
   // ===== SUBJECTS, BOOKS, CHAPTERS, TOPICS =====
   static const String subjects = "$baseUrl/subjects";
   static String subject() => subjects;
-
+  static const String storyurl = "$baseUrl/subjects";
+  static String story(storyId) => subjects;
   static const String books = "$baseUrl/books/subject";
   static String book(String id) => "$books/$id";
 

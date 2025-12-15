@@ -1,3 +1,4 @@
+import 'package:akalpit/features/posts/story/ui/story_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:akalpit/features/Feed/ui/widgets/feedcard.dart';
 
@@ -9,11 +10,30 @@ class FeedBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.only(top: 8, bottom: 16),
-      children: const [
+      padding:   EdgeInsets.only(top: 8, bottom: 16),
+      children:   [
         StoryList(),
         SizedBox(height: 12),
-        FeedCard(),
+        FeedCard(
+          onOpenPost: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const StoryScreen( )),
+            );
+          },
+          onLike: () {
+            // like logic
+          },
+          // onComment: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (_) => const CommentPage()),
+          //   );
+          // },
+          onView: () {
+            // analytics / viewers page
+          },
+        ),
         FeedCard(),
         FeedCard(),
       ],
