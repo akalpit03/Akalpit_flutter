@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/auth/ui/role.dart';
+ 
 
 import '../../../../core/utils/responsive_utils.dart';
 
@@ -149,12 +149,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       onPressed: () {
                         String code = _controllers.map((c) => c.text).join();
                         if (code.length == 6) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const UserDetailsScreen(),
-                            ),
-                          );
+                          // Navigator.pushReplacement(
+                            // context,
+                            // MaterialPageRoute(
+                              // builder: (_) => const UserDetailsScreen(),
+                            // ),
+                          // );
                         }
                       },
                       style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'package:akalpit/features/profile/ui/profile_page.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:akalpit/features/Events/ui/events.dart';
@@ -26,7 +27,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
     ClubPage(),
     EventPage(), // Events
     SimplePage2(), // Services
-    SimplePage1(), // Profile
+    ProfilePage(), // Profile
   ];
 
   void onBottomNavigationTap(int index) {
