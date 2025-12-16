@@ -82,7 +82,7 @@ class ProfileBookItem extends StatelessWidget {
                       padding: EdgeInsets.zero,
                     ),
                     child: const Text(
-                      'Start Reading',
+                      'See Events',
                       style: TextStyle(fontSize: 13),
                     ),
                   ),

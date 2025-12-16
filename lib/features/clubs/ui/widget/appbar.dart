@@ -65,7 +65,7 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
           itemBuilder: (context) => const [
             PopupMenuItem(
               value: 'create',
-              child: Text('Create Club'),
+              child: Text('Join a Club'),
             ),
             PopupMenuItem(
               value: 'manage',

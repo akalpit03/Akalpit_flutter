@@ -1,7 +1,7 @@
 import 'package:akalpit/features/profile/ui/profile_page.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:akalpit/features/Events/ui/events.dart';
+import 'package:akalpit/features/Events/layout/ui/events.dart';
 import 'package:akalpit/features/Feed/sample.dart';
 import 'package:akalpit/features/Feed/sample2.dart';
 import 'package:akalpit/features/Feed/ui/feed.dart';

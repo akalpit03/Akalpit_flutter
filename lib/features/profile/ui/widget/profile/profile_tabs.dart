@@ -18,7 +18,7 @@ class ProfileTabs extends StatelessWidget {
             indicatorColor: Colors.grey,
             tabs: [
               Tab(text: 'My Posts'),
-              Tab(text: 'Books'),
+              Tab(text: 'Events'),
               Tab(text: 'About'),
             ],
           ),

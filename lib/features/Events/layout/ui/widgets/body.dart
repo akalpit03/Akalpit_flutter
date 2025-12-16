@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:akalpit/features/Events/ui/pages/searchpage.dart';
-import 'package:akalpit/features/Events/ui/widgets/cards/eventCard.dart';
+import 'package:akalpit/features/Events/layout/ui/pages/searchpage.dart';
+import 'package:akalpit/features/Events/layout/ui/widgets/cards/eventCard.dart';
 
 class EventBody extends StatelessWidget {
   const EventBody({super.key});

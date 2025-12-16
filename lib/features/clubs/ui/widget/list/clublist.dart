@@ -1,3 +1,4 @@
+import 'package:akalpit/features/clubProfile/onboarding/create/verify.dart';
 import 'package:flutter/material.dart';
 
 class StatusList extends StatelessWidget {
@@ -31,53 +32,71 @@ class StatusList extends StatelessWidget {
 /// My Status Card
 /// =====================
 class _MyStatusCard extends StatelessWidget {
+  const _MyStatusCard({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 140,
-      margin: const EdgeInsets.only(right: 14),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 170,
-                width: 130,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: const Icon(Icons.person, size: 36, color: Colors.white),
-              ),
-              Positioned(
-                bottom: 6,
-                right: 6,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
+    return GestureDetector(
+      onTap: () {
+        // 👉 Navigate to your target screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const VerifyClubPage(), // replace later
+          ),
+        );
+      },
+      child: Container(
+        width: 140,
+        margin: const EdgeInsets.only(right: 14),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 170,
+                  width: 130,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
-                    Icons.add,
-                    size: 14,
+                    Icons.person,
+                    size: 36,
                     color: Colors.white,
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          const Text(
-            'Create your Club',
-            style: TextStyle(fontSize: 12),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+                Positioned(
+                  bottom: 6,
+                  right: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      size: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Create your Club flow',
+              style: TextStyle(fontSize: 12),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 /// =====================
 /// Other Status Card

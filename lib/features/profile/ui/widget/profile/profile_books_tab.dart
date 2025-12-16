@@ -9,22 +9,22 @@ class ProfileBooksTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final books = [
       {
-        'title': 'Flutter Development Guide',
+        'title': 'Event Name goes here',
         'chapters': 12,
         'image':
-            'https://dummyimage.com/300x450/cccccc/000000&text=Book1',
+            'https://dummyimage.com/300x450/cccccc/000000&text=EVENT1',
       },
       {
         'title': 'Understanding UI/UX Design',
         'chapters': 8,
         'image':
-            'https://dummyimage.com/300x450/bbbbbb/000000&text=Book2',
+            'https://dummyimage.com/300x450/bbbbbb/000000&text=EVENT2',
       },
       {
         'title': 'Building Scalable Apps',
         'chapters': 15,
         'image':
-            'https://dummyimage.com/300x450/aaaaaa/000000&text=Book3',
+            'https://dummyimage.com/300x450/aaaaaa/000000&text=EVENT3',
       },
     ];
 
