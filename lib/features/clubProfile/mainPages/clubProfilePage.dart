@@ -47,7 +47,7 @@ class ClubHomePage extends StatelessWidget {
           children: [
             ClubPostsPage(),
             ClubEventsPage(),
-            ClubTeamPage(),
+            ClubTeamPage(isAdmin: true),
             ClubAboutPage(),
           ],
         ),

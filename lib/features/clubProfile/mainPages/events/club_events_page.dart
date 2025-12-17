@@ -1,3 +1,4 @@
+import 'package:akalpit/features/Events/layout/ui/widgets/body.dart';
 import 'package:flutter/material.dart';
 
 class ClubEventsPage extends StatelessWidget {
@@ -5,8 +6,10 @@ class ClubEventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Events Page"),
+    return const Scaffold(
+      body: EventBody(
+        isClub: true,
+      ),
     );
   }
 }

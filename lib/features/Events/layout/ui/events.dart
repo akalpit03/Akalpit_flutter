@@ -11,7 +11,7 @@ class EventPage extends StatelessWidget {
     return Scaffold(
       appBar: const EventAppBar(),
       drawer: const EventSideDrawer(),
-      body: const EventBody(),
+      body:   EventBody(isClub: false,),
     );
   }
 }
