@@ -1,16 +1,13 @@
 import 'package:akalpit/features/clubProfile/onboarding/join/club_joining_status_page.dart';
 import 'package:flutter/material.dart';
+ 
+class ClubProfilePage extends StatelessWidget {
+  final bool isGuest;
 
-class ClubProfilePage extends StatefulWidget {
-  const ClubProfilePage({super.key});
-
-  @override
-  State<ClubProfilePage> createState() => _ClubProfilePageState();
-}
-
-class _ClubProfilePageState extends State<ClubProfilePage> {
-  /// Change later with real logic
-  bool isGuest = true;
+  const ClubProfilePage({
+    super.key,
+    required this.isGuest,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +21,18 @@ class _ClubProfilePageState extends State<ClubProfilePage> {
       ),
       body: Column(
         children: [
-          /// ================= HEADER SECTION =================
+          /// ================= HEADER =================
           const _ClubHeader(),
 
           const SizedBox(height: 20),
 
-          /// ================= BODY SECTION =================
+          /// ================= BODY =================
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: isGuest
                   ? const _GuestActions()
-                  : const Center(
-                      child: Text(
-                        'Following state UI will be added later',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
+                  : const _AboutSection(),
             ),
           ),
         ],
@@ -66,27 +58,22 @@ class _ClubHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Club Image
           CircleAvatar(
             radius: 36,
             backgroundColor: Colors.grey.shade300,
             child: const Icon(Icons.groups, size: 32),
           ),
-
           const SizedBox(width: 14),
-
-          /// Club Info
-          Expanded(
+         const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-            
               children: const [
                 Text(
                   'Akalpit Tech Club',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black45
+                    color: Colors.black45,
                   ),
                 ),
                 SizedBox(height: 4),
@@ -102,23 +89,6 @@ class _ClubHeader extends StatelessWidget {
               ],
             ),
           ),
-
-          /// Follow Button ✅ (THIS IS FINE)
-          // ElevatedButton(
-          //   onPressed: () {
-          //     // follow logic later
-          //   },
-          //   style: ElevatedButton.styleFrom(
-          //     padding: const EdgeInsets.symmetric(
-          //       horizontal: 16,
-          //       vertical: 10,
-          //     ),
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(20),
-          //     ),
-          //   ),
-          //   child: const Text('Follow'),
-          // ),
         ],
       ),
     );
@@ -134,7 +104,6 @@ class _GuestActions extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        /// Join as Team
         SizedBox(
           width: double.infinity,
           height: 46,
@@ -152,14 +121,13 @@ class _GuestActions extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('Join as Team',
-            style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Join as Team',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
-
         const SizedBox(height: 14),
-
-        /// Become a Member
         SizedBox(
           width: double.infinity,
           height: 46,
@@ -179,6 +147,47 @@ class _GuestActions extends StatelessWidget {
             ),
             child: const Text('Become a Member'),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+/// ================= ABOUT SECTION =================
+class _AboutSection extends StatelessWidget {
+  const _AboutSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text(
+          'About',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 12),
+        Text(
+          'Institute',
+          style: TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+        SizedBox(height: 4),
+        Text(
+          'XYZ University',
+          style: TextStyle(fontSize: 14),
+        ),
+        SizedBox(height: 16),
+        Text(
+          'Coordinator',
+          style: TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+        SizedBox(height: 4),
+        Text(
+          'John Doe',
+          style: TextStyle(fontSize: 14),
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:akalpit/features/clubs/ui/widget/list/club_following_list.dart';
-import 'package:akalpit/features/clubs/ui/widget/list/clublist.dart';
+import 'package:akalpit/features/clubsection/ui/widget/list/club_following_list.dart';
+import 'package:akalpit/features/clubsection/ui/widget/list/clublist.dart';
 
 class ClubBody extends StatelessWidget {
   const ClubBody({super.key});

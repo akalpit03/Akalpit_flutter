@@ -6,7 +6,7 @@ import 'package:akalpit/features/Feed/sample.dart';
 import 'package:akalpit/features/Feed/sample2.dart';
 import 'package:akalpit/features/Feed/ui/feed.dart';
 
-import 'package:akalpit/features/clubs/ui/clubpage.dart';
+import 'package:akalpit/features/clubsection/ui/clubpage.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';

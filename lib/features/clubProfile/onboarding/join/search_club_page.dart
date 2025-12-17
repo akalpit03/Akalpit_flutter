@@ -97,7 +97,7 @@ class _ClubResultCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => const ClubProfilePage(),
+            builder: (_) => const ClubProfilePage(isGuest: true,),
           ),
         );
       },
