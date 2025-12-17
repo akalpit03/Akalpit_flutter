@@ -46,9 +46,9 @@ class ClubHomePage extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           children: [
             ClubPostsPage(),
-            ClubEventsPage(),
+            ClubEventsPage(isAdmin: true,),
             ClubTeamPage(isAdmin: true),
-            ClubAboutPage(),
+            ClubAboutPage(isAdmin: true),
           ],
         ),
       ),

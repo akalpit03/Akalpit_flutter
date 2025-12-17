@@ -25,7 +25,12 @@ class ClubTeamPage extends StatelessWidget {
       floatingActionButton: isAdmin
           ? FloatingActionButton(
               onPressed: () {
-                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Admin Can Add a Team member from this button'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
               },
               child: const Icon(Icons.add),
               backgroundColor: Colors.white,

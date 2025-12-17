@@ -4,21 +4,21 @@ class AppConstants {
   // Onboarding Screen Constants
   static const List<OnboardingItem> onboardingItems = [
     OnboardingItem(
-      title: 'akalpit ',
+      title: 'Events and Competitions ',
       description:
-          'Explore daily vocab from the editorials like The Hindu, The Indian times ',
-      imagePath: 'assets/images/onboarding1.png',
+          'Participate in new events or competitions near you loaction or be a part of audeience to enjoy the event.',
+      imagePath: 'assets/images/onboarding1.jpg',
     ),
     OnboardingItem(
-      title: 'Grammer and Translation',
+      title: 'Clubs and Councils',
       description:
-          'Learn Grammer with ease and practise in a well mannered way',
-      imagePath: 'assets/images/onboarding2.png',
+          'Create a Club and manage team members. Assign tasks to your team and seek sponsorship for the new event.',
+      imagePath: 'assets/images/onboarding2.jpg',
     ),
     OnboardingItem(
-      title: 'Access to quiz and vocab',
-      description: 'Practise questions by putting them together',
-      imagePath: 'assets/images/onboarding3.png',
+      title: 'Stories and memories',
+      description: 'Share the unforgettable memories of your campus or clubs with your friends in the form of modern UI.',
+      imagePath: 'assets/images/onboarding3.jpg',
     ),
   ];
 }

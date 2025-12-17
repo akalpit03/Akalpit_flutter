@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:akalpit/features/clubsection/ui/widget/cards/following_club_card.dart';
+import 'package:flutter/material.dart';
 
 class ChatList extends StatelessWidget {
   const ChatList({super.key});
@@ -8,12 +8,13 @@ class ChatList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 12,
-      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return ChatCard(
-          name: 'Clubname ${index + 1}',
-          unreadCount: index % 3 == 0 ? 2 + index : 0,
+        return ClubUpdateCard(
+          clubName: 'Club Name ${index + 1}',
+          subtitle: 'Title of the recent post by admin.',
+          newEventsCount: index % 3 == 0 ? 5 + index : 0,
         );
       },
     );

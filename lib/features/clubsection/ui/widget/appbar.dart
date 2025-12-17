@@ -1,3 +1,4 @@
+import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/features/clubProfile/onboarding/join/search_club_page.dart';
 import 'package:flutter/material.dart';
 
@@ -36,31 +37,20 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
       /// Actions
       actions: [
         /// Search bar
-        Container(
-          width: 180,
-          height: 36,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: TextField(
-            readOnly: true,
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (_) => const ClubSearchPage()),
-              // );
-            },
-            decoration: const InputDecoration(
-              hintText: 'Search',
-              hintStyle: TextStyle(fontSize: 13),
-              prefixIcon: Icon(Icons.search, size: 18),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.zero,
-            ),
-          ),
-        ),
+        IconButton(
+  icon: const Icon(
+    Icons.search,
+    size: 22,
+  ),
+  onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const SearchClubPage(),
+      ),
+    );
+  },
+),
 
         const SizedBox(width: 8),
 

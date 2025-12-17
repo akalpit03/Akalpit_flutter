@@ -10,17 +10,47 @@ class ClubBody extends StatelessWidget {
     return ListView(
       children: const [
         SizedBox(height: 12),
-
-        /// Status Section
+_SectionTitle(title: "Club Membership"), SizedBox(height: 16),
+        /// ================= STATUS SECTION =================
         StatusList(),
+
+       
+ SizedBox(height: 16),
+        Divider(height: 1),
 
         SizedBox(height: 16),
 
-        Divider(height: 1),
+        
+        /// ================= FOLLOWING CLUBS TITLE =================
+        _SectionTitle(title: "Following Clubs"),
 
-        /// Chat List
+        SizedBox(height: 8),
+
         ChatList(),
+
+        SizedBox(height: 24),
       ],
+    );
+  }
+}
+
+/// ================= SECTION TITLE =================
+class _SectionTitle extends StatelessWidget {
+  final String title;
+
+  const _SectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }

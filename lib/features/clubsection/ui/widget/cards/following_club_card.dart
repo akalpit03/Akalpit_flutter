@@ -1,55 +1,92 @@
+import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class ChatCard extends StatelessWidget {
-  final String name;
-  final int unreadCount;
+class ClubUpdateCard extends StatelessWidget {
+  final String clubName;
+  final String subtitle;
+  final int newEventsCount;
+  final String? imageUrl;
 
-  const ChatCard({
+  const ClubUpdateCard({
     super.key,
-    required this.name,
-    required this.unreadCount,
+    required this.clubName,
+    required this.subtitle,
+    required this.newEventsCount,
+    this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 1.5),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(14),
+      ),
       child: Row(
         children: [
-          /// DP
+          /// ================= CLUB IMAGE =================
           CircleAvatar(
             radius: 26,
             backgroundColor: Colors.grey.shade300,
-            child: const Icon(Icons.person, color: Colors.white),
+            backgroundImage:
+                imageUrl != null ? NetworkImage(imageUrl!) : null,
+            child: imageUrl == null
+                ? const Icon(Icons.groups, size: 22)
+                : null,
           ),
 
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
 
-          /// Name
+          /// ================= NAME + SUBTITLE =================
           Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  clubName,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ),
 
-          /// Unread Counter
-          if (unreadCount > 0)
+          const SizedBox(width: 10),
+
+          /// ================= NEW EVENTS BADGE =================
+          if (newEventsCount > 0)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.green.shade100,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                unreadCount.toString(),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
+                newEventsCount > 5
+                    ? '5+ new events'
+                    : '$newEventsCount new event${newEventsCount > 1 ? 's' : ''}',
+                style: TextStyle(
+                  fontSize: 11,
                   fontWeight: FontWeight.w600,
+                  color: Colors.green.shade700,
                 ),
               ),
             ),
