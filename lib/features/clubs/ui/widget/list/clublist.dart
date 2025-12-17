@@ -1,3 +1,4 @@
+import 'package:akalpit/features/clubProfile/mainPages/clubProfilePage.dart';
 import 'package:akalpit/features/clubProfile/onboarding/create/verify.dart';
 import 'package:flutter/material.dart';
 
@@ -97,37 +98,52 @@ class _MyStatusCard extends StatelessWidget {
   }
 }
 
-
 /// =====================
 /// Other Status Card
 /// =====================
 class _StatusCard extends StatelessWidget {
   final String name;
 
-  const _StatusCard({required this.name});
+  const _StatusCard({
+    super.key,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      margin: const EdgeInsets.only(right: 14),
-      child: Column(
-        children: [
-          Container(
-            height: 170,
-            width: 130,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(14),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ClubHomePage()),
+        );
+      },
+      child: Container(
+        width: 150,
+        margin: const EdgeInsets.only(right: 14),
+        child: Column(
+          children: [
+            Container(
+              height: 170,
+              width: 130,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: const Icon(
+                Icons.group,
+                size: 36,
+                color: Colors.white,
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            name,
-            style: const TextStyle(fontSize: 12),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 12),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

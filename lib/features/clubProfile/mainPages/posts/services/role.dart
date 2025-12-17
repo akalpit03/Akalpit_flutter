@@ -1,0 +1,4 @@
+enum ClubRole {
+  admin,
+  member,
+}

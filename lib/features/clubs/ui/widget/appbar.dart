@@ -1,3 +1,4 @@
+import 'package:akalpit/features/clubProfile/onboarding/join/search_club_page.dart';
 import 'package:flutter/material.dart';
 
 class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -43,8 +44,15 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(18),
           ),
-          child: const TextField(
-            decoration: InputDecoration(
+          child: TextField(
+            readOnly: true,
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (_) => const ClubSearchPage()),
+              // );
+            },
+            decoration: const InputDecoration(
               hintText: 'Search',
               hintStyle: TextStyle(fontSize: 13),
               prefixIcon: Icon(Icons.search, size: 18),
@@ -60,11 +68,32 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton<String>(
           icon: const Icon(Icons.more_vert),
           onSelected: (value) {
-            // handle actions
+            switch (value) {
+              case 'join':
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const SearchClubPage()),
+                );
+                break;
+
+              case 'manage':
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const ManageCommunitiesPage()),
+                // );
+                break;
+
+              case 'settings':
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const ClubSettingsPage()),
+                // );
+                break;
+            }
           },
           itemBuilder: (context) => const [
             PopupMenuItem(
-              value: 'create',
+              value: 'join',
               child: Text('Join a Club'),
             ),
             PopupMenuItem(
@@ -84,3 +113,7 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
+ 
+
+ 
