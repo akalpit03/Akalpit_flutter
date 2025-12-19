@@ -1,4 +1,5 @@
 import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/clubProfile/mainPages/about/edit_club_profile.dart';
 import 'package:flutter/material.dart';
 
 class ClubAboutPage extends StatelessWidget {
@@ -89,7 +90,14 @@ class ClubAboutPage extends StatelessWidget {
       /// ================= ADMIN EDIT BUTTON =================
       floatingActionButton: isAdmin
           ? FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const EditClubInfoPage(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.edit),
               label: const Text("Edit"),
               backgroundColor: Colors.white,

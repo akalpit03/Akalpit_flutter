@@ -1,6 +1,7 @@
 import 'package:akalpit/features/clubProfile/mainPages/posts/services/role.dart';
 import 'package:akalpit/features/clubProfile/single_club_profile.dart';
 import 'package:flutter/material.dart';
+import '../../miscellaneous/settings_screen.dart';
 
 class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String clubTitle;
@@ -25,7 +26,9 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const ClubProfilePage(isGuest: false,),
+        builder: (_) => const ClubProfilePage(
+          isGuest: false,
+        ),
       ),
     );
   }
@@ -64,9 +67,36 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (role == ClubRole.admin)
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              switch (value) {
+                case 'edit':
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => const EditClubPage(),
+                  //   ),
+                  // );
+                  break;
+
+                case 'settings':
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ClubSettingsPage(),
+                    ),
+                  );
+                  break;
+              }
+            },
             itemBuilder: (_) => const [
-              PopupMenuItem(value: 'edit', child: Text("Edit Club")),
-              PopupMenuItem(value: 'settings', child: Text("Settings")),
+              PopupMenuItem(
+                value: 'edit',
+                child: Text("Edit Club"),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                child: Text("Settings"),
+              ),
             ],
           ),
       ],

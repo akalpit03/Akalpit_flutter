@@ -1,4 +1,5 @@
 import 'package:akalpit/features/clubProfile/mainPages/teams/TeamWidgets/memberCard.dart';
+import 'package:akalpit/features/clubProfile/mainPages/teams/floatingButtonActions/AddMember.dart';
 import 'package:flutter/material.dart';
 
 class MembersList extends StatelessWidget {
@@ -30,6 +31,15 @@ class MembersList extends StatelessWidget {
             (member) => MemberCard(
               name: member['name']!,
               designation: member['role']!,
+              isAdmin: true, // only admins will see the edit button
+              onEdit: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AddPersonPage(),
+                  ),
+                );
+              },
             ),
           ),
         ],

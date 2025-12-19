@@ -1,3 +1,4 @@
+import 'package:akalpit/features/clubProfile/mainPages/posts/post_body.dart';
 import 'package:flutter/material.dart';
 
 class ClubPostsPage extends StatelessWidget {
@@ -5,8 +6,21 @@ class ClubPostsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Posts Page"),
+    return Scaffold(
+      body: const SampleFeedPage(),
+
+      /// ================= ADD POST BUTTON =================
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        elevation: 4,
+        onPressed: () {
+          // TODO: Open create post / poll / announcement
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 }

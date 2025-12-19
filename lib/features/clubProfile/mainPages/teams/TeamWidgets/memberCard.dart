@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class MemberCard extends StatelessWidget {
   final String name;
   final String designation;
+  final bool isAdmin;
+  final VoidCallback? onEdit;
 
   const MemberCard({
     super.key,
     required this.name,
     required this.designation,
+    this.isAdmin = false,
+    this.onEdit,
   });
 
   @override
@@ -34,27 +38,35 @@ class MemberCard extends StatelessWidget {
             child: const Icon(Icons.person, size: 20),
           ),
           const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                designation,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
+                const SizedBox(height: 2),
+                Text(
+                  designation,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          // ================= ADMIN EDIT BUTTON =================
+          if (isAdmin)
+            IconButton(
+              icon: const Icon(Icons.edit, size: 20,color: Colors.black,),
+              onPressed: onEdit,
+            ),
         ],
       ),
     );

@@ -1,5 +1,8 @@
-import 'package:akalpit/features/Events/layout/ui/widgets/body.dart';
+import 'package:akalpit/features/Events/create/ui/register_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:akalpit/features/Events/layout/ui/widgets/body.dart';
+ 
 
 class ClubEventsPage extends StatelessWidget {
   final bool isAdmin;
@@ -19,16 +22,20 @@ class ClubEventsPage extends StatelessWidget {
       /// ================= ADMIN ADD EVENT BUTTON =================
       floatingActionButton: isAdmin
           ? FloatingActionButton(
-              onPressed: () {
-                 ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Admin Can create an event from here page'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-              },
-              child: const Icon(Icons.add),
               backgroundColor: Colors.white,
+              elevation: 4,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CreateEventMainPage(),
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
             )
           : null,
     );

@@ -1,5 +1,6 @@
 import 'package:akalpit/features/clubProfile/mainPages/teams/TeamWidgets/admin_header.dart';
 import 'package:akalpit/features/clubProfile/mainPages/teams/TeamWidgets/members_card.dart';
+import 'package:akalpit/features/clubProfile/mainPages/teams/floatingButtonActions/AddMember.dart';
 import 'package:flutter/material.dart';
 
 class ClubTeamPage extends StatelessWidget {
@@ -25,14 +26,14 @@ class ClubTeamPage extends StatelessWidget {
       floatingActionButton: isAdmin
           ? FloatingActionButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Admin Can Add a Team member from this button'),
-                    duration: Duration(seconds: 2),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AddPersonPage(),
                   ),
                 );
               },
-              child: const Icon(Icons.add),
+              child: Icon(Icons.add),
               backgroundColor: Colors.white,
             )
           : null,
