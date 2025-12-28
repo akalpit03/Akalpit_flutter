@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
-import '../../../../core/utils/responsive_utils.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../ui/widgets/custom_text_field.dart';
+import 'package:flutter/material.dart';
+ 
+import '../../../../../core/utils/responsive_utils.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 import 'reset_password_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -28,8 +29,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ResetPasswordScreen(email: _emailController.text),
+          builder: (context) => ResetPasswordScreen(email: _emailController.text),
         ),
       );
     }

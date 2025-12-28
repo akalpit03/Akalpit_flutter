@@ -1,3 +1,4 @@
+import 'package:akalpit/features/auth/services/auth_middleware.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
  
 import 'package:redux_persist/redux_persist.dart';
@@ -32,7 +33,7 @@ Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
     middleware: [
       persistor.createMiddleware(),
       ...createAppMiddleware(apiGateway),
- 
+      ...createAuthMiddleware(apiGateway),
     ],
   );
 

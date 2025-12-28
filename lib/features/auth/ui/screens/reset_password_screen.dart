@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../core/utils/responsive_utils.dart';
-import '../../../../core/widgets/custom_button.dart';
-import 'widgets/custom_text_field.dart';
+import '../../../../../core/utils/responsive_utils.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../widgets/custom_text_field.dart';
 import 'login_screen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

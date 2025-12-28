@@ -1,66 +1,97 @@
-// import 'package:redux/redux.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import '../../core/store/app_state.dart';
-// import 'auth_actions.dart';
+import 'package:akalpit/core/api/api_gateway.dart';
+import 'package:akalpit/core/store/app_state.dart';
+import 'package:akalpit/features/auth/services/auth_actions.dart';
+import 'package:redux/redux.dart';
+
+List<Middleware<AppState>> createAuthMiddleware(ApiGateway apiGateway) {
+  return [
+    TypedMiddleware<AppState, RegisterAction>(
+      register(apiGateway),
+    ),
+    TypedMiddleware<AppState, LoginAction>(login(apiGateway)),
+    TypedMiddleware<AppState, VerifyOtpAction>(verifyOtp(apiGateway)),
+    TypedMiddleware<AppState, ResendOtpAction>(resendOtp(apiGateway)),
+  ];
+}
+
+Middleware<AppState> register(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is RegisterAction) {
+      next(action);
+      try {
+        final response = await apiGateway.authService
+            .register(email: action.email, password: action.password,role: action.role);
+        store.dispatch(RegisterSuccessAction(response));
+      } catch (e) {
+        store.dispatch(RegisterFailureAction(e.toString()));
+      }
+    }
  
+    else {
+      next(action);
+    }
+  };
+}
 
-// List<Middleware<AppState>> createAuthMiddleware() {
-//   return [
-//     TypedMiddleware<AppState, InitializeAuth>(_initializeAuth()),
-//     TypedMiddleware<AppState, RegisterAction>(_register()),
-//     TypedMiddleware<AppState, LoginAction>(_login()),
-//     TypedMiddleware<AppState, Logout>(_logout()),
-//   ];
-// }
+Middleware<AppState> login(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is LoginAction) {
+      next(action); // sets isLoading = true in reducer
+      try {
+        final backendResponse = await apiGateway.authService.login(
+          email: action.email,
+          password: action.password,
+        );
 
-// Middleware<AppState> _initializeAuth() {
-//   return (Store<AppState> store, action, NextDispatcher next) async {
-//     next(action);
-//     final prefs = await SharedPreferences.getInstance();
-//     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-//     final userEmail = prefs.getString('userEmail');
+        store.dispatch(LoginSuccessAction(backendResponse));
+      } catch (e) {
+        store.dispatch(LoginFailureAction(e.toString()));
+      }
+    } else {
+      next(action);
+    }
+  };
+}
 
-//     if (isLoggedIn && userEmail != null) {
-//       store.dispatch(LoginSuccessAction({'email': userEmail}));
-//     }
-//   };
-// }
+Middleware<AppState> verifyOtp(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is VerifyOtpAction) {
+      next(action);
+      try {
+        final backendResponse = await apiGateway.authService.verifyOtp(
+          email: action.email,
+          otp: action.otp,
+        );
 
-// Middleware<AppState> _register() {
-//   return (Store<AppState> store, action, NextDispatcher next) async {
-//     next(action);
-//     if (action is RegisterAction) {
-      
-//       await Future.delayed(const Duration(seconds: 1));
-    
-//       store.dispatch(LoginAction(action.email, action.password));
-//     }
-//   };
-// }
+        store.dispatch(VerifyOtpSuccessAction(backendResponse));
+      } catch (e) {
+        store.dispatch(
+          VerifyOtpFailureAction(e.toString()),
+        );
+      }
+    } else {
+      next(action);
+    }
+  };
+}
 
-// Middleware<AppState> _login() {
-//   return (Store<AppState> store, action, NextDispatcher next) async {
-//     next(action);
-//     if (action is LoginAction) {
-//       await Future.delayed(const Duration(seconds: 1)); // simulate API call
-//       if (action.email.isNotEmpty && action.password.isNotEmpty) {
-//         final prefs = await SharedPreferences.getInstance();
-//         await prefs.setBool('isLoggedIn', true);
-//         await prefs.setString('userEmail', action.email);
+Middleware<AppState> resendOtp(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is ResendOtpAction) {
+      next(action);
+      try {
+        final backendResponse = await apiGateway.authService.resendOtp(
+          email: action.email,
+        );
 
-//         store.dispatch(LoginSuccessAction({'email': action.email}));
-//       } else {
-//         store.dispatch(LoginFailureAction("Invalid credentials"));
-//       }
-//     }
-//   };
-// }
-
-// Middleware<AppState> _logout() {
-//   return (Store<AppState> store, action, NextDispatcher next) async {
-//     next(action);
-//     final prefs = await SharedPreferences.getInstance();
-//     await prefs.setBool('isLoggedIn', false);
-//     await prefs.remove('userEmail');
-//   };
-// }
+        store.dispatch(ResendOtpSuccessAction(backendResponse));
+      } catch (e) {
+        store.dispatch(
+          ResendOtpFailureAction(e.toString()),
+        );
+      }
+    } else {
+      next(action);
+    }
+  };
+}

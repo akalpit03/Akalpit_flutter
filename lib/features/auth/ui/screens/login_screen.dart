@@ -1,13 +1,14 @@
+import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:akalpit/core/constants/app_colors.dart';
-import '../../../../core/store/app_state.dart';
-import '../../../../core/utils/responsive_utils.dart';
-// import '../../../../core/widgets/custom_button.dart';
-import '../ui/widgets/custom_text_field.dart';
+ 
+import '../../../../../core/store/app_state.dart';
+import '../../../../../core/utils/responsive_utils.dart';
+import '../widgets/custom_text_field.dart';
 import 'forgot_password_screen.dart';
-import '../../../features/entrypoint/entrypoint_ui.dart';
-import '../ui/viewmodel/login_viewmodel.dart';
+ 
+import '../viewmodel/login_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,77 +31,66 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  /// ---------- LOGIN HANDLER ----------
-  // Future<void> _onLogin() async {
-  //   if (!(_formKey.currentState?.validate() ?? false)) return;
+  Future<void> _onLogin() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-  //   setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
 
-  //   try {
-  //   final store = StoreProvider.of<AppState>(context, listen: false);
+    try {
+      final store = StoreProvider.of<AppState>(context, listen: false);
+      LoginViewModel.fromStore(store).onLogin(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
 
-  //     /// Trigger Redux login action
-  //      LoginViewModel.fromStore(store).onLogin(
-  //       _emailController.text.trim(),
-  //       _passwordController.text.trim(),
-  //     );
+      await Future.doWhile(() async {
+        final vm = LoginViewModel.fromStore(store);
+        if (!vm.isLoading) return false;
+        await Future.delayed(const Duration(milliseconds: 200));
+        return true;
+      });
 
-  //     /// Wait until Redux finishes loading the login
-  //     await Future.doWhile(() async {
-  //       final vm = LoginViewModel.fromStore(store);
+      if (!mounted) return;
 
-  //       if (!vm.isLoading) return false; // stop waiting
+      final finalState = LoginViewModel.fromStore(store);
+      if (finalState.isLoggedIn) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const EntryPointUI()),
+        );
+      } else if (finalState.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Invalid Login Credentials"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
-  //       await Future.delayed(const Duration(milliseconds: 200));
-  //       return true; // continue waiting
-  //     });
-
-  //     if (!mounted) return;
-
-  //     final finalState = LoginViewModel.fromStore(store);
-
-  //     if (finalState.isLoggedIn) {
-  //       // if (true) {
-  //       /// SUCCESS → navigate
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (_) => const EntryPointUI()),
-  //       );
-  //     } else if (finalState.errorMessage != null) {
-  //       /// FAILED → show error
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(finalState.errorMessage!),
-  //           backgroundColor: Colors.red,
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(e.toString()),
-  //         backgroundColor: Colors.red,
-  //       ),
-  //     );
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() => _isLoading = false);
-  //     }
-  //   }
-  // }
-
-  /// ---------- UI ----------
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Adjust font size responsively
+    double baseFontSize(double size) {
+      if (screenWidth < 350) return size * 0.85;
+      if (screenWidth > 600) return size * 1.1;
+      return size;
+    }
+
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -178,7 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           );
                         },
-                        child: const Text('Forgot password?'),
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(fontSize: baseFontSize(14)),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -188,16 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _isLoading
-                            ? null
-                            : () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const EntryPointUI(),
-                                  ),
-                                );
-                              },
+                        onPressed: _isLoading ? null : _onLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.cardBackground,
                           foregroundColor: Colors.white,
@@ -214,27 +198,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text(
+                            : Text(
                                 'Log in',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: baseFontSize(16),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                       ),
                     ),
-
                     const SizedBox(height: 24),
+
+                    /// Responsive Create Account
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Don\'t have an account? ',
-                            style: Theme.of(context).textTheme.bodyLarge),
+                        Text(
+                          'Don\'t have an account? ',
+                          style: TextStyle(fontSize: baseFontSize(14)),
+                        ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, '/create-account');
+                            Navigator.pushNamed(context, '/createAccount');
                           },
-                          child: const Text('Create an account'),
+                          child: Text(
+                            'Create an account',
+                            style: TextStyle(
+                                fontSize: baseFontSize(14),
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ],
                     ),

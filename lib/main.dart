@@ -1,3 +1,4 @@
+import 'package:akalpit/features/auth/ui/screens/create_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -9,7 +10,7 @@ import 'core/theme/app_theme.dart';
 import 'core/store/app_state.dart';
 import 'core/store/app_store.dart';
 
-import 'features/auth/ui/login_screen.dart';
+import 'features/auth/ui/screens/login_screen.dart';
 import 'features/entrypoint/entrypoint_ui.dart';
 import 'features/onboarding/presentation/screens/splash_screen.dart';
 
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => AuthWrapper(savedToken: savedToken),
           '/login': (context) => const LoginScreen(),
+          '/createAccount': (context) => const CreateAccountScreen(), // Placeholder
         },
       ),
     );

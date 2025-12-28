@@ -8,35 +8,35 @@ class AuthService {
 
   AuthService(this.client);
 
-  // ---------------------------------------------------------
-  // REGISTER USER
-  // ---------------------------------------------------------
+ 
   Future<Map<String, dynamic>> register({
-    required String email,
-    required String password,
-  }) async {
-    final response = await client.post(
-      ApiEndpoints.registerUser,
-      data: {
-        "email": email,
-        "password": password,
-      },
-    );
+  required String email,
+  required String password,
+  required String role,
+}) async {
+  final response = await client.post(
+    ApiEndpoints.registerUser,
+    data: {
+      "email": email,
+      "password": password,
+      "role": role,
+    },
+  );
 
-    final body = response.data;
+  final body = response.data;
 
-    if (body is Map<String, dynamic>) {
-    
-      return body;
-      // Expected: { success, message, userId }
-    }
-
-    throw Exception("Unexpected register response: $body");
+  if (body is Map<String, dynamic>) {
+    return {
+      "success": body["success"] ?? false,
+      "message": body["message"] ?? "",
+      "statusCode": body["statusCode"],
+      "user": body["data"],  
+    };
   }
 
-  // ---------------------------------------------------------
-  // LOGIN USER
-  // ---------------------------------------------------------
+  throw Exception("Unexpected register response: $body");
+}
+
 Future<Map<String, dynamic>> login({
   required String email,
   required String password,
@@ -81,32 +81,60 @@ Future<Map<String, dynamic>> login({
 }
 
 
- 
-  Future<Map<String, dynamic>> verifyOtp({
-    required String userId,
-    required String otp,
+Future<Map<String, dynamic>> resendOtp({
+    required String email,
   }) async {
-    final response = await client.post(
-      ApiEndpoints.verifyOtp,
-      data: {
-        "userId": userId,
-        "otp": otp,
-      },
-    );
+    try {
+      final response = await client.post(
+        ApiEndpoints.resendOtp, // Ensure this exists in your endpoints
+        data: {"email": email},
+      );
 
-    final body = response.data;
+      final body = response.data;
 
-    if (body is Map<String, dynamic>) {
-      return body;
-      // Expected: { success: true, verified: true }
+      if (body is Map<String, dynamic>) {
+        return {
+          "success": body["success"] ?? false,
+          "message": body["message"] ?? "Success",
+          "statusCode": body["statusCode"] ?? 200,
+          "data": body["data"], // String: "OTP resent successfully"
+        };
+      }
+      throw Exception("Unexpected resend OTP response format");
+    } catch (e) {
+      rethrow;
     }
-
-    throw Exception("Unexpected OTP verification response: $body");
   }
 
-  // ---------------------------------------------------------
-  // SEND RESET PASSWORD OTP (email only)
-  // ---------------------------------------------------------
+
+ 
+Future<Map<String, dynamic>> verifyOtp({
+  required String email,
+  required String otp,
+}) async {
+  final response = await client.post(
+    ApiEndpoints.verifyOtp,
+    data: {
+      "email": email,
+      "otp": otp,
+    },
+  );
+
+  final body = response.data;
+
+  if (body is Map<String, dynamic>) {
+    return {
+      "success": body["success"] ?? false,
+      "message": body["message"] ?? "",
+      "statusCode": body["statusCode"],
+      "data": body["data"], // "OTP verified successfully"
+    };
+  }
+
+  throw Exception("Unexpected verify OTP response: $body");
+}
+
+ 
   Future<Map<String, dynamic>> sendResetPasswordOtp(String email) async {
     final response = await client.post(
       ApiEndpoints.sendResetPasswordOtp,
@@ -125,9 +153,7 @@ Future<Map<String, dynamic>> login({
     throw Exception("Unexpected reset-password otp response: $body");
   }
 
-  // ---------------------------------------------------------
-  // RESET PASSWORD (userId + OTP + new password)
-  // ---------------------------------------------------------
+ 
   Future<Map<String, dynamic>> resetPassword({
     required String userId,
     required String otp,

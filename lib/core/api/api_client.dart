@@ -10,9 +10,9 @@ class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
 
-  /// Initialize Dio + load stored token if needed
+
   Future<void> init({required String baseUrl, String? token}) async {
-    // If token is not passed, try loading from storage
+
     if (token != null) {
       _token = token;
       await _saveToken(token);
@@ -33,20 +33,43 @@ class ApiClient {
     );
 
     _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          if (_token != null) {
-            options.headers['Authorization'] = 'Bearer $_token';
-          }
-          return handler.next(options);
-        },
-        onResponse: (response, handler) => handler.next(response),
-        onError: (e, handler) => handler.next(e),
-      ),
-    );
+  InterceptorsWrapper(
+    onRequest: (options, handler) {
+      // Inject token dynamically
+      if (_token != null) {
+        options.headers['Authorization'] = 'Bearer $_token';
+      }
+
+      
+      print("➡️ REQUEST: ${options.method} ${options.uri}");
+      if (options.data != null) print("📤 BODY: ${options.data}");
+      if (options.queryParameters.isNotEmpty) print("🔍 QUERY: ${options.queryParameters}");
+      print("🧾 HEADERS: ${options.headers}");
+
+      return handler.next(options);
+    },
+
+    onResponse: (response, handler) {
+      // 🔥 PRINT RESPONSE
+      print("⬅️ RESPONSE: [${response.statusCode}] ${response.requestOptions.uri}");
+      print("📥 DATA: ${response.data}");
+
+      return handler.next(response);
+    },
+
+    onError: (e, handler) {
+      // 🔥 PRINT ERROR
+      print("❌ ERROR: ${e.response?.statusCode} ${e.requestOptions.uri}");
+      print("❗ MESSAGE: ${e.message}");
+      print("📥 ERROR DATA: ${e.response?.data}");
+
+      return handler.next(e);
+    },
+  ),
+);
+
   }
 
-  /// Update token dynamically + persist it
   Future<void> updateToken(String token) async {
     _token = token;
     _dio.options.headers['Authorization'] = 'Bearer $_token';

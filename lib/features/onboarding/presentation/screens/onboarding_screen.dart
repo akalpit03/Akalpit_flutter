@@ -1,3 +1,4 @@
+import 'package:akalpit/features/auth/ui/screens/create_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
@@ -6,8 +7,8 @@ import '../../../../core/utils/animation_utils.dart';
 import '../../../../core/utils/page_transitions.dart';
 import '../../../../core/utils/responsive_utils.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../auth/ui/create_account_screen.dart';
-import '../../../auth/ui/login_screen.dart';
+ 
+import '../../../auth/ui/screens/login_screen.dart';
 import '../widgets/onboarding_content.dart';
 import '../widgets/page_indicator.dart';
 
