@@ -1,25 +1,32 @@
- 
-
 class ApiEndpoints {
   // Base URL
-  // static const String baseUrl =
-  //     "https://am-34kc.onrender.com/api/v1";
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  // static const String baseUrl = "http://localhost:8000/api/v1";
   // static SectionEndpoints get section => SectionEndpoints();
-  // ===== AUTH =====
- 
- static const String registerUser = "$baseUrl/auth/register";
+
+  static const String registerUser = "$baseUrl/auth/register";
   static const String loginUser = "$baseUrl/auth/login";
 
   static const verifyOtp = "$baseUrl/auth/verifyOtp";
   static const sendResetPasswordOtp = "$baseUrl/auth/resendOtp";
   static const resendOtp = "$baseUrl/auth/resendOtp";
   static const resetPassword = "$baseUrl/auth/reset-password";
-  // ===== STORY =====
- 
- 
+
+  //profile personal and public profile search
+  static const String createProfile = "$baseUrl/profile";
+  static String profile() => createProfile;
+
+  static const String myprofileurl = "$baseUrl/profile";
+  static String myProfile() => "$myprofileurl/me";
+  
+ static const String profileSearchUrl = "$baseUrl/profile/public/search";
+
+  static String searchProfiles({
+    required String query,
+    int page = 1,
+  }) =>
+      "$profileSearchUrl?q=$query&page=$page";
+
   static const String storyurl = "$baseUrl/story";
   static String story(storyId) => storyurl;
- 
- 
 }
