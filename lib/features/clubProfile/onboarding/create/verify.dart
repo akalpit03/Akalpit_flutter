@@ -1,6 +1,10 @@
 import 'dart:async';
+
+import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/onboarding/create/register.dart';
+import 'package:akalpit/features/search/viewmodels/clubSearchViewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class VerifyClubPage extends StatefulWidget {
   const VerifyClubPage({super.key});
@@ -12,60 +16,63 @@ class VerifyClubPage extends StatefulWidget {
 class _VerifyClubPageState extends State<VerifyClubPage> {
   final TextEditingController _clubIdController = TextEditingController();
 
-  bool _isSearching = false;
-  bool _showRegisterButton = false;
-  bool _isRegistering = false;
+  /// Instagram-style club ID:
+  /// lowercase letters, numbers, "_" and "."
+  final RegExp _clubIdRegex = RegExp(r'^[a-z0-9._]+$');
 
-  void _searchClub() {
-    if (_clubIdController.text.trim().isEmpty) return;
+  Timer? _debounce;
 
-    setState(() {
-      _isSearching = true;
-      _showRegisterButton = false;
-    });
+  void _onClubIdChanged(
+    String value,
+    ClubAvailabilityViewModel vm,
+  ) {
+    final clubId = value.trim().toLowerCase();
 
-    // ⏳ Fake API delay
-    Timer(const Duration(seconds: 2), () {
-      setState(() {
-        _isSearching = false;
-        _showRegisterButton = true;
-      });
+    /// Cancel previous debounce
+    _debounce?.cancel();
+
+    /// Reset state if empty
+    if (clubId.isEmpty) {
+      vm.clear();
+      return;
+    }
+
+    /// Invalid format → stop & reset
+    if (!_clubIdRegex.hasMatch(clubId)) {
+      vm.clear();
+      return;
+    }
+
+    /// Debounce search
+    _debounce = Timer(const Duration(milliseconds: 600), () {
+      debugPrint('🔍 Checking availability for: $clubId');
+      vm.checkAvailability(clubId);
     });
   }
 
   void _registerClub() {
-    setState(() {
-      _isRegistering = true;
-    });
-
-    // Show success snackbar immediately
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Club registered successfully'),
-        duration: Duration(seconds: 2),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const SetClubProfilePage(),
       ),
     );
+  }
 
-    // ⏳ Fake API + navigation delay
-    Timer(const Duration(seconds: 2), () {
-      setState(() {
-        _isRegistering = false;
-      });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const SetClubProfilePage(),
-        ),
-      );
-    });
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _clubIdController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
+    return StoreConnector<AppState, ClubAvailabilityViewModel>(
+      converter: ClubAvailabilityViewModel.fromStore,
+      distinct: true,
+      builder: (context, vm) {
+        return Scaffold(
           appBar: AppBar(
             title: const Text(
               'Register Your Club',
@@ -73,7 +80,6 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
             ),
             centerTitle: true,
           ),
-
           body: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -98,74 +104,94 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
 
                       const SizedBox(height: 20),
 
-                      /// Search Field
+                      /// Club ID Input
                       TextField(
                         controller: _clubIdController,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (value) =>
+                            _onClubIdChanged(value, vm),
                         decoration: InputDecoration(
-                          hintText: 'Register with your Club ID',
+                          hintText: 'Club ID (e.g. chess.club_01)',
+                          helperText:
+                              'Lowercase letters, numbers, "_" and "." only',
                           prefixIcon: const Icon(Icons.search),
+
+                          /// Status Icon
+                          suffixIcon: vm.isChecking
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(12),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                )
+                              : vm.available == true
+                                  ? const Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green,
+                                    )
+                                  : vm.available == false
+                                      ? const Icon(
+                                          Icons.cancel,
+                                          color: Colors.red,
+                                        )
+                                      : null,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onSubmitted: (_) => _searchClub(),
                       ),
+
+                      const SizedBox(height: 12),
+
+                      /// Invalid / Taken Error
+                      if (vm.available == false)
+                        const Text(
+                          'This Club ID is already taken',
+                          style: TextStyle(color: Colors.red),
+                        ),
+
+                      if (vm.error != null)
+                        Text(
+                          vm.error!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
 
                       const SizedBox(height: 16),
 
-                      /// Search Button
-                      if (!_isSearching && !_showRegisterButton)
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _searchClub,
-                            child: const Text('Search Club'),
-                          ),
-                        ),
-
-                      /// Loader
-                      if (_isSearching) ...[
-                        const SizedBox(height: 16),
-                        const CircularProgressIndicator(),
-                      ],
-
                       /// Register Button
-                      if (_showRegisterButton) ...[
-                        const SizedBox(height: 20),
+                      if (vm.available == true)
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: _registerClub,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 14,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                             child: const Text(
                               'Register Your Club',
-                              style: TextStyle(fontWeight: FontWeight.w600),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                      ],
                     ],
                   ),
                 ),
               ),
             ),
           ),
-        ),
-
-        /// ================= FULL SCREEN LOADER =================
-        if (_isRegistering)
-          Container(
-            color: Colors.black.withOpacity(0.4),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-      ],
+        );
+      },
     );
   }
 }

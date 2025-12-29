@@ -1,13 +1,13 @@
 // features/profile_search/ui/profile_search_screen.dart
 
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/search/screens/widgets/SearchBar.dart';
-import 'package:akalpit/features/search/screens/widgets/SearchResults.dart';
+import 'package:akalpit/features/search/screens/profilesearch/widgets/SearchBar.dart';
+import 'package:akalpit/features/search/screens/profilesearch/widgets/SearchResults.dart';
 import 'package:akalpit/features/search/services/searchviewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../../../core/store/app_state.dart';
+import '../../../../core/store/app_state.dart';
  
 
 class ProfileSearchScreen extends StatelessWidget {

@@ -20,7 +20,8 @@ class ApiEndpoints {
   static String myProfile() => "$myprofileurl/me";
   
  static const String profileSearchUrl = "$baseUrl/profile/public/search";
-
+ static const String clubAvailabilityUrl = "$baseUrl/club/check/";
+   static String checkclubAvailability(String clubName) => "$clubAvailabilityUrl$clubName";
   static String searchProfiles({
     required String query,
     int page = 1,

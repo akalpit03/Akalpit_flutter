@@ -1,21 +1,16 @@
 import 'package:akalpit/features/auth/services/auth_middleware.dart';
-import 'package:akalpit/features/search/services/searchMiddleware.dart';
+import 'package:akalpit/features/search/services/middlewares/searchMiddleware.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
- 
+
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:redux/redux.dart';
-// import '../../features/dailyenglish/vocabulary/vocab_actions.dart';
-// import '../../features/dailyenglish/editorials/editorial_actions.dart';
-// import '../../features/dailyenglish/idioms/idioms_actions.dart';
-// import '../../features/dailyenglish/phrasalVerbs/phrasal_verbs_actions.dart';
+
 import 'app_state.dart';
 import 'app_reducer.dart';
 import '../api/api_gateway.dart';
-import '../store/app_middleware.dart';
 
 Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
- 
   final persistor = Persistor<AppState>(
     storage: FlutterStorage(
       location: kIsWeb
@@ -33,7 +28,6 @@ Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
     initialState: initialState ?? AppState.initial(),
     middleware: [
       persistor.createMiddleware(),
-      ...createAppMiddleware(apiGateway),
       ...createAuthMiddleware(apiGateway),
       ...searchMiddleware(apiGateway),
     ],

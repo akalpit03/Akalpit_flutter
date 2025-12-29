@@ -1,4 +1,4 @@
-import 'package:akalpit/features/search/screens/searchScreen.dart';
+import 'package:akalpit/features/search/screens/profilesearch/searchScreen.dart';
 import 'package:flutter/material.dart';
 
 class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {

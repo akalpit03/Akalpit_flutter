@@ -29,3 +29,24 @@ class SearchProfilesFailureAction {
 }
 
 class ClearProfileSearchAction {}
+// features/club/store/club_availability_actions.dart
+
+class CheckClubAvailabilityAction {
+  final String clubId;
+
+  CheckClubAvailabilityAction(this.clubId);
+}
+
+class CheckClubAvailabilitySuccessAction {
+  final bool available;
+
+  CheckClubAvailabilitySuccessAction(this.available);
+}
+
+class CheckClubAvailabilityFailureAction {
+  final String error;
+
+  CheckClubAvailabilityFailureAction(this.error);
+}
+
+class ClearClubAvailabilityAction {}

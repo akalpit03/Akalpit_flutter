@@ -28,4 +28,22 @@ class ProfileSearchService {
 
     throw Exception("Unexpected profile search response: $body");
   }
+
+  Future<Map<String, dynamic>> checkclubAvailability({
+    required String clubId,
+  }) async {
+    print(  'ProfileSearchService: Checking availability for Club ID: $clubId');
+    final response =
+        await client.get(ApiEndpoints.checkclubAvailability(clubId));
+
+    final body = response.data;
+
+    if (body is Map<String, dynamic>) {
+      return {
+        "available": body["available"] ?? false,
+      };
+    }
+
+    throw Exception("Unexpected club availability response: $body");
+  }
 }

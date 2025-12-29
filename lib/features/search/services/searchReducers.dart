@@ -1,6 +1,6 @@
  
 
-import 'package:akalpit/features/search/services/searchActions.dart';
+import 'package:akalpit/features/search/services/actions/searchActions.dart';
 import 'package:akalpit/features/search/services/searchProfileState.dart';
 
 ProfileSearchState profileSearchReducer(

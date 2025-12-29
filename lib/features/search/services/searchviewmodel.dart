@@ -1,6 +1,6 @@
 // features/profile_search/viewmodel/profile_search_viewmodel.dart
 
-import 'package:akalpit/features/search/services/searchActions.dart';
+import 'package:akalpit/features/search/services/actions/searchActions.dart';
 import 'package:akalpit/features/search/services/searchProfileState.dart';
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';

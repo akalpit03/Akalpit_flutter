@@ -1,4 +1,4 @@
-import 'package:akalpit/features/search/screens/widgets/profileCard.dart';
+import 'package:akalpit/features/search/screens/profilesearch/widgets/profileCard.dart';
 import 'package:akalpit/features/search/services/searchviewmodel.dart';
 import 'package:flutter/material.dart';
  
