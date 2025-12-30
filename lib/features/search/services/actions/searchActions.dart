@@ -50,3 +50,24 @@ class CheckClubAvailabilityFailureAction {
 }
 
 class ClearClubAvailabilityAction {}
+
+// features/club_search/store/club_search_actions.dart
+
+class SearchClubsAction {
+  final String query;
+  final int page;
+  SearchClubsAction({required this.query, this.page = 1});
+}
+
+class SearchClubsSuccessAction {
+  final List<dynamic> results;
+  final Map<String, dynamic> pagination;
+  SearchClubsSuccessAction(this.results, this.pagination);
+}
+
+class SearchClubsFailureAction {
+  final String error;
+  SearchClubsFailureAction(this.error);
+}
+
+class ClearClubSearchAction {}

@@ -1,5 +1,5 @@
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/search/services/searchviewmodel.dart';
+import 'package:akalpit/features/search/viewmodels/ProfileSearchViewModel.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSearchBar extends StatelessWidget {

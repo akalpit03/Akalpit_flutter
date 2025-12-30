@@ -1,5 +1,6 @@
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/clubProfile/onboarding/join/search_club_page.dart';
+import 'package:akalpit/features/clubProfile/ui/onboarding/screens/join/search_club_page.dart';
+import 'package:akalpit/features/search/screens/clubSearch/clubSearch.dart';
 import 'package:flutter/material.dart';
 
 class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -46,7 +47,7 @@ class ClubsAppBar extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const SearchClubPage(),
+        builder: (_) => const ClubSearchScreen(),
       ),
     );
   },

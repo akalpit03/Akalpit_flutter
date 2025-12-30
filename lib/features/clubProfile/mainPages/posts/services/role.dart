@@ -1,4 +1,0 @@
-enum ClubRole {
-  admin,
-  member,
-}

@@ -10,6 +10,9 @@ List<Middleware<AppState>> searchMiddleware(ApiGateway apiGateway) {
     ),
     TypedMiddleware<AppState, CheckClubAvailabilityAction>(
       checkClubAvailability(apiGateway),
+    ), 
+        TypedMiddleware<AppState, SearchClubsAction>(
+      clubSearchMiddleware(apiGateway),
     ),
   ];
 }
@@ -73,4 +76,30 @@ Middleware<AppState> checkClubAvailability(ApiGateway apiGateway) {
   };
 }
 
-  
+// features/club_search/store/club_search_middleware.dart
+
+Middleware<AppState> clubSearchMiddleware(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is SearchClubsAction) {
+      next(action); // Let the reducer set isSearching = true
+
+      try {
+        final response = await apiGateway.profileSearchService.searchClubs(
+          query: action.query,
+          page: action.page,
+        );
+
+        store.dispatch(
+          SearchClubsSuccessAction(
+            response["results"],
+            response["pagination"],
+          ),
+        );
+      } catch (e) {
+        store.dispatch(SearchClubsFailureAction(e.toString()));
+      }
+    } else {
+      next(action);
+    }
+  };
+}

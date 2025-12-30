@@ -1,5 +1,5 @@
 import 'package:akalpit/features/auth/services/auth_service.dart';
-import 'package:akalpit/features/search/services/profileService.dart';
+import 'package:akalpit/features/search/services/searchService.dart';
 
 import 'api_client.dart';
 

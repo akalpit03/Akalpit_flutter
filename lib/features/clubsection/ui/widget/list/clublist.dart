@@ -1,5 +1,5 @@
-import 'package:akalpit/features/clubProfile/mainPages/clubProfilePage.dart';
-import 'package:akalpit/features/clubProfile/onboarding/create/verify.dart';
+import 'package:akalpit/features/clubProfile/ui/mainPages/clubProfilePage.dart';
+import 'package:akalpit/features/clubProfile/ui/onboarding/screens/create/verify.dart';
 import 'package:flutter/material.dart';
 
 class StatusList extends StatelessWidget {

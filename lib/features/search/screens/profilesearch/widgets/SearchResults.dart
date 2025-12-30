@@ -1,5 +1,5 @@
 import 'package:akalpit/features/search/screens/profilesearch/widgets/profileCard.dart';
-import 'package:akalpit/features/search/services/searchviewmodel.dart';
+import 'package:akalpit/features/search/viewmodels/ProfileSearchViewModel.dart';
 import 'package:flutter/material.dart';
  
 

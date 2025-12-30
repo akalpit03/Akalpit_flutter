@@ -1,51 +1,31 @@
-// features/club/viewmodel/club_availability_viewmodel.dart
+// features/club_search/viewmodels/ClubSearchViewModel.dart
 
+import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/search/services/actions/searchActions.dart';
-import 'package:akalpit/features/search/services/state/clubAvailability.dart';
-import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 
-import '../../../core/store/app_state.dart';
- 
-
-class ClubAvailabilityViewModel {
-  final bool isChecking;
-  final bool? available;
+class ClubSearchViewModel {
+  final bool isSearching;
+  final List<dynamic> clubs;
   final String? error;
+  final Function(String) onSearch;
+  final Function() onClear;
 
-  final void Function(String clubId) checkAvailability;
-  final VoidCallback clear;
-
-  ClubAvailabilityViewModel({
-    required this.isChecking,
-    required this.available,
-    required this.error,
-    required this.checkAvailability,
-    required this.clear,
+  ClubSearchViewModel({
+    required this.isSearching,
+    required this.clubs,
+    this.error,
+    required this.onSearch,
+    required this.onClear,
   });
 
-  static ClubAvailabilityViewModel fromStore(Store<AppState> store) {
-    final ClubAvailabilityState state =
-        store.state.clubAvailabilityState;
- 
-
-    return ClubAvailabilityViewModel(
-      isChecking: state.isChecking,
-      available: state.available,
-      error: state.error,
-
-      /// 🔍 Trigger availability check
-      checkAvailability: (String clubId) {
-       print('Dispatching CheckClubAvailabilityAction for Club ID: $clubId');
-        store.dispatch(
-          CheckClubAvailabilityAction(clubId),
-        );
-      },
-
-      /// 🧹 Reset availability state
-      clear: () {
-        store.dispatch(ClearClubAvailabilityAction());
-      },
+  static ClubSearchViewModel fromStore(Store<AppState> store) {
+    return ClubSearchViewModel(
+      isSearching: store.state.clubSearchState.isSearching,
+      clubs: store.state.clubSearchState.results,
+      error: store.state.clubSearchState.error,
+      onSearch: (query) => store.dispatch(SearchClubsAction(query: query)),
+      onClear: () => store.dispatch(ClearClubSearchAction()),
     );
   }
 }
