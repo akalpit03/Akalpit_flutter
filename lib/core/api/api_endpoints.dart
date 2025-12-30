@@ -14,7 +14,7 @@ class ApiEndpoints {
 
   //profile personal and public profile search
   static const String createProfile = "$baseUrl/profile";
-  static String profile() => createProfile;
+ 
 
   static const String myprofileurl = "$baseUrl/profile";
   static String myProfile() => "$myprofileurl/me";
