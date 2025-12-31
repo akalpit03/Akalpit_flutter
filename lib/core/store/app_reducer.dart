@@ -1,4 +1,5 @@
  
+import 'package:akalpit/features/clubProfile/services/gettingClub/reducers.dart';
 import 'package:akalpit/features/profile/services/profileReducers.dart';
 import 'package:akalpit/features/search/services/reducers/clubAvailabilty.dart';
 import 'package:akalpit/features/search/services/reducers/searchClub.dart';
@@ -16,6 +17,7 @@ AppState appReducer(AppState state, dynamic action) {
       clubAvailabilityState: clubAvailabilityReducer(state.clubAvailabilityState, action),
       clubSearchState: clubSearchReducer(state.clubSearchState, action  ),
       profileState: profileReducer(state.profileState, action),
+      clubState: clubReducer(state.clubState, action)
      
      );
 }

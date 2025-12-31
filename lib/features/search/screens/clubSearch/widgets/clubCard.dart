@@ -1,6 +1,7 @@
 // features/search/screens/clubsearch/widgets/ClubCard.dart
 
 import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/clubProfile/ui/single_club_profile.dart';
 import 'package:flutter/material.dart';
 
 class ClubCard extends StatelessWidget {
@@ -26,8 +27,13 @@ class ClubCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // 👉 Navigate to club details page
-          // Navigator.pushNamed(context, '/club-detail', arguments: club["clubId"]);
+     print( 'Club tapped: ${club["clubName"]}');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ClubProfilePage(isGuest: true, clubId: club["clubId"]),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(14),

@@ -10,9 +10,7 @@ class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
 
-
   Future<void> init({required String baseUrl, String? token}) async {
-
     if (token != null) {
       _token = token;
       await _saveToken(token);
@@ -33,41 +31,39 @@ class ApiClient {
     );
 
     _dio.interceptors.add(
-  InterceptorsWrapper(
-    onRequest: (options, handler) {
-      // Inject token dynamically
-      if (_token != null) {
-        options.headers['Authorization'] = 'Bearer $_token';
-      }
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // Inject token dynamically
+          if (_token != null) {
+            options.headers['Authorization'] = 'Bearer $_token';
+          }
 
-      
-      print("➡️ REQUEST: ${options.method} ${options.uri}");
-      if (options.data != null) print("📤 BODY: ${options.data}");
-      if (options.queryParameters.isNotEmpty) print("🔍 QUERY: ${options.queryParameters}");
-      print("🧾 HEADERS: ${options.headers}");
+          print("➡️ REQUEST: ${options.method} ${options.uri}");
+          if (options.data != null) print("📤 BODY: ${options.data}");
+          if (options.queryParameters.isNotEmpty)
+            print("🔍 QUERY: ${options.queryParameters}");
+          print("🧾 HEADERS: ${options.headers}");
 
-      return handler.next(options);
-    },
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          // 🔥 PRINT RESPONSE
+          print(
+              "⬅️ RESPONSE: [${response.statusCode}] ${response.requestOptions.uri}");
+          print("📥 DATA: ${response.data}");
 
-    onResponse: (response, handler) {
-      // 🔥 PRINT RESPONSE
-      print("⬅️ RESPONSE: [${response.statusCode}] ${response.requestOptions.uri}");
-      print("📥 DATA: ${response.data}");
+          return handler.next(response);
+        },
+        onError: (e, handler) {
+          // 🔥 PRINT ERROR
+          print("❌ ERROR: ${e.response?.statusCode} ${e.requestOptions.uri}");
+          print("❗ MESSAGE: ${e.message}");
+          print("📥 ERROR DATA: ${e.response?.data}");
 
-      return handler.next(response);
-    },
-
-    onError: (e, handler) {
-      // 🔥 PRINT ERROR
-      print("❌ ERROR: ${e.response?.statusCode} ${e.requestOptions.uri}");
-      print("❗ MESSAGE: ${e.message}");
-      print("📥 ERROR DATA: ${e.response?.data}");
-
-      return handler.next(e);
-    },
-  ),
-);
-
+          return handler.next(e);
+        },
+      ),
+    );
   }
 
   Future<void> updateToken(String token) async {
@@ -107,7 +103,26 @@ class ApiClient {
     return await _dio.patch(path, data: data);
   }
 
-  Future<Response> delete(String path, {Map<String, dynamic>? queryParams}) async {
+  Future<Response> delete(String path,
+      {Map<String, dynamic>? queryParams}) async {
     return await _dio.delete(path, queryParameters: queryParams);
+  }
+
+  /// ================= MULTIPART POST =================
+  /// Used for image/file uploads
+  Future<Response> postFormData(
+    String path, {
+    required FormData formData,
+  }) async {
+    return await _dio.post(
+      path,
+      data: formData,
+      options: Options(
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          if (_token != null) 'Authorization': 'Bearer $_token',
+        },
+      ),
+    );
   }
 }

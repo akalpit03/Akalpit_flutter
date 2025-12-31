@@ -3,7 +3,10 @@ class ApiEndpoints {
   // static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
   static const String baseUrl = "http://localhost:8000/api/v1";
   // static SectionEndpoints get section => SectionEndpoints();
-
+////////////////////////// IMAGE UPLOAD//////////////////////
+//// Cloudinary Image Upload URL
+  static const String  UploadUrl = "$baseUrl/uploads/image";
+///
   static const String registerUser = "$baseUrl/auth/register";
   static const String loginUser = "$baseUrl/auth/login";
 
@@ -14,7 +17,13 @@ class ApiEndpoints {
 
   //profile personal and public profile search
   static const String createProfile = "$baseUrl/profile";
+ ////////////////////////////////////////////////////////
+ ///ClubEndpoints
  
+  static const String clubDetailsUrl = "$baseUrl/club";
+  static const String createClub = "$baseUrl/club/";
+  static String getClubDetails(String clubId) => "$clubDetailsUrl/$clubId";
+ ////////////////////////////////////////////////////////
 
   static const String myprofileurl = "$baseUrl/profile";
   static String myProfile() => "$myprofileurl/me";

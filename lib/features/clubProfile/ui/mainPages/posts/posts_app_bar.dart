@@ -23,14 +23,14 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   void _onTitleTap(BuildContext context) {
     // 🔁 Replace with your destination page later
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const ClubProfilePage(
-          isGuest: false,
-        ),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => const ClubProfilePage(
+    //       isGuest: false,
+    //     ),
+    //   ),
+    // );
   }
 
   @override

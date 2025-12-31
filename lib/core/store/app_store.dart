@@ -1,4 +1,5 @@
 import 'package:akalpit/features/auth/services/auth_middleware.dart';
+import 'package:akalpit/features/clubProfile/services/gettingClub/middleware.dart';
 import 'package:akalpit/features/profile/services/profileMiddleware.dart';
 import 'package:akalpit/features/search/services/middlewares/searchMiddleware.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -32,6 +33,7 @@ Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
       ...createAuthMiddleware(apiGateway),
       ...searchMiddleware(apiGateway),
       ...profileMiddleware(apiGateway),
+      ...clubMiddleware(apiGateway),
     ],
   );
 

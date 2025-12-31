@@ -79,13 +79,6 @@ class SearchClubPage extends StatelessWidget {
   }
 }
 
-/// ===========================================================
-/// Category Chip Widget
-/// ===========================================================
-
-/// ===========================================================
-/// Club Result Card
-/// ===========================================================
 class _ClubResultCard extends StatelessWidget {
   const _ClubResultCard();
 
@@ -94,12 +87,12 @@ class _ClubResultCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const ClubProfilePage(isGuest: true,),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) => const ClubProfilePage(isGuest: true,),
+        //   ),
+        // );
       },
       child: Card(
         elevation: 2,

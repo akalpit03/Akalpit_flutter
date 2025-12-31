@@ -1,5 +1,5 @@
 class AppConstants {
-  static const String appName = 'akalpit';
+  static const String appName = 'The Akalpit Club';
 
   // Onboarding Screen Constants
   static const List<OnboardingItem> onboardingItems = [

@@ -1,4 +1,6 @@
 import 'package:akalpit/features/auth/services/auth_service.dart';
+import 'package:akalpit/features/clubProfile/services/gettingClub/services.dart';
+ 
 import 'package:akalpit/features/profile/services/profileServices.dart';
 import 'package:akalpit/features/search/services/searchService.dart';
 
@@ -8,11 +10,13 @@ class ApiGateway {
   final AuthService authService;
   final ProfileSearchService profileSearchService;
   final ProfileService profileService;
+  final ClubService clubService;
 
   ApiGateway._({
     required this.authService,
     required this.profileSearchService,
     required this.profileService,
+    required this.clubService,
   });
 
   factory ApiGateway.create() {
@@ -20,6 +24,7 @@ class ApiGateway {
     return ApiGateway._(
         authService: AuthService(client),
         profileSearchService: ProfileSearchService(client),
-        profileService: ProfileService(client));
+        profileService: ProfileService(client),
+        clubService: ClubService(client));
   }
 }

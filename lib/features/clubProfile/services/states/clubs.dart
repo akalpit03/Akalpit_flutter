@@ -1,127 +1,137 @@
-import 'package:akalpit/features/clubProfile/services/utils/roleenum.dart';
+import 'package:akalpit/features/clubProfile/services/states/models/owner.dart';
 
 class Club {
-  final String id;            // Mongo _id
-  final String clubId;        // instagram-like id
-  final String name;
+  final String id; // Mongo _id
+ final ClubOwner? owner;
 
+  final String clubId;
+  final String clubName;
   final String? image;
   final String? about;
 
-  final List<String> categoryIds;
+  final List<String> categories;
+  final String? councilId;
+  final String? institutionId;
 
-  final String ownerId;
-  final List<String> adminIds;
+  final List<String> admins;
+  final List<String> members;
 
-  final String privacy;       // public / private / invite_only
-  final String status;        // active / suspended / deleted
+  final String privacy; // public | private | invite_only
+  final String status; // active | suspended | deleted
 
   final int membersCount;
   final int postsCount;
 
-  final ClubRole myRole;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-
-  Club({
+  const Club({
     required this.id,
+     this.owner,
     required this.clubId,
-    required this.name,
+    required this.clubName,
     this.image,
     this.about,
-    this.categoryIds = const [],
-    required this.ownerId,
-    this.adminIds = const [],
+    required this.categories,
+    this.councilId,
+    this.institutionId,
+    required this.admins,
+    required this.members,
     required this.privacy,
     required this.status,
     required this.membersCount,
     required this.postsCount,
-    required this.myRole,
-    this.createdAt,
-    this.updatedAt,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  /// 🔁 From Backend JSON
-  factory Club.fromJson(Map<String, dynamic> json, {String? myUserId}) {
-    final ownerId = json['ownerId']?.toString() ?? '';
+  /// 🔁 FROM JSON (Backend → App State)
+factory Club.fromJson(Map<String, dynamic> json) {
+  return Club(
+    id: json["_id"].toString(),
 
-    final adminIds = (json['admins'] as List<dynamic>?)
-        ?.map((e) => e.toString())
-        .toList() ?? [];
+    owner: json["owner"] != null
+        ? ClubOwner.fromJson(json["owner"])
+        : null,
 
-    ClubRole role = ClubRole.none;
+    clubId: json["clubId"],
+    clubName: json["clubName"],
+    image: json["image"],
+    about: json["about"],
 
-    if (myUserId != null) {
-      if (myUserId == ownerId) {
-        role = ClubRole.owner;
-      } else if (adminIds.contains(myUserId)) {
-        role = ClubRole.admin;
-      }
-    }
+    categories:
+        (json["categories"] as List?)?.map((e) => e.toString()).toList() ?? [],
 
-    return Club(
-      id: json['_id'],
-      clubId: json['clubId'],
-      name: json['clubName'],
-      image: json['image'],
-      about: json['about'],
-      categoryIds: (json['categories'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList() ?? [],
-      ownerId: ownerId,
-      adminIds: adminIds,
-      privacy: json['privacy'] ?? 'public',
-      status: json['status'] ?? 'active',
-      membersCount: json['membersCount'] ?? 0,
-      postsCount: json['postsCount'] ?? 0,
-      myRole: role,
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'])
-          : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'])
-          : null,
-    );
-  }
+    councilId: json["councilId"]?.toString(),
+    institutionId: json["institutionId"]?.toString(),
 
-  /// 🔁 To Backend (Create / Update)
-  Map<String, dynamic> toJson() {
-    return {
-      'clubId': clubId,
-      'clubName': name,
-      'image': image,
-      'about': about,
-      'categories': categoryIds,
-      'privacy': privacy,
-    };
-  }
+    admins:
+        (json["admins"] as List?)?.map((e) => e.toString()).toList() ?? [],
 
-  /// 🧩 Partial → Full merge support
+    members:
+        (json["members"] as List?)?.map((e) => e.toString()).toList() ?? [],
+
+    privacy: json["privacy"] ?? "public",
+    status: json["status"] ?? "active",
+    membersCount: json["membersCount"] ?? 0,
+    postsCount: json["postsCount"] ?? 0,
+
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+  );
+}
+
+  /// 🔁 TO JSON (App State → API)
+Map<String, dynamic> toJson() {
+  return {
+    "_id": id,
+    "owner": owner?.toJson(),
+    "clubId": clubId,
+    "clubName": clubName,
+    "image": image,
+    "about": about,
+    "categories": categories,
+    "councilId": councilId,
+    "institutionId": institutionId,
+    "admins": admins,
+    "members": members,
+    "privacy": privacy,
+    "status": status,
+    "membersCount": membersCount,
+    "postsCount": postsCount,
+    "createdAt": createdAt.toIso8601String(),
+    "updatedAt": updatedAt.toIso8601String(),
+  };
+}
+
+
+  /// 🧠 Redux-friendly copyWith
   Club copyWith({
-    String? name,
     String? image,
     String? about,
-    List<String>? categoryIds,
-    List<String>? adminIds,
+    List<String>? admins,
+    List<String>? members,
     int? membersCount,
     int? postsCount,
-    ClubRole? myRole,
+    String? status,
+    String? privacy,
   }) {
     return Club(
       id: id,
+      owner: owner,
       clubId: clubId,
-      name: name ?? this.name,
+      clubName: clubName,
       image: image ?? this.image,
       about: about ?? this.about,
-      categoryIds: categoryIds ?? this.categoryIds,
-      ownerId: ownerId,
-      adminIds: adminIds ?? this.adminIds,
-      privacy: privacy,
-      status: status,
+      categories: categories,
+      councilId: councilId,
+      institutionId: institutionId,
+      admins: admins ?? this.admins,
+      members: members ?? this.members,
+      privacy: privacy ?? this.privacy,
+      status: status ?? this.status,
       membersCount: membersCount ?? this.membersCount,
       postsCount: postsCount ?? this.postsCount,
-      myRole: myRole ?? this.myRole,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );

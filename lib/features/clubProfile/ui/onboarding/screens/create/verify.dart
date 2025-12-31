@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/ui/onboarding/screens/create/register.dart';
 import 'package:akalpit/features/search/viewmodels/ClubAvailabilityViewModel.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -16,35 +15,19 @@ class VerifyClubPage extends StatefulWidget {
 
 class _VerifyClubPageState extends State<VerifyClubPage> {
   final TextEditingController _clubIdController = TextEditingController();
-
-  /// Instagram-style club ID:
-  /// lowercase letters, numbers, "_" and "."
   final RegExp _clubIdRegex = RegExp(r'^[a-z0-9._]+$');
-
   Timer? _debounce;
 
-  void _onClubIdChanged(
-    String value,
-    ClubAvailabilityViewModel vm,
-  ) {
+  void _onClubIdChanged(String value, ClubAvailabilityViewModel vm) {
     final clubId = value.trim().toLowerCase();
 
-    /// Cancel previous debounce
     _debounce?.cancel();
 
-    /// Reset state if empty
-    if (clubId.isEmpty) {
+    if (clubId.isEmpty || !_clubIdRegex.hasMatch(clubId)) {
       vm.clear();
       return;
     }
 
-    /// Invalid format → stop & reset
-    if (!_clubIdRegex.hasMatch(clubId)) {
-      vm.clear();
-      return;
-    }
-
-    /// Debounce search
     _debounce = Timer(const Duration(milliseconds: 600), () {
       debugPrint('🔍 Checking availability for: $clubId');
       vm.checkAvailability(clubId);
@@ -52,10 +35,15 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
   }
 
   void _registerClub() {
+    final clubId = _clubIdController.text.trim().toLowerCase();
+    if (clubId.isEmpty) return;
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const SetClubProfilePage(),
+        builder: (_) => SetClubProfilePage(
+          initialClubId: clubId, // Pass the ID here
+        ),
       ),
     );
   }
@@ -94,7 +82,6 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      /// Title
                       const Text(
                         'Register Your Club',
                         style: TextStyle(
@@ -102,22 +89,16 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-
                       const SizedBox(height: 20),
-
-                      /// Club ID Input
                       TextField(
                         controller: _clubIdController,
                         textInputAction: TextInputAction.done,
-                        onChanged: (value) =>
-                            _onClubIdChanged(value, vm),
+                        onChanged: (value) => _onClubIdChanged(value, vm),
                         decoration: InputDecoration(
                           hintText: 'Club ID (e.g. chess.club_01)',
                           helperText:
                               'Lowercase letters, numbers, "_" and "." only',
                           prefixIcon: const Icon(Icons.search),
-
-                          /// Status Icon
                           suffixIcon: vm.isChecking
                               ? const SizedBox(
                                   height: 20,
@@ -145,43 +126,32 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 12),
-
-                      /// Invalid / Taken Error
                       if (vm.available == false)
                         const Text(
                           'This Club ID is already taken',
                           style: TextStyle(color: Colors.red),
                         ),
-
                       if (vm.error != null)
                         Text(
                           vm.error!,
                           style: const TextStyle(color: Colors.red),
                         ),
-
                       const SizedBox(height: 16),
-
-                      /// Register Button
                       if (vm.available == true)
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: _registerClub,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 14,
-                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
                             child: const Text(
                               'Register Your Club',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),

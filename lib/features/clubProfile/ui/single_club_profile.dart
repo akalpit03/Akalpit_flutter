@@ -1,193 +1,73 @@
-import 'package:akalpit/features/clubProfile/ui/onboarding/screens/join/club_joining_status_page.dart';
-import 'package:flutter/material.dart';
  
+import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
+import 'package:akalpit/features/clubProfile/services/gettingClub/viewmodel.dart';
+ import 'package:akalpit/core/store/app_state.dart';
+import 'package:akalpit/features/clubProfile/ui/widgets/AboutSection.dart';
+import 'package:akalpit/features/clubProfile/ui/widgets/ClubHeader.dart';
+import 'package:akalpit/features/clubProfile/ui/widgets/GuestActions.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+
 class ClubProfilePage extends StatelessWidget {
   final bool isGuest;
+  final String clubId;
 
   const ClubProfilePage({
     super.key,
     required this.isGuest,
+    required this.clubId,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Club Profile',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          /// ================= HEADER =================
-          const _ClubHeader(),
-
-          const SizedBox(height: 20),
-
-          /// ================= BODY =================
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: isGuest
-                  ? const _GuestActions()
-                  : const _AboutSection(),
+    return StoreConnector<AppState, ClubViewModel>(
+      onInit: (store) {
+        store.dispatch(GetClubAction(clubId));
+      },
+      converter: (store) => ClubViewModel.fromStore(store),
+      builder: (context, vm) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Club Profile',
+              style: TextStyle(fontWeight: FontWeight.w600),
             ),
+            centerTitle: true,
           ),
-        ],
-      ),
+          body: _buildBody(vm),
+        );
+      },
     );
   }
-}
 
-/// ================= HEADER =================
-class _ClubHeader extends StatelessWidget {
-  const _ClubHeader();
+  Widget _buildBody(ClubViewModel vm) {
+    print('ClubViewModel - isLoading: ${vm.isLoading}, club: ${vm.club}, error: ${vm.error}');
+    if (vm.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(24),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 36,
-            backgroundColor: Colors.grey.shade300,
-            child: const Icon(Icons.groups, size: 32),
-          ),
-          const SizedBox(width: 14),
-         const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Akalpit Tech Club',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black45,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'XYZ University',
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Coordinator: John Doe',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    if (vm.error != null) {
+      return Center(child: Text(vm.error!));
+    }
 
-/// ================= GUEST ACTIONS =================
-class _GuestActions extends StatelessWidget {
-  const _GuestActions();
+    if (vm.club == null) {
+      return const Center(child: Text("Club not found"));
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          width: double.infinity,
-          height: 46,
-          child: OutlinedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const RequestStatusPage(),
-                ),
-              );
-            },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'Join as Team',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        SizedBox(
-          width: double.infinity,
-          height: 46,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const RequestStatusPage(),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text('Become a Member'),
-          ),
-        ),
-      ],
-    );
-  }
-}
+        /// ================= HEADER =================
+        ClubHeader(club: vm.club!),const SizedBox(height: 20),
+ AboutSection(club: vm.club!),
+        const SizedBox(height: 20),
 
-/// ================= ABOUT SECTION =================
-class _AboutSection extends StatelessWidget {
-  const _AboutSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text(
-          'About',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+        /// ================= BODY =================
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: const GuestActions(),
+              
           ),
-        ),
-        SizedBox(height: 12),
-        Text(
-          'Institute',
-          style: TextStyle(fontSize: 13, color: Colors.grey),
-        ),
-        SizedBox(height: 4),
-        Text(
-          'XYZ University',
-          style: TextStyle(fontSize: 14),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'Coordinator',
-          style: TextStyle(fontSize: 13, color: Colors.grey),
-        ),
-        SizedBox(height: 4),
-        Text(
-          'John Doe',
-          style: TextStyle(fontSize: 14),
         ),
       ],
     );
