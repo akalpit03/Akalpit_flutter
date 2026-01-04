@@ -1,3 +1,4 @@
+import 'package:akalpit/features/Feed/ui/notification.dart';
 import 'package:akalpit/features/search/screens/profilesearch/searchScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,17 +32,29 @@ class FeedAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Icons.search),
           onPressed: () {
             Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => const ProfileSearchScreen(),
-        ),
-      );
+              MaterialPageRoute(
+                builder: (_) => const ProfileSearchScreen(),
+              ),
+            );
           },
         ),
-
+// NotificationPage
         /// Notifications
         IconButton(
           icon: const Icon(Icons.notifications_none),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const NotificationPage(),
+              ),
+            );
+          },
+        ),
+
+        /// Settings (NEW)
+        IconButton(
+          icon: const Icon(Icons.settings_outlined),
+          onPressed: () {}, // leave function blank for now
         ),
 
         const SizedBox(width: 8),

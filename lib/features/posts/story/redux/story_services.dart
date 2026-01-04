@@ -10,7 +10,7 @@ class StoryService {
 
   Future<StoryResponseModel> fetchStoryById(String storyId) async {
     try {
-      final url = ApiEndpoints.story(storyId);
+      final url = ApiEndpoints.getStoryByStoryId(storyId);
 
       final response = await client.get(url);
       final body = response.data as Map<String, dynamic>;

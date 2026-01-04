@@ -1,13 +1,18 @@
 import 'package:akalpit/core/constants/app_colors.dart';
+ 
+import 'package:akalpit/features/profile/ui/profile_page.dart';
 import 'package:flutter/material.dart';
+ 
 
 class ProfileCard extends StatelessWidget {
   final Map<String, dynamic> profile;
 
-  const ProfileCard({required this.profile});
+  const ProfileCard({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
+    final userId = profile["_id"] ?? profile["userId"];
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
@@ -24,8 +29,13 @@ class ProfileCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // 👉 Navigate to public profile
-          // Navigator.pushNamed(context, '/profile/${profile["userId"]}');
+          if (userId == null) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProfilePage(userId: userId),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(14),
@@ -47,7 +57,7 @@ class ProfileCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      profile["name"] ?? "",
+                      profile["displayName"] ?? "",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -55,7 +65,7 @@ class ProfileCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Joined ${_formatDate(profile["createdAt"])}",
+                      "@${profile["username"] ?? ""}",
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -73,12 +83,5 @@ class ProfileCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatDate(String? iso) {
-    if (iso == null) return "";
-    final date = DateTime.tryParse(iso);
-    if (date == null) return "";
-    return "${date.day}/${date.month}/${date.year}";
   }
 }

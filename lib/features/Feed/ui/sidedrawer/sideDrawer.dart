@@ -5,45 +5,64 @@ class AppSideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'AKALPIT',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'My Chats',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: const Color.fromARGB(255, 89, 99, 97), // WhatsApp teal
+      ),
+      body: ListView.separated(
+        itemCount: 2,
+        separatorBuilder: (_, __) => const Divider(height: 1),
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const CircleAvatar(
+              radius: 26,
+              backgroundColor: Color.fromARGB(255, 155, 168, 160), // teal/green
+              child: Icon(Icons.person, color: Colors.white),
+            ),
+            title: Text(
+              'Chat User ${index + 1}',
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.home_outlined),
-              title: const Text('Home'),
-              onTap: () => Navigator.pop(context),
+            subtitle: const Text(
+              'Last message preview goes here...',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            ListTile(
-              leading: const Icon(Icons.person_outline),
-              title: const Text('Profile'),
-              onTap: () => Navigator.pop(context),
+            trailing: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:   [
+                Text(
+                  '10:45 AM',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: 6),
+                CircleAvatar(
+                  radius: 9,
+                  backgroundColor: Color(0xFF25D366),
+                  child: Text(
+                    '2',
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.settings_outlined),
-              title: const Text('Settings'),
-              onTap: () => Navigator.pop(context),
-            ),
-            const Spacer(),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {},
-            ),
-          ],
-        ),
+            onTap: () {
+              // Navigate to chat screen
+            },
+          );
+        },
       ),
     );
   }

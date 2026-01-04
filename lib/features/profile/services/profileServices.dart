@@ -8,7 +8,7 @@ class ProfileService {
   final ApiClient client;
 
   ProfileService(this.client);
- 
+
   Future<Map<String, dynamic>> getMyProfile() async {
     // Note: Ensure ApiEndpoints.myProfile exists in your constants
     final response = await client.get(ApiEndpoints.myProfile());
@@ -25,7 +25,23 @@ class ProfileService {
     throw Exception(body["message"] ?? "Failed to fetch profile");
   }
 
-  /// Creates a new profile or updates existing one
+  Future<Map<String, dynamic>> getPublicProfileByUserId(String userId) async {
+  final response = await client.get(
+    ApiEndpoints.getPublicUserProfile(userId),
+  );
+
+  final body = response.data;
+
+  if (body is Map<String, dynamic> && body["success"] == true) {
+    return {
+      "success": true,
+      "data": body["data"],
+    };
+  }
+
+  throw Exception(body["message"] ?? "Failed to fetch public profile");
+}
+
   Future<Map<String, dynamic>> createProfile(
       Map<String, dynamic> profileData) async {
     final response = await client.post(

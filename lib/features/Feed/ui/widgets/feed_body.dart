@@ -12,7 +12,7 @@ class FeedBody extends StatelessWidget {
     return ListView(
       padding:   EdgeInsets.only(top: 8, bottom: 16),
       children:   [
-        StoryList(),
+        ActiveUsersList(),
         SizedBox(height: 12),
         FeedCard(
           onOpenPost: () {

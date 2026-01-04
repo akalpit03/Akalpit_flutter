@@ -1,3 +1,4 @@
+import 'package:akalpit/features/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:akalpit/features/Feed/ui/sidedrawer/sideDrawer.dart';
 import 'package:akalpit/features/Feed/ui/widgets/appbar.dart';
@@ -16,7 +17,8 @@ class FeedPage extends StatelessWidget {
       // Floating action button to create a post
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to create post page or show modal
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const AkalpitEditorPage()));
         },
         backgroundColor: Colors.blue, // You can change color
         child: const Icon(Icons.edit), // Pencil icon for creating post

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/api/api_client.dart';
@@ -37,50 +39,47 @@ class AuthService {
   throw Exception("Unexpected register response: $body");
 }
 
-Future<Map<String, dynamic>> login({
-  required String email,
-  required String password,
-}) async {
-  final response = await client.post(
-    ApiEndpoints.loginUser,
-    data: {
-      "email": email,
-      "password": password,
-    },
-  );
+ Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
+    final response = await client.post(
+      ApiEndpoints.loginUser,
+      data: {
+        "email": email,
+        "password": password,
+      },
+    );
 
-  final body = response.data;
+    final body = response.data;
 
- 
-  if (body == null ||
-      body["data"] == null ||
-      body["data"]["accessToken"] == null ||
-      body["data"]["refreshToken"] == null ||
-      body["data"]["user"] == null) {
-    throw Exception("Invalid login response format");
+    if (body == null ||
+        body["data"] == null ||
+        body["data"]["accessToken"] == null ||
+        body["data"]["refreshToken"] == null ||
+        body["data"]["user"] == null) {
+      throw Exception("Invalid login response format");
+    }
+
+    final token = body["data"]["accessToken"];
+    final refreshToken = body["data"]["refreshToken"];
+    final user = body["data"]["user"]; // full user object
+
+    // Save tokens & user in SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token); // use real token here
+    await prefs.setString('refreshToken', refreshToken);
+    await prefs.setString('user', jsonEncode(user)); // ✅ store user as JSON
+
+    // Update API client with access token
+    ApiClient().updateToken(token);
+
+    return {
+      "success": body["success"],
+      "message": body["message"],
+      "user": user,
+    };
   }
-
-  
-  final token = body["data"]["accessToken"];
-  final refreshToken = body["data"]["refreshToken"];
-  final user = body["data"]["user"]; // FULL user object
-
- 
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('token', "dfsddfgsdg");
-  await prefs.setString('refreshToken', refreshToken);
-
- 
-  ApiClient().updateToken(token);
-
-  return {
-    "success": body["success"],
-    "message": body["message"],
-    "user": user, // return user if needed
-  };
-}
-
-
 Future<Map<String, dynamic>> resendOtp({
     required String email,
   }) async {
@@ -135,46 +134,46 @@ Future<Map<String, dynamic>> verifyOtp({
 }
 
  
-  Future<Map<String, dynamic>> sendResetPasswordOtp(String email) async {
-    final response = await client.post(
-      ApiEndpoints.sendResetPasswordOtp,
-      data: {
-        "email": email,
-      },
-    );
+  // Future<Map<String, dynamic>> sendResetPasswordOtp(String email) async {
+  //   final response = await client.post(
+  //     ApiEndpoints.sendResetPasswordOtp,
+  //     data: {
+  //       "email": email,
+  //     },
+  //   );
 
-    final body = response.data;
+  //   final body = response.data;
 
-    if (body is Map<String, dynamic>) {
-      return body;
-      // Expected: { success, userId, message }
-    }
+  //   if (body is Map<String, dynamic>) {
+  //     return body;
+  //     // Expected: { success, userId, message }
+  //   }
 
-    throw Exception("Unexpected reset-password otp response: $body");
-  }
+  //   throw Exception("Unexpected reset-password otp response: $body");
+  // }
 
  
-  Future<Map<String, dynamic>> resetPassword({
-    required String userId,
-    required String otp,
-    required String newPassword,
-  }) async {
-    final response = await client.post(
-      ApiEndpoints.resetPassword,
-      data: {
-        "userId": userId,
-        "otp": otp,
-        "newPassword": newPassword,
-      },
-    );
+  // Future<Map<String, dynamic>> resetPassword({
+  //   required String userId,
+  //   required String otp,
+  //   required String newPassword,
+  // }) async {
+  //   final response = await client.post(
+  //     ApiEndpoints.resetPassword,
+  //     data: {
+  //       "userId": userId,
+  //       "otp": otp,
+  //       "newPassword": newPassword,
+  //     },
+  //   );
 
-    final body = response.data;
+  //   final body = response.data;
 
-    if (body is Map<String, dynamic>) {
-      return body;
-      // Expected: { success, message }
-    }
+  //   if (body is Map<String, dynamic>) {
+  //     return body;
+  //     // Expected: { success, message }
+  //   }
 
-    throw Exception("Unexpected reset-password response: $body");
-  }
+  //   throw Exception("Unexpected reset-password response: $body");
+  // }
 }

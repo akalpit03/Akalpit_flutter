@@ -1,6 +1,6 @@
 import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
  
-import 'package:akalpit/features/profile/services/profileState.dart';
+import 'package:akalpit/features/profile/services/state/profileState.dart';
 import 'package:akalpit/features/search/services/state/searchClubState.dart';
 import 'package:akalpit/features/search/services/state/searchProfileState.dart';
 import 'package:akalpit/features/search/services/state/clubAvailability.dart';

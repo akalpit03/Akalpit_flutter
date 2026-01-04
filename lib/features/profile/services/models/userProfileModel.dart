@@ -1,52 +1,61 @@
- 
-
-import 'package:akalpit/features/profile/services/models/userExperiencemodel.dart';
-
 class UserProfileModel {
-  final String userId;
-  final String name;
+  final String id;
+  final String displayName;
+  final String username;
+
+  final String? imageUrl;
   final String about;
   final List<String> hobbies;
-  final String? imageUrl;
-  final List<UserExperience> experiences;
+  final List<dynamic> experiences;
   final Map<String, dynamic> userTypeMeta;
 
+  final bool isSelf;
+  final Map<String, dynamic> stats;
+  final Map<String, dynamic> friendship;
+
   UserProfileModel({
-    required this.userId,
-    required this.name,
+    required this.id,
+    required this.displayName,
+    required this.username,
     required this.about,
     required this.hobbies,
-    this.imageUrl,
     required this.experiences,
     required this.userTypeMeta,
+    required this.isSelf,
+    required this.stats,
+    required this.friendship,
+    this.imageUrl,
   });
 
-  /// 📥 Creates an instance from JSON (Handles nested Experience list)
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
-      userId: json['userId'] ?? "",
-      name: json['name'] ?? "",
-      about: json['about'] ?? "",
-      hobbies: List<String>.from(json['hobbies'] ?? []),
+      id: json['_id'],
+      displayName: json['displayName'] ?? '',
+      username: json['username'] ?? '',
       imageUrl: json['imageUrl'],
-      experiences: (json['experiences'] as List? ?? [])
-          .map((e) => UserExperience.fromJson(Map<String, dynamic>.from(e)))
-          .toList(),
+      about: json['about'] ?? '',
+      hobbies: List<String>.from(json['hobbies'] ?? []),
+      experiences: List<dynamic>.from(json['experiences'] ?? []),
       userTypeMeta: Map<String, dynamic>.from(json['userTypeMeta'] ?? {}),
+      isSelf: json['isSelf'] ?? false,
+      stats: Map<String, dynamic>.from(json['stats'] ?? {}),
+      friendship: Map<String, dynamic>.from(json['friendship'] ?? {}),
     );
   }
 
-  /// 📦 Converts the entire profile including Experiences to JSON
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'name': name,
-      'about': about,
-      'hobbies': hobbies,
-      'imageUrl': imageUrl,
-      // Logic: Loop through each UserExperience object and call its specific toJson()
-      'experiences': experiences.map((e) => e.toJson()).toList(),
-      'userTypeMeta': userTypeMeta,
+      "_id": id,
+      "displayName": displayName,
+      "username": username,
+      "imageUrl": imageUrl,
+      "about": about,
+      "hobbies": hobbies,
+      "experiences": experiences,
+      "userTypeMeta": userTypeMeta,
+      "isSelf": isSelf,
+      "stats": stats,
+      "friendship": friendship,
     };
   }
 }

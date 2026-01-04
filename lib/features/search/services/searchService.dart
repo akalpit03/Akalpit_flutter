@@ -11,24 +11,43 @@ class ProfileSearchService {
   Future<Map<String, dynamic>> searchProfiles({
     required String query,
     int page = 1,
+    int limit = 10,
   }) async {
     final response = await client.get(
-      ApiEndpoints.searchProfiles(query: query, page: page),
+      ApiEndpoints.searchProfiles(query: query, page: page ),
     );
 
     final body = response.data;
 
     if (body is Map<String, dynamic>) {
+      final results = body["data"]?["results"] as List<dynamic>? ?? [];
+      final pagination = body["data"]?["pagination"] as Map<String, dynamic>? ?? {};
+
+      // Optionally, map results to typed model
+      final profiles = results.map((e) => {
+            "_id": e["_id"] ?? "",
+            "displayName": e["displayName"] ?? "",
+            "username": e["username"] ?? "",
+            "imageUrl": e["imageUrl"] ?? "",
+            "role": e["role"] ?? "",
+            "createdAt": e["createdAt"] ?? "",
+          }).toList();
+
       return {
         "success": body["success"] ?? false,
-        "results": body["data"]?["results"] ?? [],
-        "pagination": body["data"]?["pagination"] ?? {},
+        "results": profiles,
+        "pagination": {
+          "total": pagination["total"] ?? 0,
+          "page": pagination["page"] ?? 1,
+          "limit": pagination["limit"] ?? 10,
+          "totalPages": pagination["totalPages"] ?? 1,
+          "hasNextPage": pagination["hasNextPage"] ?? false,
+        },
       };
     }
 
     throw Exception("Unexpected profile search response: $body");
   }
-
   Future<Map<String, dynamic>> checkclubAvailability({
     required String clubId,
   }) async {
