@@ -1,23 +1,23 @@
 class ClubOwner {
-  final String id;
-  final String? name; // optional (future)
+  final String id;           // userId (ObjectId as string)
+  final String displayName;  // snapshot name stored in club
 
   const ClubOwner({
     required this.id,
-    this.name,
+    required this.displayName,
   });
 
   factory ClubOwner.fromJson(Map<String, dynamic> json) {
     return ClubOwner(
       id: json["id"].toString(),
-      name: json["name"],
+      displayName: json["displayName"] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "name": name,
+      "displayName": displayName,
     };
   }
 }

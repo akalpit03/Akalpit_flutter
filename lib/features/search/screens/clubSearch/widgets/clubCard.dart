@@ -31,7 +31,7 @@ class ClubCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ClubProfilePage(isGuest: true, clubId: club["clubId"]),
+              builder: (_) => ClubProfilePage(isGuest: true, clubId: club["_id"]),
             ),
           );
         },

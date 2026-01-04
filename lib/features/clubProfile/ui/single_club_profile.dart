@@ -41,7 +41,7 @@ class ClubProfilePage extends StatelessWidget {
   }
 
   Widget _buildBody(ClubViewModel vm) {
-    print('ClubViewModel - isLoading: ${vm.isLoading}, club: ${vm.club}, error: ${vm.error}');
+ 
     if (vm.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -56,16 +56,16 @@ class ClubProfilePage extends StatelessWidget {
 
     return Column(
       children: [
-        /// ================= HEADER =================
+ 
         ClubHeader(club: vm.club!),const SizedBox(height: 20),
  AboutSection(club: vm.club!),
         const SizedBox(height: 20),
 
-        /// ================= BODY =================
-        Expanded(
+ 
+       const Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: const GuestActions(),
+            padding:   EdgeInsets.symmetric(horizontal: 16),
+            child:   GuestActions(),
               
           ),
         ),

@@ -1,8 +1,10 @@
 import 'package:akalpit/core/store/app_state.dart';
+import 'package:akalpit/features/auth/ui/screens/login_screen.dart';
 import 'package:akalpit/features/profile/ui/createProfile.dart';
 import 'package:akalpit/features/profile/ui/viewmodel/profileviewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// 👇 true when viewing someone else’s profile
@@ -94,29 +96,45 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // TODO: dispatch logout action
-            },
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-  }
+  
 
+void _showLogoutDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Logout'),
+      content: const Text('Are you sure you want to logout?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            // 1. Clear local storage
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.clear(); 
+
+            // 2. Navigate and prevent going back
+            if (context.mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(), // Replace with your Login Widget name
+                ),
+                (route) => false, // This condition removes all previous routes
+              );
+            }
+          },
+          child: const Text(
+            'Logout',
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
+    ),
+  );
+}
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

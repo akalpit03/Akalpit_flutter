@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  // static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  // static const String baseUrl = "http://localhost:8000/api/v1";
 
 
   // ===================== IMAGE UPLOAD =====================
@@ -73,8 +73,8 @@ static String searchClubs({
     "$clubSearchUrl?q=$query&page=$page";
 
 /// 6️⃣ Get Club by ClubId (GET /club/:clubId)
-static String getClubDetails(String clubId) =>
-    "$baseUrl/club/$clubId";
+static String getClubDetails(String Id) =>
+    "$baseUrl/club/id/$Id";
 
 /// 7️⃣ Get Clubs by User (GET /club/user/:userId)
 static String getClubsByUser(String userId) =>
@@ -123,14 +123,13 @@ static String uploadClubImage(String clubId) =>
 
 // ===================== MEMBERSHIP APIs =====================
 
-/// 1️⃣9️⃣ Join Club (POST /club/:clubId/join)
+/// 1️⃣9️⃣ Join Club (POST /membership/:clubId/join)
 static String joinClub(String clubId) =>
-    "$baseUrl/club/$clubId/join";
+    "$baseUrl/membership/$clubId/join";
 
-/// 2️⃣0️⃣ Request to Join Club (POST /club/:clubId/request)
+/// 2️⃣0️⃣ Request to Join Club (POST /membership/:clubId/request)
 static String requestToJoinClub(String clubId) =>
-    "$baseUrl/club/$clubId/request";
-
+    "$baseUrl/membership/$clubId/request";
 /// 2️⃣1️⃣ Leave Club (POST /club/:clubId/leave)
 static String leaveClub(String clubId) =>
     "$baseUrl/club/$clubId/leave";
