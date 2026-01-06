@@ -1,5 +1,6 @@
 import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipState.dart';
+import 'package:akalpit/features/clubsection/services/clubscreenstate.dart';
  
 import 'package:akalpit/features/profile/services/state/profileState.dart';
 import 'package:akalpit/features/search/services/state/searchClubState.dart';
@@ -18,6 +19,7 @@ class AppState extends Equatable {
   final ProfileState profileState;
   final ClubState clubState;
   final ClubMembershipState clubMembershipState;
+  final ClubScreenState clubScreenState;
 
   const AppState({
     required this.authState,
@@ -27,6 +29,7 @@ class AppState extends Equatable {
     required this.profileState,
     required this.clubState,
     required this.clubMembershipState,
+    required this.clubScreenState,
   });
 
   factory AppState.initial() => AppState(
@@ -37,6 +40,7 @@ class AppState extends Equatable {
         profileState: ProfileState.initial(),
         clubState: ClubState.initial(),
         clubMembershipState: ClubMembershipState.initial(),
+        clubScreenState: ClubScreenState.initial(),
       );
 
   AppState copyWith({
@@ -50,6 +54,7 @@ class AppState extends Equatable {
       profileState: profileState,
       clubState: clubState,           
       clubMembershipState: clubMembershipState,
+      clubScreenState: clubScreenState,
     );
   }
 
@@ -61,6 +66,7 @@ class AppState extends Equatable {
         'profileState': profileState.toJson(),
         'clubState': clubState.toJson(),
         'clubMembershipState': clubMembershipState.toJson(),
+        'clubScreenState': clubScreenState.toJson(),
       };
 
   static AppState fromJson(dynamic json) {
@@ -77,9 +83,10 @@ class AppState extends Equatable {
       clubState: ClubState.fromJson(json['clubState']),
       clubMembershipState:
           ClubMembershipState.fromJson(json['clubMembershipState']),
+      clubScreenState: ClubScreenState.fromJson(json['clubScreenState']),
     );
   }
 
   @override
-  List<Object?> get props => [authState, profileSearchState, clubAvailabilityState, clubSearchState, profileState, clubState, clubMembershipState];
+  List<Object?> get props => [authState, profileSearchState, clubAvailabilityState, clubSearchState, profileState, clubState, clubMembershipState, clubScreenState];
 }

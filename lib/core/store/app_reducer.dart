@@ -1,6 +1,7 @@
  
 import 'package:akalpit/features/clubProfile/services/gettingClub/reducers.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipReducers.dart';
+import 'package:akalpit/features/clubsection/services/reducers.dart';
 import 'package:akalpit/features/profile/services/profileReducers.dart';
 import 'package:akalpit/features/search/services/reducers/clubAvailabilty.dart';
 import 'package:akalpit/features/search/services/reducers/searchClub.dart';
@@ -19,7 +20,8 @@ AppState appReducer(AppState state, dynamic action) {
       clubSearchState: clubSearchReducer(state.clubSearchState, action  ),
       profileState: profileReducer(state.profileState, action),
       clubState: clubReducer(state.clubState, action),
-      clubMembershipState: clubMembershipReducer(state.clubMembershipState, action) 
+      clubMembershipState: clubMembershipReducer(state.clubMembershipState, action) ,
+      clubScreenState: clubScreenReducer(state.clubScreenState, action),
      
      );
 }

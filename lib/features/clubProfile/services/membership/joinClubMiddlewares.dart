@@ -51,9 +51,9 @@ List<Middleware<AppState>> clubMembershipMiddleware(
     TypedMiddleware<AppState, GetMyRoleInClubAction>(
       _handleGetMyRoleInClub(apiGateway),
     ),
-    TypedMiddleware<AppState, GetMyClubsAction>(
-      _handleGetMyClubs(apiGateway),
-    ),
+    // TypedMiddleware<AppState, GetMyClubsAction>(
+    //   _handleGetMyClubs(apiGateway),
+    // ),
   ];
 }
 
@@ -76,7 +76,7 @@ Middleware<AppState> _handleRequestToJoinClub(ApiGateway apiGateway) {
       next(action);
 
       try {
-        print(  "Middleware: Requesting to join club ${action.clubId}"  );
+        print("Middleware: Requesting to join club ${action.clubId}");
         await apiGateway.clubMembershipService.requestToJoinClub(action.clubId);
         store.dispatch(RequestToJoinClubSuccessAction(action.clubId));
       } catch (e) {
@@ -104,16 +104,20 @@ Middleware<AppState> _handleLeaveClub(ApiGateway apiGateway) {
 
 Middleware<AppState> _handleAcceptJoinRequest(ApiGateway apiGateway) {
   return (store, action, next) async {
-    next(action);
+    if (action is AcceptJoinRequestAction) {
+      next(action);
 
-    try {
-      await apiGateway.clubMembershipService
-          .acceptJoinRequest(action.membershipId);
-      store.dispatch(
-        AcceptJoinRequestSuccessAction(action.membershipId),
-      );
-    } catch (e) {
-      store.dispatch(ClubMembershipFailureAction(e.toString()));
+      try {
+        await apiGateway.clubMembershipService
+            .acceptJoinRequest(action.membershipId);
+        store.dispatch(
+          AcceptJoinRequestSuccessAction(action.membershipId),
+        );
+      } catch (e) {
+        store.dispatch(ClubMembershipFailureAction(e.toString()));
+      }
+    } else {
+      next(action);
     }
   };
 }
@@ -201,20 +205,24 @@ Middleware<AppState> _handleGetPendingJoinRequests(
   ApiGateway apiGateway,
 ) {
   return (store, action, next) async {
-    next(action);
+    if (action is GetPendingJoinRequestsAction) {
+      next(action);
 
-    try {
-      final requests = await apiGateway.clubMembershipService
-          .getPendingJoinRequests(action.clubId);
+      try {
+        final requests = await apiGateway.clubMembershipService
+            .getPendingJoinRequests(action.clubId);
 
-      store.dispatch(
-        GetPendingJoinRequestsSuccessAction(
-          action.clubId,
-          requests,
-        ),
-      );
-    } catch (e) {
-      store.dispatch(ClubMembershipFailureAction(e.toString()));
+        store.dispatch(
+          GetPendingJoinRequestsSuccessAction(
+            action.clubId,
+            requests,
+          ),
+        );
+      } catch (e) {
+        store.dispatch(ClubMembershipFailureAction(e.toString()));
+      }
+    } else {
+      next(action);
     }
   };
 }
@@ -257,16 +265,16 @@ Middleware<AppState> _handleGetMyRoleInClub(
   };
 }
 
-Middleware<AppState> _handleGetMyClubs(ApiGateway apiGateway) {
-  return (store, action, next) async {
-    next(action);
+// Middleware<AppState> _handleGetMyClubs(ApiGateway apiGateway) {
+//   return (store, action, next) async {
+//     next(action);
 
-    try {
-      final clubs = await apiGateway.clubMembershipService.getMyClubs();
+//     try {
+//       final clubs = await apiGateway.clubMembershipService.fetchClubByUserId();
 
-      store.dispatch(GetMyClubsSuccessAction(clubs));
-    } catch (e) {
-      store.dispatch(ClubMembershipFailureAction(e.toString()));
-    }
-  };
-}
+//       store.dispatch(GetMyClubsSuccessAction(clubs));
+//     } catch (e) {
+//       store.dispatch(ClubMembershipFailureAction(e.toString()));
+//     }
+//   };
+// }

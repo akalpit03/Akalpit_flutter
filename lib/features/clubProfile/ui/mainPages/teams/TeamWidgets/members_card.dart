@@ -28,7 +28,7 @@ class MembersList extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           ...members.map(
-            (member) => MemberCard(
+            (member) => MemberCards(
               name: member['name']!,
               designation: member['role']!,
               isAdmin: true, // only admins will see the edit button

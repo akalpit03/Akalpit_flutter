@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MemberCard extends StatelessWidget {
+class MemberCards extends StatelessWidget {
   final String name;
   final String designation;
   final bool isAdmin;
   final VoidCallback? onEdit;
 
-  const MemberCard({
+  const MemberCards({
     super.key,
     required this.name,
     required this.designation,

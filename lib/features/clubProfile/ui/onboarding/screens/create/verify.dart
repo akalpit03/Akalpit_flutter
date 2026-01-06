@@ -15,34 +15,75 @@ class VerifyClubPage extends StatefulWidget {
 
 class _VerifyClubPageState extends State<VerifyClubPage> {
   final TextEditingController _clubIdController = TextEditingController();
+
+  /// ✅ allowed: a-z, 0-9, _, .
   final RegExp _clubIdRegex = RegExp(r'^[a-z0-9._]+$');
+
   Timer? _debounce;
 
+  bool _hasInvalidChar = false;
+  bool _isTooShort = false;
+
   void _onClubIdChanged(String value, ClubAvailabilityViewModel vm) {
-    final clubId = value.trim().toLowerCase();
+    final lower = value.toLowerCase();
+
+    /// 🔽 Auto convert uppercase → lowercase
+    if (value != lower) {
+      _clubIdController.value = _clubIdController.value.copyWith(
+        text: lower,
+        selection: TextSelection.collapsed(offset: lower.length),
+      );
+    }
 
     _debounce?.cancel();
 
-    if (clubId.isEmpty || !_clubIdRegex.hasMatch(clubId)) {
+    /// ❌ Invalid characters
+    if (lower.isNotEmpty && !_clubIdRegex.hasMatch(lower)) {
+      setState(() {
+        _hasInvalidChar = true;
+        _isTooShort = false;
+      });
       vm.clear();
       return;
     }
 
+    /// ❌ Less than 6 characters
+    if (lower.isNotEmpty && lower.length < 6) {
+      setState(() {
+        _hasInvalidChar = false;
+        _isTooShort = true;
+      });
+      vm.clear();
+      return;
+    }
+
+    /// ✅ Valid input
+    setState(() {
+      _hasInvalidChar = false;
+      _isTooShort = false;
+    });
+
+    if (lower.isEmpty) {
+      vm.clear();
+      return;
+    }
+
+    /// 🔍 Debounced availability check
     _debounce = Timer(const Duration(milliseconds: 600), () {
-      debugPrint('🔍 Checking availability for: $clubId');
-      vm.checkAvailability(clubId);
+      vm.checkAvailability(lower);
     });
   }
 
   void _registerClub() {
     final clubId = _clubIdController.text.trim().toLowerCase();
-    if (clubId.isEmpty) return;
+
+    if (clubId.isEmpty || _hasInvalidChar || _isTooShort) return;
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => SetClubProfilePage(
-          initialClubId: clubId, // Pass the ID here
+          initialClubId: clubId,
         ),
       ),
     );
@@ -90,24 +131,22 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
+
+                      /// 🔤 Club ID input
                       TextField(
                         controller: _clubIdController,
-                        textInputAction: TextInputAction.done,
                         onChanged: (value) => _onClubIdChanged(value, vm),
                         decoration: InputDecoration(
                           hintText: 'Club ID (e.g. chess.club_01)',
                           helperText:
-                              'Lowercase letters, numbers, "_" and "." only',
+                              'Min 6 chars • Allowed: a-z, 0-9, "_" and "."',
                           prefixIcon: const Icon(Icons.search),
+
                           suffixIcon: vm.isChecking
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(12),
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
+                              ? const Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
                                   ),
                                 )
                               : vm.available == true
@@ -121,30 +160,49 @@ class _VerifyClubPageState extends State<VerifyClubPage> {
                                           color: Colors.red,
                                         )
                                       : null,
+
+                          /// ❌ Validation errors
+                          errorText: _hasInvalidChar
+                              ? 'Only lowercase letters, numbers, "_" and "." are allowed'
+                              : _isTooShort
+                                  ? 'Club ID must be at least 6 characters'
+                                  : null,
+
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 12),
-                      if (vm.available == false)
+
+                      if (vm.available == false &&
+                          !_hasInvalidChar &&
+                          !_isTooShort)
                         const Text(
                           'This Club ID is already taken',
                           style: TextStyle(color: Colors.red),
                         ),
+
                       if (vm.error != null)
                         Text(
                           vm.error!,
                           style: const TextStyle(color: Colors.red),
                         ),
+
                       const SizedBox(height: 16),
-                      if (vm.available == true)
+
+                      /// ✅ Register button
+                      if (vm.available == true &&
+                          !_hasInvalidChar &&
+                          !_isTooShort)
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: _registerClub,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

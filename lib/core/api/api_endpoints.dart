@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  // static const String baseUrl = "http://localhost:8000/api/v1";
+//   static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  static const String baseUrl = "http://localhost:8000/api/v1";
 
 
   // ===================== IMAGE UPLOAD =====================
@@ -120,7 +120,7 @@ static const String myAdminClubs = "$baseUrl/club/me/admin";
 static String uploadClubImage(String clubId) =>
     "$baseUrl/club/$clubId/image";
 
-
+static const String fetchClubByUserId = "$baseUrl/club/user/myclub";
 // ===================== MEMBERSHIP APIs =====================
 
 /// 1️⃣9️⃣ Join Club (POST /membership/:clubId/join)
@@ -136,11 +136,11 @@ static String leaveClub(String clubId) =>
 
 /// 2️⃣2️⃣ Accept Join Request (POST /club/request/:membershipId/accept)
 static String acceptJoinRequest(String membershipId) =>
-    "$baseUrl/club/request/$membershipId/accept";
+    "$baseUrl/membership/request/$membershipId/accept";
 
 /// 2️⃣3️⃣ Reject Join Request (POST /club/request/:membershipId/reject)
 static String rejectJoinRequest(String membershipId) =>
-    "$baseUrl/club/request/$membershipId/reject";
+    "$baseUrl/membership/request/$membershipId/reject";
 
 /// 2️⃣4️⃣ Promote Member to Admin (POST /club/member/:membershipId/promote)
 static String promoteToAdmin(String membershipId) =>
@@ -156,11 +156,11 @@ static String removeMember(String membershipId) =>
 
 /// 2️⃣7️⃣ Get Club Members (GET /club/:clubId/members)
 static String getClubMembers(String clubId) =>
-    "$baseUrl/club/$clubId/members";
+    "$baseUrl/membership/$clubId/members";
 
 /// 2️⃣8️⃣ Get Pending Join Requests (GET /club/:clubId/requests/pending)
 static String getPendingJoinRequests(String clubId) =>
-    "$baseUrl/club/$clubId/requests/pending";
+    "$baseUrl/membership/$clubId/requests/pending";
 
 /// 2️⃣9️⃣ Get Club Members Count (GET /club/:clubId/members/count)
 static String getClubMemberCount(String clubId) =>

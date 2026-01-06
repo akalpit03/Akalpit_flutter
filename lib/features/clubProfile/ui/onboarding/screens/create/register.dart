@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/services/gettingClub/viewmodel.dart';
 import 'package:akalpit/features/clubProfile/ui/categories/club_categories_bottom_sheet.dart';
+ import 'package:akalpit/features/clubsection/ui/clubpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SetClubProfilePage extends StatefulWidget {
   const SetClubProfilePage({super.key, this.initialClubId});
-  final String? initialClubId; // Club ID passed from VerifyClubPage
+
+  final String? initialClubId;
 
   @override
   State<SetClubProfilePage> createState() => _SetClubProfilePageState();
@@ -20,17 +22,17 @@ class _SetClubProfilePageState extends State<SetClubProfilePage> {
   final TextEditingController aboutCtrl = TextEditingController();
 
   String selectedCategory = '';
+  bool _navigated = false;
 
-Future<void> _pickImage(ClubViewModel vm) async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  /// Image selection only updates redux image state
+  Future<void> _pickImage(ClubViewModel vm) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-  if (pickedFile != null) {
-    // Store path only, not File object
-    vm.selectImagePath(pickedFile.path);
+    if (pickedFile != null) {
+      vm.selectImagePath(pickedFile.path);
+    }
   }
-}
-
 
   void _openCategorySheet() async {
     final result = await showModalBottomSheet<String>(
@@ -43,9 +45,7 @@ Future<void> _pickImage(ClubViewModel vm) async {
     );
 
     if (result != null) {
-      setState(() {
-        selectedCategory = result;
-      });
+      setState(() => selectedCategory = result);
     }
   }
 
@@ -59,12 +59,12 @@ Future<void> _pickImage(ClubViewModel vm) async {
       return;
     }
 
+    /// ❌ NO IMAGE INCLUDED (as requested)
     final clubData = {
-      "clubId": widget.initialClubId, // passed from VerifyClubPage
-      "clubName": nameCtrl.text.trim(), // owner types name freely
+      "clubId": widget.initialClubId,
+      "clubName": nameCtrl.text.trim(),
       "about": aboutCtrl.text.trim(),
       "categories": [selectedCategory],
-      // Image handled separately in middleware via Redux state
     };
 
     vm.submitCreateClub(clubData);
@@ -75,6 +75,20 @@ Future<void> _pickImage(ClubViewModel vm) async {
     return StoreConnector<AppState, ClubViewModel>(
       distinct: true,
       converter: ClubViewModel.fromStore,
+      onDidChange: (_, vm) {
+        /// ✅ Navigate only after successful creation
+        if (!_navigated &&
+            // vm.myClubId != null &&
+            !vm.isLoading &&
+            vm.error == null) {
+          _navigated = true;
+
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => const ClubPage()),
+            (_) => false,
+          );
+        }
+      },
       builder: (context, vm) {
         final File? selectedImage = vm.selectedImage;
 
@@ -86,7 +100,7 @@ Future<void> _pickImage(ClubViewModel vm) async {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                /// ================= Image Upload =================
+                /// ================= Image =================
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -106,11 +120,11 @@ Future<void> _pickImage(ClubViewModel vm) async {
                               : null,
                         ),
                         const SizedBox(height: 12),
-                        // OutlinedButton.icon(
-                        //   // onPressed: () => _pickImage(vm),
-                        //   icon: const Icon(Icons.upload),
-                        //   label: const Text('Upload Image'),
-                        // ),
+                        OutlinedButton.icon(
+                          onPressed: () => _pickImage(vm),
+                          icon: const Icon(Icons.upload),
+                          label: const Text('Upload Image'),
+                        ),
                       ],
                     ),
                   ),
@@ -123,7 +137,6 @@ Future<void> _pickImage(ClubViewModel vm) async {
                   controller: nameCtrl,
                   decoration: const InputDecoration(
                     labelText: 'Club Name',
-                    hintText: 'Enter your club name',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -195,7 +208,6 @@ Future<void> _pickImage(ClubViewModel vm) async {
                   ),
                 ),
 
-                /// ================= Error =================
                 if (vm.error != null) ...[
                   const SizedBox(height: 12),
                   Text(

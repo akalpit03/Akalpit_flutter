@@ -1,5 +1,6 @@
 import 'package:akalpit/core/api/api_client.dart';
 import 'package:akalpit/core/api/api_endpoints.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
 
 class ClubMembershipService {
   final ApiClient client;
@@ -170,18 +171,24 @@ class ClubMembershipService {
     throw Exception("Failed to fetch role");
   }
 
-  /// GET /my/clubs
-  Future<List<dynamic>> getMyClubs() async {
+ 
+ 
+  /// ✅ Fetch club owned by logged-in user
+  Future<Club?> fetchClubByUserId() async {
     final response = await client.get(
-      ApiEndpoints.getMyClubs,
+      ApiEndpoints.fetchClubByUserId,
     );
 
     final body = response.data;
 
-    if (body is Map<String, dynamic>) {
-      return body["data"] ?? [];
+    if (body != null &&
+        body is Map<String, dynamic> &&
+        body['data'] != null) {
+      return Club.fromJson(body['data']);
     }
 
-    throw Exception("Failed to fetch my clubs");
-  }
+    return null; // user has no club
+  
+}
+
 }
