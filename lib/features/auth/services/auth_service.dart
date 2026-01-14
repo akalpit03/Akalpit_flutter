@@ -80,6 +80,8 @@ class AuthService {
       "user": user,
     };
   }
+
+  
 Future<Map<String, dynamic>> resendOtp({
     required String email,
   }) async {

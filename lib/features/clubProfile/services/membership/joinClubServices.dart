@@ -125,7 +125,24 @@ class ClubMembershipService {
 
     throw Exception("Failed to fetch club members");
   }
+// In ApiEndpoints class
 
+
+// In ClubMembershipService class
+Future<List<dynamic>> getClubAdmins(String clubId) async {
+  final response = await client.get(
+    ApiEndpoints.getClubAdmins(clubId),
+  );
+
+  final body = response.data;
+
+  if (body is Map<String, dynamic>) {
+    // Note: Since admins aren't usually paginated, we just return the "data" array
+    return body["data"] ?? [];
+  }
+
+  throw Exception("Failed to fetch club admins");
+}
   /// GET /:clubId/requests/pending
   Future<List<dynamic>> getPendingJoinRequests(String clubId) async {
     final response = await client.get(

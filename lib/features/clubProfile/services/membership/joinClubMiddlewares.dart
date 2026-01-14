@@ -26,7 +26,9 @@ List<Middleware<AppState>> clubMembershipMiddleware(
     TypedMiddleware<AppState, RejectJoinRequestAction>(
       _handleRejectJoinRequest(apiGateway),
     ),
-
+TypedMiddleware<AppState, GetClubAdminsAction>(
+  _handleGetClubAdmins(apiGateway),
+),
     /// Admin / role actions
     TypedMiddleware<AppState, PromoteToAdminAction>(
       _handlePromoteToAdmin(apiGateway),
@@ -200,7 +202,24 @@ Middleware<AppState> _handleGetClubMembers(ApiGateway apiGateway) {
     }
   };
 }
+// Add to your middleware list
 
+
+Middleware<AppState> _handleGetClubAdmins(ApiGateway apiGateway) {
+  return (store, action, next) async {
+    next(action); // Let the loading state (if any) trigger in the reducer
+
+    try {
+      final admins = await apiGateway.clubMembershipService.getClubAdmins(action.clubId);
+
+      store.dispatch(
+        GetClubAdminsSuccessAction(action.clubId, admins),
+      );
+    } catch (e) {
+      store.dispatch(ClubMembershipFailureAction(e.toString()));
+    }
+  };
+}
 Middleware<AppState> _handleGetPendingJoinRequests(
   ApiGateway apiGateway,
 ) {

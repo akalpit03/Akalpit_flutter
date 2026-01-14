@@ -17,6 +17,7 @@ class ClubEventsPage extends StatelessWidget {
     return Scaffold(
       body: const EventBody(
         isClub: true,
+        clubId: "695bd1e0e6fcc1140f103834",
       ),
 
       /// ================= ADMIN ADD EVENT BUTTON =================

@@ -14,6 +14,8 @@ final clubMembershipReducer = combineReducers<ClubMembershipState>([
   TypedReducer<ClubMembershipState, RemoveAdminAction>(_setLoading),
   TypedReducer<ClubMembershipState, RemoveMemberAction>(_setLoading),
   TypedReducer<ClubMembershipState, GetClubMembersAction>(_setLoading),
+ TypedReducer<ClubMembershipState, GetClubAdminsAction>(_setLoading),
+  TypedReducer<ClubMembershipState, GetClubAdminsSuccessAction>(_getAdminsSuccess),
   TypedReducer<ClubMembershipState, GetPendingJoinRequestsAction>(_setLoading),
   TypedReducer<ClubMembershipState, GetClubMemberCountAction>(_setLoading),
   TypedReducer<ClubMembershipState, GetMyRoleInClubAction>(_setLoading),
@@ -109,7 +111,17 @@ ClubMembershipState _removeMemberSuccess(ClubMembershipState state, RemoveMember
 /// =====================
 /// FETCH ACTIONS SUCCESS
 /// =====================
+ 
+/// REDUCER HELPERS
+/// =====================
 
+ClubMembershipState _getAdminsSuccess(ClubMembershipState state, GetClubAdminsSuccessAction action) {
+  return state.copyWith(
+    isLoading: false,
+    admins: action.admins,
+    error: null,
+  );
+}
 ClubMembershipState _getMembersSuccess(ClubMembershipState state, GetClubMembersSuccessAction action) {
   return state.copyWith(isLoading: false, members: action.members);
 }

@@ -121,7 +121,16 @@ class GetClubMembersSuccessAction {
   final List<dynamic> members;
   GetClubMembersSuccessAction(this.clubId, this.members);
 }
+class GetClubAdminsAction {
+  final String clubId;
+  GetClubAdminsAction(this.clubId);
+}
 
+class GetClubAdminsSuccessAction {
+  final String clubId;
+  final List<dynamic> admins;
+  GetClubAdminsSuccessAction(this.clubId, this.admins);
+}
 /// GET /:clubId/requests/pending
 class GetPendingJoinRequestsAction {
   final String clubId;

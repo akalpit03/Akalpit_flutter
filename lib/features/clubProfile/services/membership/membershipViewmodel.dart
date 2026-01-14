@@ -1,6 +1,5 @@
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/services/membership/joinClubActions.dart';
- 
 import 'package:redux/redux.dart';
 
 class ClubMembershipViewModel {
@@ -8,6 +7,7 @@ class ClubMembershipViewModel {
   final String? error;
 
   final List<dynamic> members;
+  final List<dynamic> admins; // <--- Added for admins
   final List<dynamic> pendingRequests;
   final int memberCount;
   final String myRole;
@@ -25,6 +25,7 @@ class ClubMembershipViewModel {
   final Function(String membershipId) removeMember;
 
   final Function(String clubId) getClubMembers;
+  final Function(String clubId) getClubAdmins; // <--- Added for admins
   final Function(String clubId) getPendingJoinRequests;
   final Function(String clubId) getClubMemberCount;
   final Function(String clubId) getMyRoleInClub;
@@ -34,6 +35,7 @@ class ClubMembershipViewModel {
     required this.isLoading,
     required this.error,
     required this.members,
+    required this.admins, // <--- Added
     required this.pendingRequests,
     required this.memberCount,
     required this.myRole,
@@ -47,27 +49,25 @@ class ClubMembershipViewModel {
     required this.removeAdmin,
     required this.removeMember,
     required this.getClubMembers,
+    required this.getClubAdmins, // <--- Added
     required this.getPendingJoinRequests,
     required this.getClubMemberCount,
     required this.getMyRoleInClub,
     required this.getMyClubs,
   });
 
-  /// =====================
-  /// Factory constructor to create ViewModel from Redux Store
-  /// =====================
   factory ClubMembershipViewModel.fromStore(Store<AppState> store) {
     final state = store.state.clubMembershipState;
 
     return ClubMembershipViewModel(
-      isLoading: state.isLoading,
+        isLoading: state.isLoading,
       error: state.error,
       members: state.members,
       pendingRequests: state.pendingRequests,
       memberCount: state.memberCount,
       myRole: state.myRole,
       myClubs: state.myClubs,
-
+      admins: state.admins,
       /// MEMBER ACTIONS
       joinClub: (clubId) => store.dispatch(JoinClubAction(clubId)),
       requestToJoinClub: (clubId) => store.dispatch(RequestToJoinClubAction(clubId)),
@@ -84,6 +84,7 @@ class ClubMembershipViewModel {
 
       /// FETCH ACTIONS
       getClubMembers: (clubId) => store.dispatch(GetClubMembersAction(clubId)),
+      getClubAdmins: (clubId) => store.dispatch(GetClubAdminsAction(clubId)), // <--- Dispatch Action
       getPendingJoinRequests: (clubId) => store.dispatch(GetPendingJoinRequestsAction(clubId)),
       getClubMemberCount: (clubId) => store.dispatch(GetClubMemberCountAction(clubId)),
       getMyRoleInClub: (clubId) => store.dispatch(GetMyRoleInClubAction(clubId)),

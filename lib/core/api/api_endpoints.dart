@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-//   static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  // static const String baseUrl = "http://localhost:8000/api/v1";
 
 
   // ===================== IMAGE UPLOAD =====================
@@ -157,7 +157,7 @@ static String removeMember(String membershipId) =>
 /// 2️⃣7️⃣ Get Club Members (GET /club/:clubId/members)
 static String getClubMembers(String clubId) =>
     "$baseUrl/membership/$clubId/members";
-
+static String getClubAdmins(String clubId) => "$baseUrl/membership/$clubId/admins";
 /// 2️⃣8️⃣ Get Pending Join Requests (GET /club/:clubId/requests/pending)
 static String getPendingJoinRequests(String clubId) =>
     "$baseUrl/membership/$clubId/requests/pending";
@@ -180,7 +180,8 @@ static const String getMyClubs = "$baseUrl/club/my/clubs";
 static const String createEvent = "$baseUrl/events";
 
 /// 2️⃣ Get Events (List / Filters) (GET /events)
-static const String getEvents = "$baseUrl/events";
+static   String getEvents(String clubId) => "$baseUrl/events/club/$clubId";
+static   String getEventsUpComing(String clubId) => "$baseUrl/events/club/$clubId/upcoming";
 
 /// 3️⃣ Get Single Event by ID (GET /events/:eventId)
 static String getEventById(String eventId) =>
@@ -221,7 +222,8 @@ static String updateEventDay(String eventId, String dayId) =>
 static String deleteEventDay(String eventId, String dayId) =>
     "$baseUrl/events/$eventId/days/$dayId";
 
-
+static String fetchSchedule(String eventId ) =>
+    "$baseUrl/events/activity/$eventId/schedule";
 // ===================== CONNECTIONS / FRIENDS APIs =====================
 
 /// 1️⃣ Send Friend Request (POST /connections/request/:userId)

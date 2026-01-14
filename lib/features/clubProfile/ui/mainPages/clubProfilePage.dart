@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:akalpit/features/clubProfile/ui/mainPages/about/club_about_page.dart';
-import 'package:akalpit/features/clubProfile/ui/mainPages/events/club_events_page.dart';
+import 'package:akalpit/features/clubProfile/ui/mainPages/events/ui/club_events_page.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/adminAppBar/club_app_bar.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/posts/club_post_screen.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/teams/club_team_page.dart';

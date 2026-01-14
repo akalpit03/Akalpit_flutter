@@ -8,10 +8,11 @@ class EventPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("DEBUG: EventPage Build Triggered");
     return Scaffold(
       appBar: const EventAppBar(),
       drawer: const EventSideDrawer(),
-      body:   EventBody(isClub: false,),
+      body: EventBody(isClub: true, clubId: "695bd1e0e6fcc1140f103834"),
     );
   }
 }
