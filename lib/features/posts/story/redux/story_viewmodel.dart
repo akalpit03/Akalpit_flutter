@@ -1,6 +1,6 @@
+ 
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/posts/story/redux/story_model.dart';
- 
 import 'package:redux/redux.dart';
 
 class StoryViewModel {
@@ -18,14 +18,10 @@ class StoryViewModel {
 
   static StoryViewModel fromStore(Store<AppState> store) {
     return StoryViewModel(
-      // isLoading: store.state.storyState.isLoading,
-      // story: store.state.storyState.story,
-      // isEmpty: store.state.storyState.isEmpty,
-      // error: store.state.storyState.error,
-      isLoading: "true" == "true",
-      story: null,  
-      isEmpty: false,
-      error: null,
+      isLoading: store.state.storyState.isLoading,
+      story: store.state.storyState.story,
+      isEmpty: store.state.storyState.isEmpty,
+      error: store.state.storyState.error,
     );
   }
 }

@@ -1,10 +1,14 @@
+import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/features/posts/story/ui/supporter/image/models/image_model_widget.dart';
 import 'package:flutter/material.dart';
  
+
 class ImageBlockWidget extends StatelessWidget {
   final ImageBlockModel model;
 
   const ImageBlockWidget({required this.model, Key? key}) : super(key: key);
+
+  static const double _thumbnailHeight = 350; // small preview height
 
   @override
   Widget build(BuildContext context) {
@@ -12,24 +16,24 @@ class ImageBlockWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         GestureDetector(
-          onTap: () => _openImageViewer(context),
+          onTap: () => _openFullScreenViewer(context),
           child: Align(
             alignment: model.alignment,
             child: Hero(
-              tag: model.url, // Smooth animation when opening
-              child: Image.network(
-                model.url,
-                width: model.width,
-                height: model.height,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => 
-                    Container(
-                      width: model.width ?? 100,
-                      height: model.height ?? 100,
-                      color: Colors.grey.shade300,
-                      alignment: Alignment.center,
-                      child: Text(model.alt ?? "Image not available"),
-                    ),
+              tag: model.url,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: double.infinity,
+                  height: _thumbnailHeight,
+                  color: AppColors.cardBackground,
+                  child: Image.network(
+                    model.url,
+                    fit: BoxFit.contain, // ✅ show full image without cropping
+                    alignment: Alignment.center,
+                    errorBuilder: (_, __, ___) => _errorBox(),
+                  ),
+                ),
               ),
             ),
           ),
@@ -37,38 +41,73 @@ class ImageBlockWidget extends StatelessWidget {
 
         if (model.caption != null)
           Padding(
-            padding: const EdgeInsets.only(top: 4.0),
+            padding: const EdgeInsets.only(top: 6),
             child: Text(
               model.caption!,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade400),
+              style: TextStyle(
+                color: Colors.grey.shade400,
+                fontSize: 13,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
       ],
     );
   }
 
-  void _openImageViewer(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.7), 
-      builder: (_) => GestureDetector(
+  Widget _errorBox() {
+    return Container(
+      width: double.infinity,
+      height: _thumbnailHeight,
+      color: Colors.grey.shade300,
+      alignment: Alignment.center,
+      child: Text(model.alt ?? "Image not available"),
+    );
+  }
+
+  void _openFullScreenViewer(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => _FullScreenImageViewer(imageUrl: model.url),
+      ),
+    );
+  }
+}
+
+class _FullScreenImageViewer extends StatelessWidget {
+  final String imageUrl;
+
+  const _FullScreenImageViewer({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GestureDetector(
         onTap: () => Navigator.pop(context),
         child: Stack(
           children: [
-            Center(
+            Positioned.fill(
               child: Hero(
-                tag: model.url,
+                tag: imageUrl,
                 child: InteractiveViewer(
-                  maxScale: 6.0,
-                  minScale: 1.0,
-                  child: Image.network(model.url),
+                  panEnabled: true,
+                  scaleEnabled: true,
+                  minScale: 1,
+                  maxScale: 6,
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.contain, // preserves aspect ratio
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
               ),
             ),
             Positioned(
-              right: 16,
-              top: 30,
+              top: 40,
+              right: 20,
               child: IconButton(
                 icon: const Icon(Icons.close, color: Colors.white, size: 30),
                 onPressed: () => Navigator.pop(context),

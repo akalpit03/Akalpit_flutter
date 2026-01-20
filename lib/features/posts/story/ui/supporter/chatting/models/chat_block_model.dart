@@ -1,5 +1,5 @@
-import 'package:akalpit/features/posts/story/ui/supporter/chatting/models/chat_message_widget.dart';
  
+import 'package:akalpit/features/posts/story/ui/supporter/chatting/models/chat_message_widget.dart';
 
 class ChatBlockModel {
     final bool isChatting;

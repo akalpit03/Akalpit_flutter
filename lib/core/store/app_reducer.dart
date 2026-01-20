@@ -4,6 +4,7 @@ import 'package:akalpit/features/clubProfile/services/gettingClub/reducers.dart'
 import 'package:akalpit/features/clubProfile/services/membership/membershipReducers.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/reducers.dart';
 import 'package:akalpit/features/clubsection/services/reducers.dart';
+import 'package:akalpit/features/posts/story/redux/story_reducer.dart';
 import 'package:akalpit/features/profile/services/profileReducers.dart';
 import 'package:akalpit/features/search/services/reducers/clubAvailabilty.dart';
 import 'package:akalpit/features/search/services/reducers/searchClub.dart';
@@ -25,7 +26,8 @@ AppState appReducer(AppState state, dynamic action) {
       clubMembershipState: clubMembershipReducer(state.clubMembershipState, action) ,
       clubScreenState: clubScreenReducer(state.clubScreenState, action),
       clubEventState: clubEventReducer(state.clubEventState,action),
-      activityState: activityReducer(state.activityState, action)
+      activityState: activityReducer(state.activityState, action),
+      storyState: storyReducer(state.storyState, action),
      
      );
 }

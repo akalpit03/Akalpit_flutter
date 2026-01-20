@@ -1,8 +1,7 @@
 import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/features/posts/story/ui/supporter/mcqs/models/mcq_block_model_widget.dart';
 import 'package:flutter/material.dart';
- 
-
+  
 class MCQBlockWidget extends StatefulWidget {
   final MCQBlockModel model;
 

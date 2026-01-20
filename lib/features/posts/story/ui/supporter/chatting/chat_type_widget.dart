@@ -1,7 +1,6 @@
 import 'package:akalpit/features/posts/story/ui/supporter/chatting/models/chat_block_model.dart';
 import 'package:flutter/material.dart';
  
-
 class ChatBlockWidget extends StatelessWidget {
   final ChatBlockModel model;
 

@@ -1,7 +1,7 @@
 name: akalpit
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.0+9
+version: 1.0.0+10
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -25,6 +25,7 @@ dependencies:
   redux_persist_flutter: ^0.9.0
   equatable: ^2.0.5
   swipe_cards: ^0.1.0
+  url_launcher: ^6.3.0
 
   dio: ^5.4.2
 

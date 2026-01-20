@@ -3,6 +3,7 @@ import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipState.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/state.dart';
 import 'package:akalpit/features/clubsection/services/clubscreenstate.dart';
+import 'package:akalpit/features/posts/story/redux/story_state.dart';
 
 import 'package:akalpit/features/profile/services/state/profileState.dart';
 import 'package:akalpit/features/search/services/state/searchClubState.dart';
@@ -24,6 +25,7 @@ class AppState extends Equatable {
   final ClubScreenState clubScreenState;
   final ClubEventState clubEventState;
   final ActivityState activityState;
+  final StoryState storyState;
 
   const AppState(
       {required this.authState,
@@ -35,7 +37,9 @@ class AppState extends Equatable {
       required this.clubMembershipState,
       required this.clubScreenState,
       required this.clubEventState,
-      required this.activityState});
+      required this.activityState,
+      required this.storyState,
+      });
 
   factory AppState.initial() => AppState(
       authState: AuthState.initial(),
@@ -47,7 +51,9 @@ class AppState extends Equatable {
       clubMembershipState: ClubMembershipState.initial(),
       clubScreenState: ClubScreenState.initial(),
       clubEventState: ClubEventState.initial(),
-      activityState: ActivityState.initial());
+      activityState: ActivityState.initial(),
+      storyState: StoryState.initial(),
+      );
 
   AppState copyWith({
     AuthState? authState,
@@ -62,7 +68,9 @@ class AppState extends Equatable {
         clubMembershipState: clubMembershipState,
         clubScreenState: clubScreenState,
         clubEventState: clubEventState,
-        activityState: activityState);
+        activityState: activityState,
+        storyState: storyState,
+        );
   }
 
   Map<String, dynamic> toJson() => {
@@ -76,6 +84,7 @@ class AppState extends Equatable {
         'clubScreenState': clubScreenState.toJson(),
         'clubEventState': clubEventState.toJson(),
         'activityState':activityState.toJson(),
+        'storyState': storyState.toJson(),
       };
 
   static AppState fromJson(dynamic json) {
@@ -94,7 +103,8 @@ class AppState extends Equatable {
           ClubMembershipState.fromJson(json['clubMembershipState']),
       clubScreenState: ClubScreenState.fromJson(json['clubScreenState']),
       clubEventState: ClubEventState.fromJson(json['clubEventState']),
-      activityState: ActivityState.fromJson(json['activityState'])
+      activityState: ActivityState.fromJson(json['activityState']),
+      storyState: StoryState.fromJson(json['storyState']),
     );
   }
 
@@ -109,6 +119,7 @@ class AppState extends Equatable {
         clubMembershipState,
         clubScreenState,
         clubEventState,
-        activityState
+        activityState,
+        storyState,
       ];
 }

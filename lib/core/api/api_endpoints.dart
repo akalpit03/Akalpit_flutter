@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  // static const String baseUrl = "http://localhost:8000/api/v1";
+  // static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  static const String baseUrl = "http://localhost:8000/api/v1";
 
 
   // ===================== IMAGE UPLOAD =====================
@@ -279,7 +279,7 @@ static const String storyurl = "$baseUrl/story";
 
 /// 2️⃣ Get Story by Story ID (GET /story/:storyId) [JWT]
 static String getStoryByStoryId(String storyId) =>
-    "$baseUrl/story/$storyId";
+    "$baseUrl/stories/$storyId";
 
 /// 3️⃣ Get Stories by User ID (GET /story/user/:userId) [JWT]
 static String getStoryByUserId(String userId) =>

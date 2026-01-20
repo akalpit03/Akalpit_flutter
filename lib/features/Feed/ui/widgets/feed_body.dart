@@ -18,7 +18,7 @@ class FeedBody extends StatelessWidget {
           onOpenPost: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const StoryScreen( )),
+              MaterialPageRoute(builder: (_) => const StoryScreen(topicId: "696f21ba6ea90a243baad1c8" )),
             );
           },
           onLike: () {

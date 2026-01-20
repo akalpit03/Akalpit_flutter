@@ -3,6 +3,7 @@ import 'package:akalpit/features/auth/services/auth_service.dart';
 import 'package:akalpit/features/clubProfile/services/gettingClub/services.dart';
 import 'package:akalpit/features/clubProfile/services/membership/joinClubServices.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/services.dart';
+import 'package:akalpit/features/posts/story/redux/story_services.dart';
 
 import 'package:akalpit/features/profile/services/profileServices.dart';
 import 'package:akalpit/features/search/services/searchService.dart';
@@ -17,16 +18,18 @@ class ApiGateway {
   final ClubMembershipService clubMembershipService;
   final EventService eventService;
   final ActivityService activityService;
+  final StoryService storyService;
 
-  ApiGateway._({
-    required this.authService,
-    required this.profileSearchService,
-    required this.profileService,
-    required this.clubService,
-    required this.clubMembershipService,
-    required this.eventService,
-    required this.activityService
-  });
+  ApiGateway._(
+      {required this.authService,
+      required this.profileSearchService,
+      required this.profileService,
+      required this.clubService,
+      required this.clubMembershipService,
+      required this.eventService,
+      required this.activityService,
+      required this.storyService,
+      });
 
   factory ApiGateway.create() {
     final client = ApiClient();
@@ -37,6 +40,8 @@ class ApiGateway {
         clubService: ClubService(client),
         clubMembershipService: ClubMembershipService(client),
         eventService: EventService(client),
-        activityService: ActivityService(client));
+        activityService: ActivityService(client),
+        storyService: StoryService(client),
+        );
   }
 }

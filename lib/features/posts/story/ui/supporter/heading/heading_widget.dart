@@ -1,7 +1,7 @@
 import 'package:akalpit/features/posts/story/ui/supporter/heading/models/heading_style_model_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
- 
+// import 'package:penverse/core/constants/constants.dart';
   
 
 class HeadingBlockWidget extends StatelessWidget {
@@ -68,9 +68,9 @@ class HeadingBlockWidget extends StatelessWidget {
       if (hex != null && hex.startsWith('#')) {
         return Color(int.parse(hex.substring(1), radix: 16) + 0xFF000000);
       } else {
-        return Colors.black;
+        return Colors.white;
       }
     } catch (_) {
-      return Colors.black;
+      return Colors.white;
     }
   }
