@@ -2,9 +2,9 @@ import 'package:akalpit/features/profile/ui/profile_page.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:akalpit/features/Events/layout/ui/events.dart';
-import 'package:akalpit/features/Feed/sample.dart';
-import 'package:akalpit/features/Feed/sample2.dart';
+ 
 import 'package:akalpit/features/Feed/ui/feed.dart';
+import 'package:akalpit/features/services/services.dart';
 
 import 'package:akalpit/features/clubsection/ui/clubpage.dart';
 
@@ -22,11 +22,11 @@ class EntryPointUI extends StatefulWidget {
 class _EntryPointUIState extends State<EntryPointUI> {
   int currentIndex = 0;
 
-  final List<Widget> pages = const [
+  final List<Widget> pages =   [
     FeedPage(), // Home
     ClubPage(),
     EventPage(), // Events
-    SimplePage2(), // Services
+      ServicesPage(), // Services
     ProfilePage(), // Profile
   ];
 

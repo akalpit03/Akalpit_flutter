@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  // static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  // static const String baseUrl = "http://localhost:8000/api/v1";
 
 
   // ===================== IMAGE UPLOAD =====================
