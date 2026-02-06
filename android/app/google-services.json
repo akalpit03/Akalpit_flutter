@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "66508243226",
-    "project_id": "akalpit-f4c49",
-    "storage_bucket": "akalpit-f4c49.firebasestorage.app"
+    "project_number": "367576133349",
+    "project_id": "akalpit-b53cf",
+    "storage_bucket": "akalpit-b53cf.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:66508243226:android:89a50630dd032e0fdb2ca3",
+        "mobilesdk_app_id": "1:367576133349:android:d08e5349eb8286e3a32e0c",
         "android_client_info": {
-          "package_name": "com.penlink.akalpit"
+          "package_name": "com.amiable_ventures.akalpit"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAw4cxtDPYYm2n2PvGC1si08cC2586kNF0"
+          "current_key": "AIzaSyAI2yt6xrIEnskC0AqFZLwmPl4NoFNGNM4"
         }
       ],
       "services": {

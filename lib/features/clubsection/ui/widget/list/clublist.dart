@@ -1,4 +1,6 @@
+import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/clubProfilePage.dart';
+import 'package:akalpit/features/clubProfile/ui/single_club_profile.dart';
 import 'package:akalpit/features/clubsection/ui/viewmodel/clubStateViewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -79,10 +81,10 @@ class _MyClubStatusCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-        context,
-        MaterialPageRoute(
-        builder: (_) => ClubHomePage(clubId: club.id),
-        ),
+          context,
+          MaterialPageRoute(
+            builder: (_) =>  ClubHomePage(clubId: club.id),
+          ),
         );
       },
       child: _BaseStatusCard(

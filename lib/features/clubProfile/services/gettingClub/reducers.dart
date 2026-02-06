@@ -9,10 +9,7 @@ final clubReducer = combineReducers<ClubState>([
   TypedReducer<ClubState, GetClubSuccessAction>(_getClubSuccess),
   TypedReducer<ClubState, GetClubFailureAction>(_getClubFailure),
 
-  /// ===== CREATE CLUB =====
-  TypedReducer<ClubState, CreateClubAction>(_createClub),
-  TypedReducer<ClubState, CreateClubSuccessAction>(_createClubSuccess),
-  TypedReducer<ClubState, CreateClubFailureAction>(_createClubFailure),
+ 
   TypedReducer<ClubState, ResetCreateClubAction>(_resetCreateClub),
 
   /// ===== IMAGE SELECT =====
@@ -42,29 +39,7 @@ ClubState _getClubFailure(ClubState state, GetClubFailureAction action) {
   );
 }
 
-/// ================= CREATE =================
-ClubState _createClub(ClubState state, CreateClubAction action) {
-  return state.copyWith(
-    isLoading: true,
-    error: null,
-  );
-}
-
-ClubState _createClubSuccess(ClubState state, CreateClubSuccessAction action) {
-  return state.copyWith(
-    isLoading: false,
-    club: action.club, // Newly created club replaces current state
-    error: null,
-  );
-}
-
-ClubState _createClubFailure(ClubState state, CreateClubFailureAction action) {
-  return state.copyWith(
-    isLoading: false,
-    error: action.error,
-  );
-}
-
+ 
 ClubState _resetCreateClub(ClubState state, ResetCreateClubAction action) {
   return state.copyWith(
     isLoading: false,

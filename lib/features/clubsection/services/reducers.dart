@@ -1,4 +1,3 @@
-import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
  
 import 'package:akalpit/features/clubsection/services/actions.dart';
 import 'package:akalpit/features/clubsection/services/clubscreenstate.dart';
@@ -28,6 +27,21 @@ ClubScreenState clubScreenReducer(
       error: action.error,
     );
   }
+if (action is CreateClubSuccessAction) {
+  final club = action.club;
 
+  return state.copyWith(
+    byId: {
+      ...state.byId,
+      club.id: club,
+    },
+    myClubId: club.id,
+    ownedClubIds: state.ownedClubIds.contains(club.id)
+        ? state.ownedClubIds
+        : [...state.ownedClubIds, club.id],
+    isLoading: false,
+    error: null,
+  );
+}
   return state;
 }

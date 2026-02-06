@@ -1,5 +1,7 @@
+import 'package:akalpit/core/api/api_client.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
+import 'package:akalpit/features/notifications/notification_bootstrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
  
@@ -31,52 +33,62 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _onLogin() async {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+Future<void> _onLogin() async {
+  if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    setState(() => _isLoading = true);
+  setState(() => _isLoading = true);
 
-    try {
-      final store = StoreProvider.of<AppState>(context, listen: false);
-      LoginViewModel.fromStore(store).onLogin(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
+  try {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+
+    LoginViewModel.fromStore(store).onLogin(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+
+    // Wait until redux login finishes
+    await Future.doWhile(() async {
+      final vm = LoginViewModel.fromStore(store);
+      if (!vm.isLoading) return false;
+      await Future.delayed(const Duration(milliseconds: 200));
+      return true;
+    });
+
+    if (!mounted) return;
+
+    final finalState = LoginViewModel.fromStore(store);
+
+    if (finalState.isLoggedIn) {
+      // 🔔 BOOTSTRAP NOTIFICATIONS HERE (ONCE)
+      final notificationBootstrapper =
+          NotificationBootstrapper(ApiClient());
+
+      await notificationBootstrapper.initAfterLogin();
+
+      // ➡️ Navigate to Home
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const EntryPointUI()),
       );
-
-      await Future.doWhile(() async {
-        final vm = LoginViewModel.fromStore(store);
-        if (!vm.isLoading) return false;
-        await Future.delayed(const Duration(milliseconds: 200));
-        return true;
-      });
-
-      if (!mounted) return;
-
-      final finalState = LoginViewModel.fromStore(store);
-      if (finalState.isLoggedIn) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const EntryPointUI()),
-        );
-      } else if (finalState.errorMessage != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid Login Credentials"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } catch (e) {
+    } else if (finalState.errorMessage != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
+        const SnackBar(
+          content: Text("Invalid Login Credentials"),
           backgroundColor: Colors.red,
         ),
       );
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: Colors.red,
+      ),
+    );
+  } finally {
+    if (mounted) setState(() => _isLoading = false);
   }
+}
 
   @override
   Widget build(BuildContext context) {

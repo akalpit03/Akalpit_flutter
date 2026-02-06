@@ -29,25 +29,8 @@ class SubmitCreateClubAction {
   SubmitCreateClubAction(this.clubData);
 }
 
-class CreateClubAction {
-  final Map<String, dynamic> clubData;
+ 
 
-  CreateClubAction(this.clubData);
-}
-
-/// 🔹 API success
-class CreateClubSuccessAction {
-  final Club club;
-
-  CreateClubSuccessAction(this.club);
-}
-
-/// 🔹 API failure
-class CreateClubFailureAction {
-  final String error;
-
-  CreateClubFailureAction(this.error);
-}
-
+ 
 /// 🔹 Optional: reset create state (useful after success)
 class ResetCreateClubAction {}

@@ -54,3 +54,25 @@ class SetClubLoadingAction {
   final bool isLoading;
   SetClubLoadingAction(this.isLoading);
 }
+
+/// ===============================
+/// 🆕 CREATE CLUB
+/// ===============================
+
+/// 🔹 Request
+class CreateClubRequestAction {
+  final Map<String, dynamic> data;
+  CreateClubRequestAction(this.data);
+}
+
+/// 🔹 Success
+class CreateClubSuccessAction {
+  final Club club;
+  CreateClubSuccessAction(this.club);
+}
+
+/// 🔹 Failure
+class CreateClubFailureAction {
+  final String error;
+  CreateClubFailureAction(this.error);
+}

@@ -1,7 +1,7 @@
 name: akalpit
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.0+12
+version: 1.0.0+13
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -36,8 +36,8 @@ dependencies:
   intl: ^0.18.0
 
   lucide_icons_flutter: ^3.1.5
-  firebase_messaging: ^16.1.1
-  firebase_core: ^4.4.0
+  firebase_core: ^3.6.0
+  firebase_messaging: ^15.1.0
   cached_network_image: ^3.3.1
   
 dev_dependencies:

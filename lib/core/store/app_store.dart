@@ -4,6 +4,7 @@ import 'package:akalpit/features/clubProfile/services/gettingClub/middleware.dar
 import 'package:akalpit/features/clubProfile/services/membership/joinClubMiddlewares.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/middleware.dart';
 import 'package:akalpit/features/clubsection/services/middleware.dart';
+import 'package:akalpit/features/misc/services/middleware.dart';
 import 'package:akalpit/features/posts/story/redux/story_middleware.dart';
 import 'package:akalpit/features/profile/services/profileMiddleware.dart';
 import 'package:akalpit/features/search/services/middlewares/searchMiddleware.dart';
@@ -28,6 +29,7 @@ Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
       ...createEventMiddleware(apiGateway),
       ...activityMiddleware(apiGateway),
       ...createStoryMiddleware(apiGateway.storyService),
+      ...categoryMiddleware(apiGateway),
     ],
   );
 
