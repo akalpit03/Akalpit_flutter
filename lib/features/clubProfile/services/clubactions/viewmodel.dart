@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:akalpit/core/store/app_state.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/state.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 

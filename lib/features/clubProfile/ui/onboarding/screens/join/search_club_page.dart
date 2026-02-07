@@ -1,4 +1,4 @@
-import 'package:akalpit/features/clubProfile/ui/single_club_profile.dart';
+
 import 'package:flutter/material.dart';
 import 'widgets/category_chip.dart';
 

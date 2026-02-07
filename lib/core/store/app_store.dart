@@ -1,6 +1,6 @@
 import 'package:akalpit/features/Events/activities/services/middleware.dart';
 import 'package:akalpit/features/auth/services/auth_middleware.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/middleware.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/middleware.dart';
 import 'package:akalpit/features/clubProfile/services/membership/joinClubMiddlewares.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/middleware.dart';
 import 'package:akalpit/features/clubsection/services/middleware.dart';

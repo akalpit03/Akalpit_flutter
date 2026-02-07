@@ -1,14 +1,11 @@
-import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
-import 'package:akalpit/features/clubProfile/ui/mainPages/clubProfilePage.dart';
-import 'package:akalpit/features/clubProfile/ui/single_club_profile.dart';
+import 'package:akalpit/features/clubProfile/ui/mainPages/clubHomePage.dart';
+import 'package:akalpit/features/clubsection/services/models/myclubs.dart';
 import 'package:akalpit/features/clubsection/ui/viewmodel/clubStateViewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
 import 'package:akalpit/core/store/app_state.dart';
-
 import 'package:akalpit/features/clubProfile/ui/onboarding/screens/create/verify.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+ 
 
 class StatusList extends StatelessWidget {
   const StatusList({super.key});
@@ -20,32 +17,62 @@ class StatusList extends StatelessWidget {
       child: StoreConnector<AppState, ClubScreenViewModel>(
         converter: ClubScreenViewModel.fromStore,
         distinct: true,
-        builder: (context, vm) {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: vm.followingClubs.length + 1,
-            itemBuilder: (context, index) {
-              /// FIRST CARD (My Club OR Create Club)
-              if (index == 0) {
-                if (vm.myClub != null) {
-                  return _MyClubStatusCard(club: vm.myClub!);
-                } else {
-                  return const _CreateClubStatusCard();
-                }
-              }
+       builder: (context, vm) {
+  final ownedList = vm.ownedClubs.values.toList();
+  final myclub = vm.myClub;
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    itemCount: ownedList.length + 1,
+    itemBuilder: (context, index) {
+   if (index == 0) {
+  if (myclub != null) {
+    return _MyClubStatusCard(club: myclub);
+  }
+  return const _CreateClubStatusCard();
+}
 
-              /// OTHER CLUBS
-              final Club club = vm.followingClubs[index - 1];
-              return _OtherClubStatusCard(club: club);
-            },
-          );
-        },
-      ),
+      final clubInfo = ownedList[index - 1];
+
+      return _OtherClubStatusCard(
+        clubId: clubInfo.id,
+        name: clubInfo.clubName,
+        image: clubInfo.clubImage!,
+        role: clubInfo.myRole,
+      );
+    },
+  );
+},
+),
     );
   }
 }
 
+class _OtherClubStatusCard extends StatelessWidget {
+  final String clubId;
+  final String name;
+  final String image;
+  final String role;
+
+  const _OtherClubStatusCard({
+    required this.clubId,
+    required this.name,
+    required this.image,
+    required this.role,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ClubHomePage(clubId: clubId,role: role,)),
+      ),
+      child: _BaseStatusCard(imageUrl: image, title: name),
+    );
+  }
+}
+// ... keep _CreateClubStatusCard, _MyClubStatusCard, and _BaseStatusCard as they were
 class _CreateClubStatusCard extends StatelessWidget {
   const _CreateClubStatusCard({super.key});
 
@@ -69,7 +96,7 @@ class _CreateClubStatusCard extends StatelessWidget {
 }
 
 class _MyClubStatusCard extends StatelessWidget {
-  final Club club;
+  final MyClub club;
 
   const _MyClubStatusCard({
     super.key,
@@ -83,45 +110,19 @@ class _MyClubStatusCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) =>  ClubHomePage(clubId: club.id),
+            builder: (_) =>  ClubHomePage(clubId: club.id, role: club.myRole,),
           ),
         );
       },
       child: _BaseStatusCard(
-        imageUrl: club.image,
+        imageUrl: club.clubImage,
         title: club.clubName,
       ),
     );
   }
 }
 
-class _OtherClubStatusCard extends StatelessWidget {
-  final Club club;
-
-  const _OtherClubStatusCard({
-    super.key,
-    required this.club,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (_) => ClubHomePage(clubId: club.id),
-        //   ),
-        // );
-      },
-      child: _BaseStatusCard(
-        imageUrl: club.image,
-        title: club.clubName,
-      ),
-    );
-  }
-}
-
+ 
 class _BaseStatusCard extends StatelessWidget {
   final String? imageUrl;
   final String title;

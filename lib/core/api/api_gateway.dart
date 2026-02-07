@@ -1,6 +1,6 @@
 import 'package:akalpit/features/Events/activities/services/services.dart';
 import 'package:akalpit/features/auth/services/auth_service.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/services.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/services.dart';
 import 'package:akalpit/features/clubProfile/services/membership/joinClubServices.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/services.dart';
 import 'package:akalpit/features/clubsection/services/services.dart';

@@ -29,10 +29,10 @@ class _ClubPageState extends State<ClubPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const AppSideDrawer(),
-      appBar: const ClubsAppBar(),
-      body: const ClubBody(),
+    return const Scaffold(
+      drawer:   AppSideDrawer(), 
+      appBar:   ClubsAppBar(),
+      body:   ClubBody(),
     );
   }
 }

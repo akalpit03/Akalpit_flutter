@@ -1,5 +1,6 @@
 import 'package:akalpit/core/store/app_state.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 import 'package:akalpit/features/clubProfile/services/utils/roleenum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -12,36 +13,44 @@ import 'package:akalpit/features/clubProfile/ui/mainPages/teams/club_team_page.d
 
 class ClubHomePage extends StatelessWidget {
   final String clubId;
+  final String role;
 
   const ClubHomePage({
     super.key,
     required this.clubId,
+    required this.role,
   });
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Club?>(
       distinct: true,
-      converter: (store) {
-        return store.state.clubScreenState.byId[clubId];
+
+      /// 🔥 FETCH CLUB WHEN PAGE LOADS
+      onInit: (store) {
+        store.dispatch(GetClubAction(clubId));
       },
+
+      converter: (store) {
+        return store.state.clubState.club;
+      },
+
       builder: (context, club) {
-       
         if (club == null) {
+   
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        
-        final ClubRole role = ClubRole.admin;  
-
+        final  role =  this.role; // TODO: derive dynamically
+        print("User Role in Club: $role");
         return DefaultTabController(
           length: 4,
           child: Scaffold(
             appBar: ClubAppBar(
               clubTitle: club.clubName,
-              imageUrl: club.image!,
+              imageUrl: club.image ?? "",
               role: role,
               clubId: club.id,
               bottom: PreferredSize(
@@ -70,21 +79,25 @@ class ClubHomePage extends StatelessWidget {
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                ClubPostsPage(
-                  // clubId: club.clubId
-                  ),
-                ClubEventsPage(
-                  // clubId: club.clubId,
-                  isAdmin: role == ClubRole.admin,
+                /// 🔥 Now this page can safely read club from Redux
+                  ClubPostsPage(
+                  clubId: club.id,
+                  isAdmin: role == "admin" || role == "owner",
                 ),
+
+                ClubEventsPage(
+                       clubId: club.id,
+                  isAdmin: role == "admin" || role == "owner",
+                ),
+
                 ClubTeamPage(
                   clubId: club.id,
-                  isAdmin: role == ClubRole.admin,
+                  isAdmin:  role == "admin" || role == "owner",
                   owner: club.owner,
                 ),
+
                 ClubAboutPage(
-                  // clubId: club.clubId,
-                  isAdmin: role == ClubRole.admin,
+                  isAdmin: role == "admin" || role == "owner",
                 ),
               ],
             ),

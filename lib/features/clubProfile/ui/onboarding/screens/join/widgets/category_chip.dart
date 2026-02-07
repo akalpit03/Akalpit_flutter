@@ -1,4 +1,4 @@
-import 'package:akalpit/features/clubProfile/ui/mainPages/clubProfilePage.dart';
+import 'package:akalpit/features/clubProfile/ui/mainPages/clubHomePage.dart';
 import 'package:flutter/material.dart';
 
 class CategoryChip extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
  import 'package:akalpit/features/clubProfile/ui/widgets/InfoCard.dart';
 import 'package:flutter/material.dart';
  

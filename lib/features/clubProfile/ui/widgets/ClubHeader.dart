@@ -1,4 +1,4 @@
- import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+ import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 import 'package:akalpit/features/clubProfile/ui/widgets/infoChip.dart';
 import 'package:akalpit/features/clubProfile/ui/widgets/statuschip.dart';
 import 'package:flutter/material.dart';

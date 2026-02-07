@@ -1,7 +1,8 @@
 // features/search/screens/clubsearch/widgets/ClubCard.dart
 
 import 'package:akalpit/core/constants/app_colors.dart';
-import 'package:akalpit/features/clubProfile/ui/single_club_profile.dart';
+import 'package:akalpit/features/clubProfile/ui/view_club_profile.dart';
+
 import 'package:flutter/material.dart';
 
 class ClubCard extends StatelessWidget {

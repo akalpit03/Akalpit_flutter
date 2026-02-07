@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/models/post_data.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
  
 class GetClubAction {
   final String clubId;
@@ -30,6 +31,20 @@ class SubmitCreateClubAction {
 }
 
  
+class CreateClubPostAction {
+  final Map<String, dynamic> postData;
+  CreateClubPostAction(this.postData);
+}
+
+class CreateClubPostSuccessAction {
+  final ClubPost post;
+  CreateClubPostSuccessAction(this.post);
+}
+
+class CreateClubPostFailureAction {
+  final String error;
+  CreateClubPostFailureAction(this.error);
+}
 
  
 /// 🔹 Optional: reset create state (useful after success)

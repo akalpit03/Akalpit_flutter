@@ -115,6 +115,9 @@ static const String resetPassword = "$baseUrl/auth/reset-password";
   static String uploadClubImage(String clubId) => "$baseUrl/club/$clubId/image";
 
   static const String fetchClubByUserId = "$baseUrl/club/user/myclub";
+  static const String createClubPost = "$baseUrl/club/posts";
+
+
 // ===================== MEMBERSHIP APIs =====================
 
   /// 1️⃣9️⃣ Join Club (POST /membership/:clubId/join)

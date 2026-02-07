@@ -1,6 +1,6 @@
  
-import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/viewmodel.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/viewmodel.dart';
  import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/ui/widgets/AboutSection.dart';
 import 'package:akalpit/features/clubProfile/ui/widgets/ClubHeader.dart';
@@ -58,7 +58,7 @@ class ClubProfilePage extends StatelessWidget {
       children: [
  
         ClubHeader(club: vm.club!),const SizedBox(height: 20),
- AboutSection(club: vm.club!),
+//  AboutSection(club: vm.club!),
         const SizedBox(height: 20),
 
  

@@ -7,7 +7,7 @@ import '../../miscellaneous/settings_screen.dart';
 class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String clubTitle;
   final String imageUrl;
-  final ClubRole role;
+  final String role;
   final String clubId;
   final PreferredSizeWidget? bottom;
 
@@ -113,7 +113,7 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       /// ⚙️ ACTIONS
       actions: [
-        if (role == ClubRole.admin || role == ClubRole.owner)
+        if (role == 'admin' || role == 'owner')
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {

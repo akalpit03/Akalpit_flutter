@@ -1,6 +1,6 @@
  
 import 'package:akalpit/features/Events/activities/services/reducer.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/reducers.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/reducers.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipReducers.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/reducers.dart';
 import 'package:akalpit/features/clubsection/services/reducers.dart';

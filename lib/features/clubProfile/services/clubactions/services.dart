@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:akalpit/core/api/api_endpoints.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/models/post_data.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 
 import '../../../../core/api/api_client.dart';
 
@@ -51,6 +52,23 @@ Future<Club> getClubDetails(String clubId) async {
 
     throw Exception("Failed to create club");
   }
+Future<ClubPost> createClubPost(
+  Map<String, dynamic> postData,
+) async {
+  final response = await client.post(
+    ApiEndpoints.createClubPost,
+    data: postData,
+  );
+
+  final body = response.data;
+
+  if (body is Map<String, dynamic>) {
+    final postJson = body["data"];
+    return ClubPost.fromJson(postJson);
+  }
+
+  throw Exception("Failed to create post");
+}
 
   Future<String> uploadClubImage(File imageFile) async {
     final fileName = path.basename(imageFile.path);

@@ -1,6 +1,7 @@
 import 'package:akalpit/core/api/api_client.dart';
 import 'package:akalpit/core/api/api_endpoints.dart';
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+ 
+import 'package:akalpit/features/clubsection/services/models/myclubs.dart';
 
 class ClubMembershipService {
   final ApiClient client;
@@ -191,7 +192,7 @@ Future<List<dynamic>> getClubAdmins(String clubId) async {
  
  
   /// ✅ Fetch club owned by logged-in user
-  Future<Club?> fetchClubByUserId() async {
+  Future<MyClub?> fetchClubByUserId() async {
     final response = await client.get(
       ApiEndpoints.fetchClubByUserId,
     );
@@ -201,7 +202,7 @@ Future<List<dynamic>> getClubAdmins(String clubId) async {
     if (body != null &&
         body is Map<String, dynamic> &&
         body['data'] != null) {
-      return Club.fromJson(body['data']);
+      return MyClub.fromJson(body['data']);
     }
 
     return null; // user has no club

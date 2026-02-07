@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:akalpit/features/clubProfile/services/gettingClub/actions.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/state.dart';
 import 'package:redux/redux.dart';
 
 final clubReducer = combineReducers<ClubState>([
@@ -39,7 +39,34 @@ ClubState _getClubFailure(ClubState state, GetClubFailureAction action) {
   );
 }
 
- 
+ ClubState _createPost(
+    ClubState state,
+    CreateClubPostAction action) {
+  return state.copyWith(
+    isPostCreating: true,
+    error: null,
+  );
+}
+
+ClubState _createPostSuccess(
+    ClubState state,
+    CreateClubPostSuccessAction action) {
+  return state.copyWith(
+    isPostCreating: false,
+    lastCreatedPost: action.post,
+    error: null,
+  );
+}
+
+ClubState _createPostFailure(
+    ClubState state,
+    CreateClubPostFailureAction action) {
+  return state.copyWith(
+    isPostCreating: false,
+    error: action.error,
+  );
+}
+
 ClubState _resetCreateClub(ClubState state, ResetCreateClubAction action) {
   return state.copyWith(
     isLoading: false,

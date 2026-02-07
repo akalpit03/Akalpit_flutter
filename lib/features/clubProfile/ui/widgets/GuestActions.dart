@@ -1,5 +1,5 @@
 import 'package:akalpit/core/store/app_state.dart';
- import 'package:akalpit/features/clubProfile/services/gettingClub/viewmodel.dart';
+ import 'package:akalpit/features/clubProfile/services/clubactions/viewmodel.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipViewmodel.dart';
 import 'package:akalpit/features/clubProfile/ui/onboarding/screens/join/club_joining_status_page.dart';
 import 'package:flutter/material.dart';

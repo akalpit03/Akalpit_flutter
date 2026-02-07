@@ -5,19 +5,20 @@ import 'package:akalpit/features/Events/layout/ui/widgets/body.dart';
  
 
 class ClubEventsPage extends StatelessWidget {
-  final bool isAdmin;
+  final bool isAdmin; final String clubId;
 
   const ClubEventsPage({
     super.key,
     required this.isAdmin,
+    required this.clubId,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const EventBody(
+      body:   EventBody(
         isClub: true,
-        clubId: "695bd1e0e6fcc1140f103834",
+        clubId: clubId,
       ),
 
       /// ================= ADMIN ADD EVENT BUTTON =================

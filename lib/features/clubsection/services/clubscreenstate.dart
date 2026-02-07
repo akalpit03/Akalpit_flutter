@@ -1,14 +1,12 @@
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubsection/services/models/myclubs.dart';
 
 class ClubScreenState {
-  final Map<String, Club> byId;
-  final List<String> ownedClubIds;
-  final List<String> followingClubIds;
+  final Map<String, MyClub> byId;
+  final Map<String, MyClub> ownedClubIds;
+  final Map<String, MyClub> followingClubIds;
   final List<String> searchResultIds;
 
- 
   final String? myClubId;
-
   final String? activeClubId;
   final bool isLoading;
   final String? error;
@@ -27,8 +25,8 @@ class ClubScreenState {
   factory ClubScreenState.initial() {
     return ClubScreenState(
       byId: {},
-      ownedClubIds: [],
-      followingClubIds: [],
+      ownedClubIds: {},
+      followingClubIds: {},
       searchResultIds: [],
       myClubId: null,
       activeClubId: null,
@@ -39,18 +37,20 @@ class ClubScreenState {
 
   /// 📥 FROM JSON
   factory ClubScreenState.fromJson(Map<String, dynamic> json) {
+    Map<String, MyClub> parseMyClubMap(dynamic data) {
+      if (data == null) return {};
+      final map = data as Map<String, dynamic>;
+      return map.map(
+        (key, value) => MapEntry(key, MyClub.fromJson(value)),
+      );
+    }
+
     return ClubScreenState(
-      byId: (json['byId'] as Map<String, dynamic>?)?.map(
-            (key, value) => MapEntry(key, Club.fromJson(value)),
-          ) ??
-          {},
-      ownedClubIds: List<String>.from(json['ownedClubIds'] ?? []),
-      followingClubIds: List<String>.from(json['followingClubIds'] ?? []),
+      byId: parseMyClubMap(json['byId']),
+      ownedClubIds: parseMyClubMap(json['ownedClubIds']),
+      followingClubIds: parseMyClubMap(json['followingClubIds']),
       searchResultIds: List<String>.from(json['searchResultIds'] ?? []),
-
-      /// ✅ restore myClubId
       myClubId: json['myClubId'] as String?,
-
       activeClubId: json['activeClubId'] as String?,
       isLoading: false,
       error: json['error'] as String?,
@@ -61,22 +61,21 @@ class ClubScreenState {
   Map<String, dynamic> toJson() {
     return {
       'byId': byId.map((key, value) => MapEntry(key, value.toJson())),
-      'ownedClubIds': ownedClubIds,
-      'followingClubIds': followingClubIds,
+      'ownedClubIds':
+          ownedClubIds.map((key, value) => MapEntry(key, value.toJson())),
+      'followingClubIds':
+          followingClubIds.map((key, value) => MapEntry(key, value.toJson())),
       'searchResultIds': searchResultIds,
-
-      /// ✅ persist myClubId
       'myClubId': myClubId,
-
       'activeClubId': activeClubId,
       'error': error,
     };
   }
 
   ClubScreenState copyWith({
-    Map<String, Club>? byId,
-    List<String>? ownedClubIds,
-    List<String>? followingClubIds,
+    Map<String, MyClub>? byId,
+    Map<String, MyClub>? ownedClubIds,
+    Map<String, MyClub>? followingClubIds,
     List<String>? searchResultIds,
     String? myClubId,
     String? activeClubId,
@@ -91,7 +90,7 @@ class ClubScreenState {
       myClubId: myClubId ?? this.myClubId,
       activeClubId: activeClubId ?? this.activeClubId,
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: error ?? this.error,
     );
   }
 }

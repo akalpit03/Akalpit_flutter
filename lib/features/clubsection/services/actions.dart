@@ -1,4 +1,5 @@
-import 'package:akalpit/features/clubProfile/services/states/clubs.dart';
+import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
+import 'package:akalpit/features/clubsection/services/models/myclubs.dart';
  
 
 /// 🔹 Trigger
@@ -6,7 +7,7 @@ class FetchMyClubByUserIdAction {}
 
 /// 🔹 Success
 class FetchMyClubByUserIdSuccessAction {
-  final Club club;
+  final MyClub club;
 
   FetchMyClubByUserIdSuccessAction(this.club);
 }
@@ -75,4 +76,19 @@ class CreateClubSuccessAction {
 class CreateClubFailureAction {
   final String error;
   CreateClubFailureAction(this.error);
+}
+class GetMyClubsRequestAction {}
+class GetMyClubsSuccessAction {
+  final Map<String, MyClub> owned;
+  final Map<String, MyClub> following;
+
+  GetMyClubsSuccessAction({
+    required this.owned,
+    required this.following,
+  });
+}
+class GetMyClubsFailureAction {
+  final String error;
+
+  GetMyClubsFailureAction(this.error);
 }

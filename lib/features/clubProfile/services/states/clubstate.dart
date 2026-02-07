@@ -15,8 +15,8 @@ class Club {
   final ClubMeta? institution;
 
   final String privacy; // public | private | invite_only
-  final String status;  // active | suspended | deleted
-
+  final String status; // active | suspended | deleted
+  final String role;
   final int membersCount;
   final int postsCount;
 
@@ -35,6 +35,7 @@ class Club {
     this.image,
     this.about,
     this.council,
+   required this.role,
     this.institution,
     required this.privacy,
     required this.status,
@@ -50,33 +51,23 @@ class Club {
   factory Club.fromJson(Map<String, dynamic> json) {
     return Club(
       id: json["_id"].toString(),
-
-      owner: json["owner"] != null
-          ? ClubOwner.fromJson(json["owner"])
-          : null,
-
+      owner: json["owner"] != null ? ClubOwner.fromJson(json["owner"]) : null,
       clubId: json["clubId"],
       clubName: json["clubName"],
       image: json["image"],
       about: json["about"],
-
-      council: json["council"] != null
-          ? ClubMeta.fromJson(json["council"])
-          : null,
-
+      role: json["myRole"] ?? "none", // Default to "none" if not provided
+      council:
+          json["council"] != null ? ClubMeta.fromJson(json["council"]) : null,
       institution: json["institution"] != null
           ? ClubMeta.fromJson(json["institution"])
           : null,
-
       privacy: json["privacy"] ?? "public",
       status: json["status"] ?? "active",
-
       membersCount: json["membersCount"] ?? 0,
       postsCount: json["postsCount"] ?? 0,
-
       isMember: json["isMember"] ?? false,
       hasRequested: json["hasRequested"] ?? false,
-
       createdAt: DateTime.parse(json["createdAt"]),
       updatedAt: DateTime.parse(json["updatedAt"]),
     );
@@ -90,7 +81,8 @@ class Club {
       "clubId": clubId,
       "clubName": clubName,
       "image": image,
-      "about": about,
+      "about": about, 
+      "myRole": role,
       "council": council?.toJson(),
       "institution": institution?.toJson(),
       "privacy": privacy,
@@ -122,6 +114,7 @@ class Club {
       clubName: clubName,
       image: image ?? this.image,
       about: about ?? this.about,
+      role: role ?? this.role,
       council: council,
       institution: institution,
       privacy: privacy ?? this.privacy,

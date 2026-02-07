@@ -1,5 +1,5 @@
 import 'package:akalpit/features/Events/activities/services/state.dart';
-import 'package:akalpit/features/clubProfile/services/gettingClub/state.dart';
+import 'package:akalpit/features/clubProfile/services/clubactions/state.dart';
 import 'package:akalpit/features/clubProfile/services/membership/membershipState.dart';
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/state.dart';
 import 'package:akalpit/features/clubsection/services/clubscreenstate.dart';
