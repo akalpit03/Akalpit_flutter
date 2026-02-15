@@ -1,5 +1,5 @@
 import 'package:akalpit/core/store/app_state.dart';
-import 'package:akalpit/features/profile/ui/viewmodel/profileviewmodel.dart';
+import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.dart';
 import 'package:akalpit/features/profile/ui/widget/profile/about/awards.dart';
 import 'package:akalpit/features/profile/ui/widget/profile/about/experience.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class ProfileAboutTab extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return Padding(
+        return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,8 +32,8 @@ class ProfileAboutTab extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                profile.about.isNotEmpty
-                    ? profile.about
+                profile.bio.isNotEmpty
+                    ? profile.bio
                     : "No description added yet.",
                 style: const TextStyle(color: Colors.white54),
               ),
@@ -48,7 +48,6 @@ class ProfileAboutTab extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
-
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
@@ -81,7 +80,7 @@ class ProfileAboutTab extends StatelessWidget {
               const SizedBox(height: 20),
               const Divider(),
 
-              // ===== Awards (STATIC for now) =====
+              // ===== Awards =====
               const SizedBox(height: 10),
               const ProfileAwardsCarousel(),
 
@@ -95,6 +94,8 @@ class ProfileAboutTab extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               const ProfileExperienceTimeline(),
+
+              const SizedBox(height: 30), // extra bottom breathing space
             ],
           ),
         );

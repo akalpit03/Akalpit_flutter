@@ -16,6 +16,8 @@ List<Middleware<AppState>> clubMiddleware(ApiGateway apiGateway) {
     ),
     TypedMiddleware<AppState, CreateClubPostAction>(
       _handleCreateClubPost(apiGateway),
+    ), TypedMiddleware<AppState, FetchClubPostsByDateAction>(
+      _handleFetchClubPostsByDate(apiGateway),
     ),
   ];
 }
@@ -64,6 +66,32 @@ Middleware<AppState> _handleGetClub(ApiGateway apiGateway) {
     }
   };
 }
+Middleware<AppState> _handleFetchClubPostsByDate(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is FetchClubPostsByDateAction) {
+      next(action);
+
+      print("Fetching posts for clubId: ${action.clubId} on date: ${action.date}");
+
+      try {
+        final List<ClubPost> posts = await apiGateway.clubService.fetchClubPostsByDate(
+          clubId: action.clubId,
+          date: action.date,
+        );
+
+        print("Fetched ${posts.length} posts");
+
+        store.dispatch(FetchClubPostsByDateSuccessAction(posts));
+      } catch (e) {
+        print("Error fetching posts: $e");
+        store.dispatch(FetchClubPostsByDateFailureAction(e.toString()));
+      }
+    } else {
+      next(action);
+    }
+  };
+}
+
 
 /// CREATE CLUB
 

@@ -21,6 +21,20 @@ class SearchProfilesSuccessAction {
     required this.query,
   });
 }
+class CheckUsernameAvailabilityAction {
+  final String username;
+  CheckUsernameAvailabilityAction(this.username);
+}
+
+class CheckUsernameAvailabilitySuccessAction {
+  final bool available;
+  CheckUsernameAvailabilitySuccessAction(this.available);
+}
+
+class CheckUsernameAvailabilityFailureAction {
+  final String error;
+  CheckUsernameAvailabilityFailureAction(this.error);
+}
 
 class SearchProfilesFailureAction {
   final String error;
@@ -50,7 +64,7 @@ class CheckClubAvailabilityFailureAction {
 }
 
 class ClearClubAvailabilityAction {}
-
+class ClearUsernameAvailabilityAction{}
 // features/club_search/store/club_search_actions.dart
 
 class SearchClubsAction {

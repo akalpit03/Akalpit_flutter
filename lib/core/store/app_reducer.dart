@@ -10,6 +10,7 @@ import 'package:akalpit/features/profile/services/profileReducers.dart';
 import 'package:akalpit/features/search/services/reducers/clubAvailabilty.dart';
 import 'package:akalpit/features/search/services/reducers/searchClub.dart';
 import 'package:akalpit/features/search/services/reducers/searchReducers.dart';
+import 'package:akalpit/features/search/services/reducers/usernameAvail.dart';
 
 import '../../features/auth/services/auth_reducers.dart';
  
@@ -21,6 +22,7 @@ AppState appReducer(AppState state, dynamic action) {
       authState: authReducer(state.authState, action),
       profileSearchState: profileSearchReducer(state.profileSearchState, action),
       clubAvailabilityState: clubAvailabilityReducer(state.clubAvailabilityState, action),
+      usernameAvailabilityState: usernameAvailabilityReducer(state.usernameAvailabilityState, action),
       clubSearchState: clubSearchReducer(state.clubSearchState, action  ),
       profileState: profileReducer(state.profileState, action),
       clubState: clubReducer(state.clubState, action),

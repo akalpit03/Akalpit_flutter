@@ -10,8 +10,11 @@ List<Middleware<AppState>> searchMiddleware(ApiGateway apiGateway) {
     ),
     TypedMiddleware<AppState, CheckClubAvailabilityAction>(
       checkClubAvailability(apiGateway),
-    ), 
-        TypedMiddleware<AppState, SearchClubsAction>(
+    ),
+    TypedMiddleware<AppState, CheckUsernameAvailabilityAction>(
+      checkUsernameAvailability(apiGateway),
+    ),
+    TypedMiddleware<AppState, SearchClubsAction>(
       clubSearchMiddleware(apiGateway),
     ),
   ];
@@ -39,11 +42,10 @@ Middleware<AppState> searchProfiles(ApiGateway apiGateway) {
         );
       }
     } else {
-      next(action); 
+      next(action);
     }
   };
 }
- 
 
 Middleware<AppState> checkClubAvailability(ApiGateway apiGateway) {
   return (Store<AppState> store, action, NextDispatcher next) async {
@@ -51,15 +53,15 @@ Middleware<AppState> checkClubAvailability(ApiGateway apiGateway) {
       next(action);
 
       try {
-      print('Middleware: Checking availability for Club ID: ${action.clubId}');
-        final response = await apiGateway.profileSearchService.checkclubAvailability(
+        print(
+            'Middleware: Checking availability for Club ID: ${action.clubId}');
+        final response =
+            await apiGateway.profileSearchService.checkclubAvailability(
           clubId: action.clubId,
         );
 
-      
-
         final bool available = response["available"] as bool;
-       print('available ${available}');
+        print('available ${available}');
 
         store.dispatch(
           CheckClubAvailabilitySuccessAction(available),
@@ -77,6 +79,36 @@ Middleware<AppState> checkClubAvailability(ApiGateway apiGateway) {
 }
 
 // features/club_search/store/club_search_middleware.dart
+Middleware<AppState> checkUsernameAvailability(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is CheckUsernameAvailabilityAction) {
+      next(action);
+
+      try {
+        print(
+            'Middleware: Checking availability for Username: ${action.username}');
+
+        final response =
+            await apiGateway.profileSearchService.checkUsernameAvailability(
+          username: action.username,
+        );
+
+        final bool available = response["available"] as bool;
+        print('available $available');
+
+        store.dispatch(
+          CheckUsernameAvailabilitySuccessAction(available),
+        );
+      } catch (e) {
+        store.dispatch(
+          CheckUsernameAvailabilityFailureAction(e.toString()),
+        );
+      }
+    } else {
+      next(action);
+    }
+  };
+}
 
 Middleware<AppState> clubSearchMiddleware(ApiGateway apiGateway) {
   return (Store<AppState> store, action, NextDispatcher next) async {

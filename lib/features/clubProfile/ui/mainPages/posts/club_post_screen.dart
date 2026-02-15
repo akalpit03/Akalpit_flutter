@@ -16,7 +16,7 @@ class ClubPostsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const SampleFeedPage(),
+      body: ClubFeedPage(clubId: clubId, selectedDate: DateTime.now().toString().split(' ')[0]),
 
       /// 👇 Floating button only for Admin
       floatingActionButton: isAdmin

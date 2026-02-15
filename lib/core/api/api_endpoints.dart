@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  // static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
+  // static const String baseUrl = "http://localhost:8000/api/v1";
 
   // ===================== IMAGE UPLOAD =====================
   //// Cloudinary Image Upload URL
@@ -14,6 +14,8 @@ class ApiEndpoints {
   static const verifyOtp = "$baseUrl/auth/verifyOtp";
   static const resendOtp = "$baseUrl/auth/resendOtp";
   static const updateFcmToken = "$baseUrl/auth/deviceToken";
+   static String checkusernameAvailability(String userId) =>
+      "$baseUrl/auth/checkusername/$userId";
 
 // 🔐 Protected (JWT required)
   static const String completeProfile = "$baseUrl/auth/completeprofile";
@@ -61,7 +63,8 @@ static const String resetPassword = "$baseUrl/auth/reset-password";
   /// 4️⃣ Check Club ID Availability (GET /club/check/:clubId)
   static String checkclubAvailability(String clubId) =>
       "$baseUrl/club/check/$clubId";
-
+  static String fetchClubPostsByDate(String clubId, String date) =>
+      "$baseUrl/club/posts/club/$clubId/date/$date";
   /// 5️⃣ Search Clubs (GET /club/search)
   static const String clubSearchUrl = "$baseUrl/club/search";
   static String searchClubs({
@@ -243,7 +246,7 @@ static const String resetPassword = "$baseUrl/auth/reset-password";
   /// ===================== FRIEND LIST & REQUESTS =====================
 
   /// 6️⃣ Get My Friends (GET /connections/my)
-  static const String getMyFriends = "$baseUrl/connections/my";
+  static const String getMyFriends = "$baseUrl/connections/myfriends";
 
   /// 7️⃣ Get Incoming Friend Requests (GET /connections/requests/incoming)
   static const String getIncomingRequests =

@@ -1,15 +1,15 @@
 import 'package:akalpit/core/api/api_client.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
+import 'package:akalpit/features/auth/ui/screens/username.dart';
 import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
 import 'package:akalpit/features/notifications/notification_bootstrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
- 
+
 import '../../../../../core/store/app_state.dart';
 import '../../../../../core/utils/responsive_utils.dart';
 import '../widgets/custom_text_field.dart';
 import 'forgot_password_screen.dart';
- 
 import '../viewmodel/login_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   bool _isPasswordVisible = false;
   bool _isLoading = false;
 
@@ -33,68 +34,93 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-Future<void> _onLogin() async {
-  if (!(_formKey.currentState?.validate() ?? false)) return;
+  Future<void> _onLogin() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-  setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
 
-  try {
-    final store = StoreProvider.of<AppState>(context, listen: false);
+    try {
+      final store = StoreProvider.of<AppState>(context, listen: false);
 
-    LoginViewModel.fromStore(store).onLogin(
-      _emailController.text.trim(),
-      _passwordController.text.trim(),
-    );
-
-    // Wait until redux login finishes
-    await Future.doWhile(() async {
-      final vm = LoginViewModel.fromStore(store);
-      if (!vm.isLoading) return false;
-      await Future.delayed(const Duration(milliseconds: 200));
-      return true;
-    });
-
-    if (!mounted) return;
-
-    final finalState = LoginViewModel.fromStore(store);
-
-    if (finalState.isLoggedIn) {
-      // 🔔 BOOTSTRAP NOTIFICATIONS HERE (ONCE)
-      final notificationBootstrapper =
-          NotificationBootstrapper(ApiClient());
-
-      await notificationBootstrapper.initAfterLogin();
-
-      // ➡️ Navigate to Home
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const EntryPointUI()),
+      LoginViewModel.fromStore(store).onLogin(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
       );
-    } else if (finalState.errorMessage != null) {
+
+      // Wait until redux login finishes
+      await Future.doWhile(() async {
+        final vm = LoginViewModel.fromStore(store);
+        if (!vm.isLoading) return false;
+        await Future.delayed(const Duration(milliseconds: 200));
+        return true;
+      });
+
+      if (!mounted) return;
+
+      final finalState = LoginViewModel.fromStore(store);
+
+      if (finalState.isLoggedIn) {
+        // 🔔 Ask user about notifications
+        final allowNotifications = await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text("Enable Notifications?"),
+            content: const Text(
+              "We use notifications only for club-side updates like events, announcements and important alerts.\n\nWould you like to enable them?",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Not Now"),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Allow"),
+              ),
+            ],
+          ),
+        );
+
+        // If user allowed → initialize notifications
+        if (allowNotifications == true) {
+          final notificationBootstrapper =
+              NotificationBootstrapper(ApiClient());
+
+          await notificationBootstrapper.initAfterLogin();
+        }
+
+        if (!mounted) return;
+
+        // Navigate to Home
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const EntryPointUI()),
+        );
+      } else if (finalState.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Invalid Login Credentials"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Invalid Login Credentials"),
+        SnackBar(
+          content: Text(e.toString()),
           backgroundColor: Colors.red,
         ),
       );
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(e.toString()),
-        backgroundColor: Colors.red,
-      ),
-    );
-  } finally {
-    if (mounted) setState(() => _isLoading = false);
   }
-}
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // Adjust font size responsively
     double baseFontSize(double size) {
       if (screenWidth < 350) return size * 0.85;
       if (screenWidth > 600) return size * 1.1;
@@ -176,7 +202,7 @@ Future<void> _onLogin() async {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const ForgotPasswordScreen(),
+                                  const EnterNameUsernameScreen(),
                             ),
                           );
                         },
@@ -188,7 +214,7 @@ Future<void> _onLogin() async {
                     ),
                     const SizedBox(height: 32),
 
-                    /// Login Button with loader
+                    /// Login Button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -221,7 +247,7 @@ Future<void> _onLogin() async {
                     ),
                     const SizedBox(height: 24),
 
-                    /// Responsive Create Account
+                    /// Create Account
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -236,8 +262,9 @@ Future<void> _onLogin() async {
                           child: Text(
                             'Create an account',
                             style: TextStyle(
-                                fontSize: baseFontSize(14),
-                                fontWeight: FontWeight.w600),
+                              fontSize: baseFontSize(14),
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],

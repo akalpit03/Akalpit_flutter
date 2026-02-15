@@ -1,7 +1,7 @@
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/auth/ui/screens/login_screen.dart';
 import 'package:akalpit/features/profile/ui/createProfile.dart';
-import 'package:akalpit/features/profile/ui/viewmodel/profileviewmodel.dart';
+import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';

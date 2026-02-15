@@ -1,7 +1,7 @@
 class ClubPost {
   final String id;
   final String clubId;
-  final String createdBy;
+  final String createdBy; // store only the userId as String
   final String title;
   final String content;
   final String type;
@@ -25,31 +25,33 @@ class ClubPost {
 
   factory ClubPost.fromJson(Map<String, dynamic> json) {
     return ClubPost(
-      id: json["_id"],
-      clubId: json["clubId"],
-      createdBy: json["createdBy"],
-      title: json["title"],
-      content: json["content"],
-      type: json["type"],
+      id: json["_id"] ?? "",
+      clubId: json["clubId"] ?? "",
+      createdBy: json["createdBy"] is Map
+          ? json["createdBy"]["_id"] ?? ""
+          : json["createdBy"] ?? "",
+      title: json["title"] ?? "",
+      content: json["content"] ?? "",
+      type: json["type"] ?? "",
       isEdited: json["isEdited"] ?? false,
       isDeleted: json["isDeleted"] ?? false,
-      createdAt: DateTime.parse(json["createdAt"]),
-      updatedAt: DateTime.parse(json["updatedAt"]),
+      createdAt: DateTime.parse(json["createdAt"] ?? DateTime.now().toIso8601String()),
+      updatedAt: DateTime.parse(json["updatedAt"] ?? DateTime.now().toIso8601String()),
     );
   }
-  Map<String, dynamic> toJson() {
-  return {
-    "_id": id,
-    "clubId": clubId,
-    "createdBy": createdBy,
-    "title": title,
-    "content": content,
-    "type": type,
-    "isEdited": isEdited,
-    "isDeleted": isDeleted,
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-  };
-}
 
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "clubId": clubId,
+      "createdBy": {"_id": createdBy},
+      "title": title,
+      "content": content,
+      "type": type,
+      "isEdited": isEdited,
+      "isDeleted": isDeleted,
+      "createdAt": createdAt.toIso8601String(),
+      "updatedAt": updatedAt.toIso8601String(),
+    };
+  }
 }

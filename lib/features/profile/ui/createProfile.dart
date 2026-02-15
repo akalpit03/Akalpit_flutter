@@ -1,7 +1,7 @@
 import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
-import 'package:akalpit/features/profile/ui/viewmodel/profileviewmodel.dart';
+import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -90,7 +90,7 @@ class _ProfileFormViewState extends State<_ProfileFormView> {
     if (widget.isEditMode) {
       final p = widget.profile!;
       _nameController.text = p.displayName;
-      _aboutController.text = p.about;
+      _aboutController.text = p.bio;
       _hobbies.addAll(p.hobbies);
     }
   }

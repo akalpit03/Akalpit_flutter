@@ -1,4 +1,7 @@
+import 'package:akalpit/features/profile/ui/friendslist.dart';
+import 'package:akalpit/features/profile/ui/requests/incomingrequests.dart';
 import 'package:flutter/material.dart';
+ 
 
 class ProfileSideDrawer extends StatelessWidget {
   const ProfileSideDrawer({super.key});
@@ -25,20 +28,34 @@ class ProfileSideDrawer extends StatelessWidget {
 
             const Divider(),
 
-            // ===== Drawer Items =====
-            _DrawerItem(
-              icon: Icons.people_outline,
-              title: 'My Followings',
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-
+          
             _DrawerItem(
               icon: Icons.group_outlined,
               title: 'My Friends',
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const FriendsPage( ),
+                  ),
+                );
+              },
+            ),
+
+            /// 🔥 Incoming Friend Requests
+            _DrawerItem(
+              icon: Icons.person_add_alt_1_outlined,
+              title: 'Incoming Requests',
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const FriendsIncomingRequestsPage(),
+                  ),
+                );
               },
             ),
 
@@ -47,6 +64,12 @@ class ProfileSideDrawer extends StatelessWidget {
               title: 'My Awards',
               onTap: () {
                 Navigator.pop(context);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (_) => const MyAwardsPage(),
+                //   ),
+                // );
               },
             ),
 

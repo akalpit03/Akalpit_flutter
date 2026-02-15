@@ -49,3 +49,24 @@ class CreateClubPostFailureAction {
  
 /// 🔹 Optional: reset create state (useful after success)
 class ResetCreateClubAction {}
+class FetchClubPostsByDateAction {
+  final String clubId;
+  final String date;
+
+  FetchClubPostsByDateAction({
+    required this.clubId,
+    required this.date,
+  });
+}
+
+class FetchClubPostsByDateSuccessAction {
+  final List<ClubPost> posts;
+
+  FetchClubPostsByDateSuccessAction(this.posts);
+}
+
+class FetchClubPostsByDateFailureAction {
+  final String error;
+
+  FetchClubPostsByDateFailureAction(this.error);
+}

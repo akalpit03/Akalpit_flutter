@@ -3,16 +3,20 @@ import 'dart:io';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
 import 'package:akalpit/features/clubProfile/services/clubactions/state.dart';
+import 'package:akalpit/features/clubProfile/services/models/post_data.dart';
 import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-
 class ClubViewModel {
   /// ====== STATE ======
   final bool isLoading;
   final Club? club;
   final String? error;
-  final String? selectedImagePath; // store path instead of File
+  final String? selectedImagePath;
+
+  final List<ClubPost> posts;
+  final bool isPostsLoading;
+  final bool isPostCreating;
 
   /// ====== ACTIONS ======
   final VoidCallback clearError;
@@ -21,19 +25,26 @@ class ClubViewModel {
   final VoidCallback removeSelectedImage;
   final void Function(Map<String, dynamic> clubData) submitCreateClub;
 
+  final void Function(String clubId, String date) fetchPostsByDate;
+  final void Function(Map<String, dynamic> postData) createPost;
+
   ClubViewModel({
     required this.isLoading,
     required this.club,
     required this.error,
     required this.selectedImagePath,
+    required this.posts,
+    required this.isPostsLoading,
+    required this.isPostCreating,
     required this.clearError,
     required this.getClub,
     required this.selectImagePath,
     required this.removeSelectedImage,
     required this.submitCreateClub,
+    required this.fetchPostsByDate,
+    required this.createPost,
   });
 
-  /// Helper to get File for UI purposes only
   File? get selectedImage =>
       selectedImagePath != null ? File(selectedImagePath!) : null;
 
@@ -46,11 +57,12 @@ class ClubViewModel {
       club: state.club,
       error: state.error,
       selectedImagePath: state.selectedImagePath,
+      posts: state.posts,
+      isPostsLoading: state.isPostsLoading,
+      isPostCreating: state.isPostCreating,
 
       /// ====== ACTIONS ======
-      clearError: () {
-        // store.dispatch(ClearClubErrorAction());
-      },
+      clearError: () {},
 
       getClub: (String clubId) {
         store.dispatch(GetClubAction(clubId));
@@ -66,6 +78,21 @@ class ClubViewModel {
 
       submitCreateClub: (Map<String, dynamic> clubData) {
         store.dispatch(SubmitCreateClubAction(clubData));
+      },
+
+      fetchPostsByDate: (String clubId, String date) {
+        store.dispatch(
+          FetchClubPostsByDateAction(
+            clubId: clubId,
+            date: date,
+          ),
+        );
+      },
+
+      createPost: (Map<String, dynamic> postData) {
+        store.dispatch(
+          CreateClubPostAction(postData),
+        );
       },
     );
   }

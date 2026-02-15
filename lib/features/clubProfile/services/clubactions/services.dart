@@ -15,21 +15,20 @@ class ClubService {
   ClubService(this.client);
 
   /// Fetch club details
-Future<Club> getClubDetails(String clubId) async {
-  final response = await client.get(
-    ApiEndpoints.getClubDetails(clubId),
-  );
+  Future<Club> getClubDetails(String clubId) async {
+    final response = await client.get(
+      ApiEndpoints.getClubDetails(clubId),
+    );
 
-  final body = response.data;
+    final body = response.data;
 
-  if (body is Map<String, dynamic>) {
-    final clubJson = body["data"];
-    return Club.fromJson(clubJson); // ✅ parse here
+    if (body is Map<String, dynamic>) {
+      final clubJson = body["data"];
+      return Club.fromJson(clubJson); // ✅ parse here
+    }
+
+    throw Exception("Failed to fetch club details");
   }
-
-  throw Exception("Failed to fetch club details");
-}
-
 
   Future<Map<String, dynamic>> createClub(
     Map<String, dynamic> clubData,
@@ -52,23 +51,42 @@ Future<Club> getClubDetails(String clubId) async {
 
     throw Exception("Failed to create club");
   }
-Future<ClubPost> createClubPost(
-  Map<String, dynamic> postData,
-) async {
-  final response = await client.post(
-    ApiEndpoints.createClubPost,
-    data: postData,
-  );
 
-  final body = response.data;
+  Future<ClubPost> createClubPost(
+    Map<String, dynamic> postData,
+  ) async {
+    final response = await client.post(
+      ApiEndpoints.createClubPost,
+      data: postData,
+    );
 
-  if (body is Map<String, dynamic>) {
-    final postJson = body["data"];
-    return ClubPost.fromJson(postJson);
+    final body = response.data;
+
+    if (body is Map<String, dynamic>) {
+      final postJson = body["data"];
+      return ClubPost.fromJson(postJson);
+    }
+
+    throw Exception("Failed to create post");
   }
+Future<List<ClubPost>> fetchClubPostsByDate({
+    required String clubId,
+    required String date, // yyyy-MM-dd
+  }) async {
+    final response = await client.get(
+      ApiEndpoints.fetchClubPostsByDate(clubId, date),
+    );
 
-  throw Exception("Failed to create post");
-}
+    final body = response.data;
+
+    if (body is Map<String, dynamic>) {
+      final List<dynamic> postsJson = body["data"] ?? [];
+
+      return postsJson.map((json) => ClubPost.fromJson(json)).toList();
+    }
+
+    throw Exception("Failed to fetch club posts");
+  }
 
   Future<String> uploadClubImage(File imageFile) async {
     final fileName = path.basename(imageFile.path);

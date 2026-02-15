@@ -10,6 +10,7 @@ import 'package:akalpit/features/profile/services/state/profileState.dart';
 import 'package:akalpit/features/search/services/state/searchClubState.dart';
 import 'package:akalpit/features/search/services/state/searchProfileState.dart';
 import 'package:akalpit/features/search/services/state/clubAvailability.dart';
+import 'package:akalpit/features/search/services/state/usernameAvailability.dart';
 
 import '../../features/auth/services/auth_state.dart';
 
@@ -19,6 +20,7 @@ class AppState extends Equatable {
   final AuthState authState;
   final ProfileSearchState profileSearchState;
   final ClubAvailabilityState clubAvailabilityState;
+  final UsernameAvailabilityState usernameAvailabilityState;
   final ClubSearchState clubSearchState;
   final ProfileState profileState;
   final ClubState clubState;
@@ -33,6 +35,7 @@ class AppState extends Equatable {
     required this.authState,
     required this.profileSearchState,
     required this.clubAvailabilityState,
+    required this.usernameAvailabilityState,
     required this.clubSearchState,
     required this.profileState,
     required this.clubState,
@@ -48,6 +51,7 @@ class AppState extends Equatable {
         authState: AuthState.initial(),
         profileSearchState: ProfileSearchState.initial(),
         clubAvailabilityState: ClubAvailabilityState.initial(),
+        usernameAvailabilityState: UsernameAvailabilityState.initial(),
         clubSearchState: ClubSearchState.initial(),
         profileState: ProfileState.initial(),
         clubState: ClubState.initial(),
@@ -66,6 +70,7 @@ class AppState extends Equatable {
       authState: authState ?? this.authState,
       profileSearchState: profileSearchState,
       clubAvailabilityState: clubAvailabilityState,
+      usernameAvailabilityState: usernameAvailabilityState,
       clubSearchState: clubSearchState,
       profileState: profileState,
       clubState: clubState,
@@ -82,6 +87,7 @@ class AppState extends Equatable {
         'authState': authState.toJson(),
         'profileSearchState': profileSearchState.toJson(),
         'clubAvailabilityState': clubAvailabilityState.toJson(),
+        'usernameAvailabilityState': usernameAvailabilityState.toJson(),
         'clubSearchState': clubSearchState.toJson(),
         'profileState': profileState.toJson(),
         'clubState': clubState.toJson(),
@@ -102,6 +108,8 @@ class AppState extends Equatable {
           ProfileSearchState.fromJson(json['profileSearchState']),
       clubAvailabilityState:
           ClubAvailabilityState.fromJson(json['clubAvailabilityState']),
+      usernameAvailabilityState:
+          UsernameAvailabilityState.fromJson(json['usernameAvailabilityState']),
       clubSearchState: ClubSearchState.fromJson(json['clubSearchState']),
       profileState: ProfileState.fromJson(json['profileState']),
       clubState: ClubState.fromJson(json['clubState']),
@@ -120,6 +128,7 @@ class AppState extends Equatable {
         authState,
         profileSearchState,
         clubAvailabilityState,
+        usernameAvailabilityState,
         clubSearchState,
         profileState,
         clubState,
