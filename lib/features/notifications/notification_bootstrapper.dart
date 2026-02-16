@@ -9,8 +9,8 @@ class NotificationBootstrapper {
   NotificationBootstrapper(this.client);
 
   Future<void> initAfterLogin() async {
-    // final fcmToken =
-    //     await NotificationService.requestPermissionAndGetToken();
+    final fcmToken =
+        await NotificationService.requestPermissionAndGetToken();
 
     
 
@@ -18,7 +18,7 @@ class NotificationBootstrapper {
     await client.patch(
       ApiEndpoints.updateFcmToken,
       data: {
-        "fcmToken": "fcmToken",
+        "fcmToken": fcmToken,
       },
     );
 

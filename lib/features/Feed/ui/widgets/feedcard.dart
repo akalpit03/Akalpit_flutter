@@ -2,7 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class FeedCard extends StatelessWidget {
-  final bool hasImage;
+  final String storyId;
+  final String username;
+  final String title;
+  final String imageUrl;
+  final DateTime createdAt;
 
   /// Navigation callbacks
   final VoidCallback? onOpenPost;
@@ -12,17 +16,35 @@ class FeedCard extends StatelessWidget {
 
   const FeedCard({
     super.key,
-    this.hasImage = true,
+    required this.storyId,
+    required this.username,
+    required this.title,
+    required this.imageUrl,
+    required this.createdAt,
     this.onOpenPost,
     this.onLike,
     this.onComment,
     this.onView,
   });
 
+  bool get hasImage => imageUrl.isNotEmpty;
+
+  String get timeAgo {
+    final diff = DateTime.now().difference(createdAt);
+
+    if (diff.inMinutes < 60) {
+      return "${diff.inMinutes}m ago";
+    } else if (diff.inHours < 24) {
+      return "${diff.inHours}h ago";
+    } else {
+      return "${diff.inDays}d ago";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onOpenPost, // 👈 open post detail
+      onTap: onOpenPost,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         child: ClipRRect(
@@ -40,7 +62,8 @@ class FeedCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// Header
+
+                  /// 🔹 Header
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Row(
@@ -51,16 +74,16 @@ class FeedCard extends StatelessWidget {
                           child: const Icon(Icons.person, size: 18),
                         ),
                         const SizedBox(width: 8),
-                        const Text(
-                          'username_here',
-                          style: TextStyle(
+                        Text(
+                          username,
+                          style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const Spacer(),
                         Text(
-                          '2h ago',
+                          timeAgo,
                           style: TextStyle(
                             fontSize: 11,
                             color: Colors.grey.shade500,
@@ -70,28 +93,28 @@ class FeedCard extends StatelessWidget {
                     ),
                   ),
 
-                  /// Image
+                  /// 🔹 Image
                   if (hasImage)
                     Container(
                       height: 400,
                       margin: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.image, size: 60, color: Colors.white),
+                        image: DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
 
                   const SizedBox(height: 12),
 
-                  /// Title / Content
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                  /// 🔹 Title
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Text(
-                      'This is a Sample Card for style feed title which can have either image or just text content inside it.',
-                      style: TextStyle(
+                      title,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         height: 1.3,
@@ -99,7 +122,7 @@ class FeedCard extends StatelessWidget {
                     ),
                   ),
 
-                  /// Actions
+                  /// 🔹 Actions
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 8),
@@ -107,13 +130,13 @@ class FeedCard extends StatelessWidget {
                       children: [
                         _ModernActionItem(
                           icon: Icons.favorite_border,
-                          label: '24',
+                          label: 'Like',
                           onTap: onLike,
                         ),
                         const SizedBox(width: 14),
                         _ModernActionItem(
                           icon: Icons.comment_outlined,
-                          label: '8',
+                          label: 'Comment',
                           onTap: onComment,
                         ),
                         const Spacer(),
@@ -135,7 +158,7 @@ class FeedCard extends StatelessWidget {
                                 ),
                                 SizedBox(width: 6),
                                 Text(
-                                  '120',
+                                  'View',
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

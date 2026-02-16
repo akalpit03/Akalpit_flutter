@@ -31,9 +31,11 @@ class ProfileTabs extends StatelessWidget {
             child: const TabBarView(
               children: [
                 ProfileAboutTab( ),
-                ProfilePostsTab( ),
-               
                 ProfileAboutTab( ),
+                ProfileAboutTab( ),
+                // ProfilePostsTab(),
+               
+                // ProfileEventsTab( ),
               ],
             ),
           ),

@@ -11,13 +11,7 @@ class ClubPoliciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'About the Club',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-      ),
+     
       body: const SingleChildScrollView(
         padding:   EdgeInsets.all(16),
         child: Column(

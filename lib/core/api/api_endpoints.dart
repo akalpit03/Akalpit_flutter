@@ -2,10 +2,19 @@ class ApiEndpoints {
   // ===================== BASE URL =====================
   static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
   // static const String baseUrl = "http://localhost:8000/api/v1";
-
+// 
   // ===================== IMAGE UPLOAD =====================
   //// Cloudinary Image Upload URL
   static const String UploadUrl = "$baseUrl/uploads/image";
+static String getClubStories({
+  required String clubId,
+  required int page,
+  required int limit,
+}) {
+  return "$baseUrl/stories/club/$clubId?page=$page&limit=$limit";
+}
+
+
 
   // ===================== AUTH =====================
 

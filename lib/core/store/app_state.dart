@@ -4,6 +4,7 @@ import 'package:akalpit/features/clubProfile/services/membership/membershipState
 import 'package:akalpit/features/clubProfile/ui/mainPages/events/services/state.dart';
 import 'package:akalpit/features/clubsection/services/clubscreenstate.dart';
 import 'package:akalpit/features/misc/services/categories/categoriesState.dart';
+import 'package:akalpit/features/posts/clubfeed/services/state.dart';
 import 'package:akalpit/features/posts/story/redux/story_state.dart';
 
 import 'package:akalpit/features/profile/services/state/profileState.dart';
@@ -30,6 +31,7 @@ class AppState extends Equatable {
   final ActivityState activityState;
   final StoryState storyState;
   final CategoryState categoryState;
+  final FeedState feedState;
 
   const AppState({
     required this.authState,
@@ -45,6 +47,7 @@ class AppState extends Equatable {
     required this.activityState,
     required this.storyState,
     required this.categoryState,
+    required this.feedState,
   });
 
   factory AppState.initial() => AppState(
@@ -61,6 +64,7 @@ class AppState extends Equatable {
         activityState: ActivityState.initial(),
         storyState: StoryState.initial(),
         categoryState: CategoryState.initial(),
+        feedState: FeedState.initial(),
       );
 
   AppState copyWith({
@@ -80,6 +84,7 @@ class AppState extends Equatable {
       activityState: activityState,
       storyState: storyState,
       categoryState: categoryState,
+      feedState: feedState,
     );
   }
 
@@ -97,6 +102,7 @@ class AppState extends Equatable {
         'activityState': activityState.toJson(),
         'storyState': storyState.toJson(),
         'categoryState': categoryState.toJson(),
+        'feedState': feedState.toJson(),
       };
 
   static AppState fromJson(dynamic json) {
@@ -120,6 +126,7 @@ class AppState extends Equatable {
       activityState: ActivityState.fromJson(json['activityState']),
       storyState: StoryState.fromJson(json['storyState']),
       categoryState: CategoryState.fromJson(json['categoryState']),
+      feedState: FeedState.fromJson(json['feedState']),
     );
   }
 
@@ -138,5 +145,6 @@ class AppState extends Equatable {
         activityState,
         storyState,
         categoryState,
+        feedState,
       ];
 }

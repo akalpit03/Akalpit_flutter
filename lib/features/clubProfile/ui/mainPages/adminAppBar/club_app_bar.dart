@@ -1,4 +1,5 @@
 import 'package:akalpit/features/clubProfile/services/utils/roleenum.dart';
+import 'package:akalpit/features/clubProfile/ui/mainPages/about/club_about_page.dart';
 import 'package:akalpit/features/clubProfile/ui/miscellaneous/joinrequests.dart';
 import 'package:akalpit/features/clubProfile/ui/widgets/rules.dart';
 import 'package:flutter/material.dart';
@@ -48,15 +49,17 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// 📄 Navigate to policies / description page
   void _openClubInfo(BuildContext context) {
- 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ClubPoliciesPage(clubId: clubId),
+        builder: (_) => ClubAboutPage(
+                  isAdmin: role == "admin" || role == "owner",
+                ),
       ),
     );
   }
-// ClubJoinRequestsPage
+
+  /// 📥 Navigate to join requests page
   void _openJoinRequests(BuildContext context) {
     Navigator.push(
       context,
@@ -66,16 +69,28 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  /// ℹ️ Navigate to custom info page (YOU will replace target screen)
+  void _openInfoPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>  ClubPoliciesPage(clubId: clubId),
+    
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       titleSpacing: 0,
+      elevation: 0,
       title: Row(
         children: [
           const SizedBox(width: 16),
 
-          /// 🖼️ IMAGE TAP (SEPARATE)
+          /// 🖼️ IMAGE TAP
           GestureDetector(
             onTap: () => _openImagePreview(context),
             child: Hero(
@@ -90,7 +105,7 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
 
           const SizedBox(width: 12),
 
-          /// 📝 TITLE TAP (SEPARATE)
+          /// 📝 TITLE TAP
           Expanded(
             child: InkWell(
               onTap: () => _openClubInfo(context),
@@ -113,6 +128,14 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       /// ⚙️ ACTIONS
       actions: [
+        /// ℹ️ INFO BUTTON (Visible to everyone)
+        IconButton(
+          icon: const Icon(Icons.info_outline),
+          tooltip: "Club Info",
+          onPressed: () => _openInfoPage(context),
+        ),
+
+        /// Admin / Owner menu
         if (role == 'admin' || role == 'owner')
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert),
@@ -157,7 +180,6 @@ class ClubAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
       ],
       bottom: bottom,
-      elevation: 0,
     );
   }
 }

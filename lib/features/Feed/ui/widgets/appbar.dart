@@ -88,10 +88,10 @@ class _FeedAppBarState extends State<FeedAppBar> {
         ),
 
         /// Settings
-        IconButton(
-          icon: const Icon(Icons.settings_outlined),
-          onPressed: () {},
-        ),
+        // IconButton(
+        //   icon: const Icon(Icons.settings_outlined),
+        //   onPressed: () {},
+        // ),
 
         const SizedBox(width: 8),
       ],

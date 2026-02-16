@@ -14,28 +14,28 @@ class FeedBody extends StatelessWidget {
       children:   [
         ActiveUsersList(),
         SizedBox(height: 12),
-        FeedCard(
-          onOpenPost: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const StoryScreen(topicId: "696f21ba6ea90a243baad1c8" )),
-            );
-          },
-          onLike: () {
-            // like logic
-          },
-          // onComment: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (_) => const CommentPage()),
-          //   );
-          // },
-          onView: () {
-            // analytics / viewers page
-          },
-        ),
-        FeedCard(),
-        FeedCard(),
+        // FeedCard(
+        //   onOpenPost: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (_) => const StoryScreen(topicId: "696f21ba6ea90a243baad1c8" )),
+        //     );
+        //   },
+        //   onLike: () {
+        //     // like logic
+        //   },
+        //   // onComment: () {
+        //   //   Navigator.push(
+        //   //     context,
+        //   //     MaterialPageRoute(builder: (_) => const CommentPage()),
+        //   //   );
+        //   // },
+        //   onView: () {
+        //     // analytics / viewers page
+        //   },
+        // ),
+        // FeedCard(),
+        // FeedCard(),
       ],
     );
   }

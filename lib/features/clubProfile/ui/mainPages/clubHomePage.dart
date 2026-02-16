@@ -2,6 +2,7 @@ import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/clubProfile/services/clubactions/actions.dart';
 import 'package:akalpit/features/clubProfile/services/states/clubstate.dart';
 import 'package:akalpit/features/clubProfile/services/utils/roleenum.dart';
+import 'package:akalpit/features/profile/ui/widget/profile/profile_post_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -37,13 +38,12 @@ class ClubHomePage extends StatelessWidget {
 
       builder: (context, club) {
         if (club == null) {
-   
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        final  role =  this.role; // TODO: derive dynamically
+        final role = this.role; // TODO: derive dynamically
         print("User Role in Club: $role");
         return DefaultTabController(
           length: 4,
@@ -67,10 +67,11 @@ class ClubHomePage extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                     tabs: [
+                      Tab(text: "Updates"),
                       Tab(text: "Posts"),
                       Tab(text: "Events"),
                       Tab(text: "Team"),
-                      Tab(text: "About"),
+                      // Tab(text: "About"),
                     ],
                   ),
                 ),
@@ -80,19 +81,20 @@ class ClubHomePage extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 /// 🔥 Now this page can safely read club from Redux
-                  ClubPostsPage(
+                ClubPostsPage(
                   clubId: club.id,
                   isAdmin: role == "admin" || role == "owner",
                 ),
-
+                ProfilePostsTab(  clubId: club.id,
+                  isAdmin: role == "admin" || role == "owner",),
                 ClubEventsPage(
-                       clubId: club.id,
+                  clubId: club.id,
                   isAdmin: role == "admin" || role == "owner",
                 ),
 
                 ClubTeamPage(
                   clubId: club.id,
-                  isAdmin:  role == "admin" || role == "owner",
+                  isAdmin: role == "admin" || role == "owner",
                   owner: club.owner,
                 ),
 
