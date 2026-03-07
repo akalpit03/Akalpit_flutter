@@ -1,4 +1,4 @@
-// features/profile/store/profile_middleware.dart
+import 'dart:io';
 import 'package:akalpit/core/api/api_gateway.dart';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/profile/services/models/friends/friendmodel.dart';
@@ -18,9 +18,9 @@ List<Middleware<AppState>> profileMiddleware(ApiGateway apiGateway) {
      TypedMiddleware<AppState, GetPublicProfileAction>( // 👈 ADDED
       _handleGetPublicProfile(apiGateway),
     ),
-    // TypedMiddleware<AppState, UpdateProfileAction>(
-    //   _handleUpdateProfile(apiGateway),
-    // ),
+    TypedMiddleware<AppState, UpdateProfileAction>(
+      _handleUpdateProfile(apiGateway),
+    ),
       TypedMiddleware<AppState, FetchIncomingRequestsAction>(
       _handleFetchIncomingRequests(apiGateway),
     ),TypedMiddleware<AppState, FetchMyFriendsAction>(
@@ -48,8 +48,12 @@ Middleware<AppState> _handleGetProfile(ApiGateway apiGateway) {
 
     try {
       final response = await apiGateway.profileService.getMyProfile();
-      final profile = UserProfileModel.fromJson(response["data"]);
-      store.dispatch(GetMyProfileSuccessAction(profile));
+      if (response == null) {
+        store.dispatch(GetMyProfileSuccessAction(null));
+      } else {
+        final profile = UserProfileModel.fromJson(response["data"]);
+        store.dispatch(GetMyProfileSuccessAction(profile));
+      }
     } catch (e) {
       store.dispatch(GetMyProfileFailureAction(e.toString()));
     }
@@ -111,12 +115,20 @@ Middleware<AppState> _handleFetchIncomingRequests(
 /// =======================
 Middleware<AppState> _handleCreateProfile(ApiGateway apiGateway) {
   return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is! CreateProfileAction) return next(action);
+    
     next(action);
 
     try {
-      final response = await apiGateway.profileService
-          .createProfile(action.profileData);
+      final Map<String, dynamic> profileData = Map.from(action.profileData);
 
+      // If there's an image, upload it first
+      if (action.imageFile != null) {
+        final imageUrl = await apiGateway.profileService.uploadProfileImage(action.imageFile!);
+        profileData["imageUrl"] = imageUrl;
+      }
+
+      final response = await apiGateway.profileService.createProfile(profileData);
       final profile = UserProfileModel.fromJson(response["data"]);
 
       store.dispatch(CreateProfileSuccessAction(profile));
@@ -129,22 +141,30 @@ Middleware<AppState> _handleCreateProfile(ApiGateway apiGateway) {
 /// =======================
 /// UPDATE PROFILE
 /// =======================
-// Middleware<AppState> _handleUpdateProfile(ApiGateway apiGateway) {
-//   return (Store<AppState> store, action, NextDispatcher next) async {
-//     next(action);
+Middleware<AppState> _handleUpdateProfile(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is! UpdateProfileAction) return next(action);
 
-//     try {
-//       final response = await apiGateway.profileService
-//           .updateProfile(action.profileData);
+    next(action);
 
-//       final profile = UserProfileModel.fromJson(response["data"]);
+    try {
+      final Map<String, dynamic> profileData = Map.from(action.profileData);
 
-//       store.dispatch(UpdateProfileSuccessAction(profile));
-//     } catch (e) {
-//       store.dispatch(UpdateProfileFailureAction(e.toString()));
-//     }
-//   };
-// }
+      // If there's an image, upload it first
+      if (action.imageFile != null) {
+        final imageUrl = await apiGateway.profileService.uploadProfileImage(action.imageFile!);
+        profileData["imageUrl"] = imageUrl;
+      }
+
+      final response = await apiGateway.profileService.updateMyProfile(profileData);
+      final profile = UserProfileModel.fromJson(response["data"]);
+
+      store.dispatch(UpdateProfileSuccessAction(profile));
+    } catch (e) {
+      store.dispatch(UpdateProfileFailureAction(e.toString()));
+    }
+  };
+}
 Middleware<AppState> _handleAcceptFriendRequest(
     ApiGateway apiGateway,
 ) {

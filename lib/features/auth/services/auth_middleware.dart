@@ -1,6 +1,7 @@
 import 'package:akalpit/core/api/api_gateway.dart';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/auth/services/auth_actions.dart';
+import 'package:dio/dio.dart';
 import 'package:redux/redux.dart';
 
 List<Middleware<AppState>> createAuthMiddleware(ApiGateway apiGateway) {
@@ -11,7 +12,45 @@ List<Middleware<AppState>> createAuthMiddleware(ApiGateway apiGateway) {
     TypedMiddleware<AppState, LoginAction>(login(apiGateway)),
     TypedMiddleware<AppState, VerifyOtpAction>(verifyOtp(apiGateway)),
     TypedMiddleware<AppState, ResendOtpAction>(resendOtp(apiGateway)),
+    TypedMiddleware<AppState, CompleteProfileAction>(completeProfile(apiGateway)),
+    TypedMiddleware<AppState, LogoutAction>(logout(apiGateway)),
   ];
+}
+
+Middleware<AppState> completeProfile(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is CompleteProfileAction) {
+      next(action);
+      try {
+        final response = await apiGateway.authService.completeProfile(
+          userId: action.userId,
+          username: action.username,
+          displayName: action.displayName,
+        );
+        store.dispatch(CompleteProfileSuccessAction(response));
+      } catch (e) {
+        store.dispatch(CompleteProfileFailureAction(_getErrorMessage(e)));
+      }
+    } else {
+      next(action);
+    }
+  };
+}
+
+Middleware<AppState> logout(ApiGateway apiGateway) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    if (action is LogoutAction) {
+      next(action);
+      try {
+        await apiGateway.authService.logout();
+        store.dispatch(LogoutSuccessAction());
+      } catch (e) {
+        store.dispatch(LogoutFailureAction(_getErrorMessage(e)));
+      }
+    } else {
+      next(action);
+    }
+  };
 }
 
 Middleware<AppState> register(ApiGateway apiGateway) {
@@ -23,7 +62,7 @@ Middleware<AppState> register(ApiGateway apiGateway) {
             .register(email: action.email, password: action.password,role: action.role);
         store.dispatch(RegisterSuccessAction(response));
       } catch (e) {
-        store.dispatch(RegisterFailureAction(e.toString()));
+        store.dispatch(RegisterFailureAction(_getErrorMessage(e)));
       }
     }
  
@@ -45,7 +84,7 @@ Middleware<AppState> login(ApiGateway apiGateway) {
 
         store.dispatch(LoginSuccessAction(backendResponse));
       } catch (e) {
-        store.dispatch(LoginFailureAction(e.toString()));
+        store.dispatch(LoginFailureAction(_getErrorMessage(e)));
       }
     } else {
       next(action);
@@ -66,7 +105,7 @@ Middleware<AppState> verifyOtp(ApiGateway apiGateway) {
         store.dispatch(VerifyOtpSuccessAction(backendResponse));
       } catch (e) {
         store.dispatch(
-          VerifyOtpFailureAction(e.toString()),
+          VerifyOtpFailureAction(_getErrorMessage(e)),
         );
       }
     } else {
@@ -87,11 +126,20 @@ Middleware<AppState> resendOtp(ApiGateway apiGateway) {
         store.dispatch(ResendOtpSuccessAction(backendResponse));
       } catch (e) {
         store.dispatch(
-          ResendOtpFailureAction(e.toString()),
+          ResendOtpFailureAction(_getErrorMessage(e)),
         );
       }
     } else {
       next(action);
     }
   };
+}
+String _getErrorMessage(dynamic e) {
+  if (e is DioException) {
+    if (e.response?.data is Map<String, dynamic>) {
+      return e.response?.data['message'] ?? e.message ?? "An error occurred";
+    }
+    return e.message ?? "An error occurred";
+  }
+  return e.toString();
 }

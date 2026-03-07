@@ -28,11 +28,11 @@ class ProfileTabs extends StatelessWidget {
           /// 👇 Use flexible instead of fixed height
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
-            child: const TabBarView(
+            child: TabBarView(
               children: [
-                ProfileAboutTab( ),
-                ProfileAboutTab( ),
-                ProfileAboutTab( ),
+                ProfileAboutTab(profile: profile),
+                ProfileAboutTab(profile: profile),
+                ProfileAboutTab(profile: profile),
                 // ProfilePostsTab(),
                
                 // ProfileEventsTab( ),

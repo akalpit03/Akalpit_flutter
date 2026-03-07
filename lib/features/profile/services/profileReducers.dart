@@ -72,7 +72,7 @@ if (action is AcceptFriendRequestSuccessAction ||
 if (action is GetPublicProfileSuccessAction) {
   return state.copyWith(
     isLoading: false,
-    profile: action.profile,
+    publicProfile: action.profile,
     isSuccess: false,
     error: null,
   );

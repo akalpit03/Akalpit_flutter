@@ -15,7 +15,7 @@ class FeedPage extends StatelessWidget {
     return Scaffold(
       appBar: const FeedAppBar(),
       drawer: const AppSideDrawer(),
- 
+      body: const FeedBody(),
       // Floating action button to create a post
       floatingActionButton: FloatingActionButton(
         onPressed: () {

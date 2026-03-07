@@ -15,10 +15,10 @@ import 'app_state.dart';
 import 'app_reducer.dart';
 import '../api/api_gateway.dart';
 
-Future<Store<AppState>> createStore(ApiGateway apiGateway) async {
+Future<Store<AppState>> createStore(ApiGateway apiGateway, {AppState? initialState}) async {
   final store = Store<AppState>(
     appReducer,
-    initialState: AppState.initial(),
+    initialState: initialState ?? AppState.initial(),
     middleware: [
       ...createAuthMiddleware(apiGateway),
       ...searchMiddleware(apiGateway),

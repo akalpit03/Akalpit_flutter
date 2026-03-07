@@ -1,6 +1,7 @@
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
 import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.dart';
+import 'package:akalpit/features/profile/ui/createProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -114,6 +115,44 @@ class ProfileHeader extends StatelessWidget {
                           height: 34,
                           child: _buildCompactFriendButton(
                               vm, profileModel),
+                        ),
+                      ),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: IntrinsicWidth(
+                        child: SizedBox(
+                          height: 34,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ProfileFormScreen(
+                                    profile: profileModel,
+                                  ),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey.shade200,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              elevation: 0,
+                            ),
+                            child: const Text(
+                              "Edit Profile",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),

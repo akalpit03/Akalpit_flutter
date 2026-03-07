@@ -13,21 +13,28 @@ import '../../core/constants/app_defaults.dart';
 import 'component/app_navigation_bar.dart';
 
 class EntryPointUI extends StatefulWidget {
-  const EntryPointUI({super.key});
+  final int initialIndex;
+  const EntryPointUI({super.key, this.initialIndex = 0});
 
   @override
   State<EntryPointUI> createState() => _EntryPointUIState();
 }
 
 class _EntryPointUIState extends State<EntryPointUI> {
-  int currentIndex = 0;
+  late int currentIndex;
 
-  final List<Widget> pages =   [
-    FeedPage(), // Home
-    ClubPage(),
-    EventPage(), // Events
-      ServicesPage(), // Services
-    ProfilePage(), // Profile
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.initialIndex;
+  }
+
+  List<Widget> get _pages => [
+    const FeedPage(), // Home
+    const ClubPage(),
+    const EventPage(), // Events
+    const ServicesPage(), // Services
+    const ProfilePage(), // Profile
   ];
 
   void onBottomNavigationTap(int index) {
@@ -50,7 +57,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
             child: child,
           );
         },
-        child: pages[currentIndex],
+        child: _pages[currentIndex],
       ),
       bottomNavigationBar: AppBottomNavigationBar(
         currentIndex: currentIndex,

@@ -2,8 +2,12 @@ import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
+
 class ProfileExperienceTimeline extends StatelessWidget {
-  const ProfileExperienceTimeline({super.key});
+  final UserProfileModel? profile;
+
+  const ProfileExperienceTimeline({super.key, this.profile});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,8 @@ class ProfileExperienceTimeline extends StatelessWidget {
       distinct: true,
       converter: ProfileViewModel.fromStore,
       builder: (context, vm) {
-        final experiences = vm.profile?.experiences ?? [];
+        final profileModel = profile ?? vm.profile;
+        final experiences = profileModel?.experiences ?? [];
 
         if (experiences.isEmpty) {
           return const Padding(

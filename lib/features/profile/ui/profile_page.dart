@@ -104,13 +104,15 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           }
 
-          if (vm.profile == null) {
+          final publicProfile = vm.publicProfile;
+
+          if (publicProfile == null) {
             return const Scaffold(
               body: Center(child: Text("Profile not found")),
             );
           }
 
-          final viewedUserId = vm.profile!.id;
+          final viewedUserId = publicProfile.id;
 
           // 🔥 SELF CHECK USING AUTH STATE
           final bool isSelf =
@@ -121,11 +123,11 @@ class _ProfilePageState extends State<ProfilePage> {
             body: ListView(
               children: [
                 ProfileHeader(
-                  profile: vm.profile!,
+                  profile: publicProfile,
                   isSelf: isSelf, // 🔥 pass to header
                 ),
                 const Divider(),
-                ProfileTabs(profile: vm.profile!),
+                ProfileTabs(profile: publicProfile),
               ],
             ),
           );
@@ -135,8 +137,22 @@ class _ProfilePageState extends State<ProfilePage> {
         /// 🟢 MY PROFILE MODE
         /// ================================
 
-        // 1️⃣ Show local cached profile instantly
-        if (_localUser != null) {
+        // 1️⃣ Loading state (only if no local cache yet)
+        if (vm.isLoading && _localUser == null) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        // 2️⃣ Explicit NO PROFILE from backend
+        // If we finished loading and the backend says no profile exists, 
+        // we MUST show the creation form, even if we have local Auth data.
+        if (!vm.isLoading && vm.profile == null) {
+          return ProfileFormScreen(profile: _localUser);
+        }
+
+        // 3️⃣ Show local cached profile while loading (UX optimization)
+        if (_localUser != null && vm.profile == null) {
           return Scaffold(
             appBar: const ProfileAppBar(),
             drawer: const ProfileSideDrawer(),
@@ -144,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 ProfileHeader(
                   profile: _localUser!,
-                  isSelf: true, // 🔥 always self
+                  isSelf: true,
                 ),
                 const Divider(),
                 ProfileTabs(profile: _localUser!),
@@ -153,19 +169,13 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
 
-        // 2️⃣ Loading
-        if (vm.isLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+        // 4️⃣ Profile exists from backend (or error occurred)
+        if (vm.error != null) {
+            return Scaffold(
+              body: Center(child: Text(vm.error!)),
+            );
         }
 
-        // 3️⃣ No profile → Create profile
-        if (vm.error != null || vm.profile == null) {
-          return const ProfileFormScreen();
-        }
-
-        // 4️⃣ Profile exists
         return Scaffold(
           appBar: const ProfileAppBar(),
           drawer: const ProfileSideDrawer(),
@@ -173,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               ProfileHeader(
                 profile: vm.profile!,
-                isSelf: true, // 🔥 self
+                isSelf: true,
               ),
               const Divider(),
               ProfileTabs(profile: vm.profile!),

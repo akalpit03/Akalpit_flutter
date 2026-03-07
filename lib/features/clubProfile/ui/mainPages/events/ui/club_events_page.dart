@@ -1,4 +1,4 @@
-import 'package:akalpit/features/Events/create/ui/register_screen.dart';
+import 'package:akalpit/features/Events/create/ui/create_event.dart';
 import 'package:flutter/material.dart';
 
 import 'package:akalpit/features/Events/layout/ui/widgets/body.dart';
@@ -30,7 +30,7 @@ class ClubEventsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const CreateEventMainPage(),
+                    builder: (_) => const CreateEventScreen(),
                   ),
                 );
               },

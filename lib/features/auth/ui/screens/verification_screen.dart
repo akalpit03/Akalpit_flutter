@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/core/store/app_state.dart';
+import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
 import 'package:akalpit/features/auth/services/auth_actions.dart';
 import 'package:akalpit/features/auth/services/auth_state.dart';
 import 'package:akalpit/features/auth/ui/screens/login_screen.dart';
+import 'package:akalpit/features/auth/ui/screens/username.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -116,7 +118,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
+              MaterialPageRoute(builder: (_) => EnterNameUsernameScreen()),
             );
           });
         }

@@ -5,6 +5,7 @@ class AuthState {
   final bool isLoggedIn;
   final bool isRegistered;
   final bool isOtpVerified; // ✅ NEW
+  final bool isProfileComplete; // ✅ NEW
   final String? userEmail;
   final String? userId;
   final String? accessToken;
@@ -16,6 +17,7 @@ class AuthState {
     required this.isLoggedIn,
     required this.isRegistered,
     required this.isOtpVerified, // ✅ NEW
+    required this.isProfileComplete, // ✅ NEW
     this.userEmail,
     this.userId,
     this.accessToken,
@@ -28,6 +30,7 @@ class AuthState {
     bool? isLoggedIn,
     bool? isRegistered,
     bool? isOtpVerified, // ✅ NEW
+    bool? isProfileComplete, // ✅ NEW
     String? userEmail,
     String? userId,
     String? accessToken,
@@ -39,6 +42,7 @@ class AuthState {
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       isRegistered: isRegistered ?? this.isRegistered,
       isOtpVerified: isOtpVerified ?? this.isOtpVerified,
+      isProfileComplete: isProfileComplete ?? this.isProfileComplete,
       userEmail: userEmail ?? this.userEmail,
       userId: userId ?? this.userId,
       accessToken: accessToken ?? this.accessToken,
@@ -52,6 +56,7 @@ class AuthState {
         'isLoggedIn': isLoggedIn,
         'isRegistered': isRegistered,
         'isOtpVerified': isOtpVerified, // ✅ NEW
+        'isProfileComplete': isProfileComplete, // ✅ NEW
         'userEmail': userEmail,
         'userId': userId,
         'accessToken': accessToken,
@@ -64,6 +69,7 @@ class AuthState {
         isLoggedIn: false,
         isRegistered: false,
         isOtpVerified: false, // ✅ DEFAULT
+        isProfileComplete: false, // ✅ DEFAULT
         userEmail: null,
         userId: null,
         accessToken: null,
@@ -79,6 +85,7 @@ class AuthState {
       isLoggedIn: json['isLoggedIn'] ?? false,
       isRegistered: json['isRegistered'] ?? false,
       isOtpVerified: json['isOtpVerified'] ?? false,
+      isProfileComplete: json['isProfileComplete'] ?? false,
       userEmail: json['userEmail'],
       userId: json['userId'],
       accessToken: json['accessToken'],

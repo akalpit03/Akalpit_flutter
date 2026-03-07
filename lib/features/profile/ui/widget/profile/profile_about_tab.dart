@@ -4,9 +4,11 @@ import 'package:akalpit/features/profile/ui/widget/profile/about/awards.dart';
 import 'package:akalpit/features/profile/ui/widget/profile/about/experience.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
 
 class ProfileAboutTab extends StatelessWidget {
-  const ProfileAboutTab({super.key});
+  final UserProfileModel? profile;
+  const ProfileAboutTab({super.key, this.profile});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,9 @@ class ProfileAboutTab extends StatelessWidget {
       distinct: true,
       converter: ProfileViewModel.fromStore,
       builder: (context, vm) {
-        final profile = vm.profile;
+        final profileModel = profile ?? vm.profile;
 
-        if (profile == null) {
+        if (profileModel == null) {
           return const SizedBox.shrink();
         }
 
@@ -32,14 +34,14 @@ class ProfileAboutTab extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                profile.bio.isNotEmpty
-                    ? profile.bio
+                profileModel.bio.isNotEmpty
+                    ? profileModel.bio
                     : "No description added yet.",
                 style: const TextStyle(color: Colors.white54),
               ),
 
               // ===== Hobbies =====
-              if (profile.hobbies.isNotEmpty) ...[
+              if (profileModel.hobbies.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 const Divider(),
                 const SizedBox(height: 12),
@@ -51,7 +53,7 @@ class ProfileAboutTab extends StatelessWidget {
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: profile.hobbies.map((hobby) {
+                  children: profileModel.hobbies.map((hobby) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
@@ -93,7 +95,7 @@ class ProfileAboutTab extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 12),
-              const ProfileExperienceTimeline(),
+              ProfileExperienceTimeline(profile: profileModel),
 
               const SizedBox(height: 30), // extra bottom breathing space
             ],

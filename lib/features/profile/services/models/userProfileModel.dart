@@ -76,9 +76,9 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
-      id: json['userId']?.toString() ?? '',
+      id: (json['userId'] ?? json['_id'])?.toString() ?? '',
 
-      displayName: json['displayName']?.toString() ?? '',
+      displayName: (json['displayName'] ?? json['name'])?.toString() ?? '',
       username: json['username']?.toString(),
       location: json['location']?.toString(), // ✅ NEW
 

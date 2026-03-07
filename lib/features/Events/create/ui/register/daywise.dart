@@ -1,99 +1,21 @@
-import 'package:akalpit/features/Events/create/ui/register/daywise/awards_form.dart';
-import 'package:akalpit/features/Events/create/ui/register/daywise/contact_information_form.dart';
-import 'package:akalpit/features/Events/create/ui/register/daywise/rules_form.dart';
-import 'package:akalpit/features/Events/create/ui/register/daywise/scheduling_form.dart';
-import 'package:akalpit/features/Events/create/ui/register/daywise/venue_form.dart';
+ 
 import 'package:flutter/material.dart';
  
 
 class DayWiseEventPage extends StatelessWidget {
-  const DayWiseEventPage({super.key});
+  final int dayNumber;
+
+  const DayWiseEventPage({
+    super.key,
+    required this.dayNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Day-wise Event Details",
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _EventActionButton(
-            emoji: "🗓️",
-            title: "Scheduling",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const SchedulingPage(),
-                ),
-              );
-            },
-          ),
-          _EventActionButton(
-            emoji: "🏆",
-            title: "Awards & Recognition",
-            onTap: () {
-               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const AwardsPage(),
-                ),
-              );
-            },
-          ),
-          _EventActionButton(
-            emoji: "📜",
-            title: "Rules & Guidelines",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const RulesPage(),
-                ),
-              );
-            },
-          ),
-          // _EventActionButton(
-          //   emoji: "👥",
-          //   title: "Participation Details",
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (_) => const AwardsPage(),
-          //       ),
-          //     );
-          //   },
-          // ),
-          _EventActionButton(
-            emoji: "📍",
-            title: "Venue & Logistics",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const VenueLogisticsPage(),
-                ),
-              );
-            },
-          ),
-          _EventActionButton(
-            emoji: "☎️",
-            title: "Contacts & Support",
-            onTap: () {
-             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ContactsPage(),
-                ),
-              );
-            },
-          ),
-        ],
+      appBar: AppBar(title: Text("Day $dayNumber Schedule")),
+      body: Center(
+        child: Text("Add events for Day $dayNumber"),
       ),
     );
   }

@@ -1,8 +1,7 @@
- 
 import 'package:akalpit/features/profile/services/models/friends/friendmodel.dart';
 import 'package:akalpit/features/profile/services/models/incomoingRequests/request.dart';
 import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
- 
+import 'package:image_picker/image_picker.dart';
 
 /// 🔍 Request
 class GetPublicProfileAction {
@@ -22,31 +21,25 @@ class GetPublicProfileFailureAction {
   GetPublicProfileFailureAction(this.error);
 }
 
-
 /// 🔹 1. Trigger Action (Start Loading)
 class FetchIncomingRequestsAction {}
-
 
 /// 🔹 2. Success Action
 class FetchIncomingRequestsSuccessAction {
   final List<IncomingRequest> requests;
-
   FetchIncomingRequestsSuccessAction(this.requests);
 }
-
 
 /// 🔹 3. Failure Action
 class FetchIncomingRequestsFailureAction {
   final String error;
-
   FetchIncomingRequestsFailureAction(this.error);
 }
-
 
 class GetMyProfileAction {}
 
 class GetMyProfileSuccessAction {
-  final UserProfileModel profile;
+  final UserProfileModel? profile;
   GetMyProfileSuccessAction(this.profile);
 }
 
@@ -54,11 +47,11 @@ class GetMyProfileFailureAction {
   final String error;
   GetMyProfileFailureAction(this.error);
 }
- 
 
 class CreateProfileAction {
   final Map<String, dynamic> profileData;
-  CreateProfileAction(this.profileData);
+  final XFile? imageFile;
+  CreateProfileAction(this.profileData, {this.imageFile});
 }
 
 class CreateProfileSuccessAction {
@@ -70,9 +63,11 @@ class CreateProfileFailureAction {
   final String error;
   CreateProfileFailureAction(this.error);
 }
+
 class UpdateProfileAction {
   final Map<String, dynamic> profileData;
-  UpdateProfileAction(this.profileData);
+  final XFile? imageFile;
+  UpdateProfileAction(this.profileData, {this.imageFile});
 }
 
 class UpdateProfileSuccessAction {

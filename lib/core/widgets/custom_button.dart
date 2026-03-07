@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final bool isSecondary;
+  final bool isLoading;
   final Color? color;
 
   const CustomButton({
@@ -12,6 +13,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     this.onPressed,
     this.isSecondary = false,
+    this.isLoading = false,
     this.color,
   });
 
@@ -59,13 +61,22 @@ class CustomButton extends StatelessWidget {
                     (color ?? AppColors.cardBackground).withOpacity(0.3),
                 disabledForegroundColor: Colors.white.withOpacity(0.3),
               ),
-              child: Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              child: isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      text,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
             ),
     );
   }

@@ -9,13 +9,15 @@ AuthState authReducer(AuthState state, dynamic action) {
       isRegistered: false,
     );
   } else if (action is RegisterSuccessAction) {
-    final user = action.response['user'] as Map<String, dynamic>;
+    final user = action.response['data'] as Map<String, dynamic>?;
+    final userId = user?['_id'] as String?;
+    final userEmail = user?['email'] as String?;
 
     return state.copyWith(
       isLoading: false,
       isRegistered: true,
-      userId: user['_id'] as String?,
-      userEmail: user['email'] as String?,
+      userId: userId,
+      userEmail: userEmail,
       errorMessage: null,
     );
   } else if (action is RegisterFailureAction) {
@@ -78,14 +80,15 @@ if (action is ClearAuthErrorAction) {
       errorMessage: null,
     );
   } else if (action is LoginSuccessAction) {
-    final user = action.response['user'] as Map<String, dynamic>?;
+    final user = action.response['data']['user'] as Map<String, dynamic>?;
 
     return state.copyWith(
       isLoading: false,
       isLoggedIn: true,
       userId: user?['_id'] as String?,
-      accessToken: action.response['token'] as String?,
-      refreshToken: action.response['refreshToken'] as String?,
+      isProfileComplete: user?['isProfileComplete'] ?? false,
+      accessToken: action.response['data']['accessToken'] as String?,
+      refreshToken: action.response['data']['refreshToken'] as String?,
     );
   } else if (action is LoginFailureAction) {
     return state.copyWith(
@@ -112,11 +115,24 @@ if (action is ClearAuthErrorAction) {
   // }
 
   // ------------------------------
-  // LOGOUT
-  // ------------------------------
-  // else if (action is LogoutAction) {
-  //   return AuthState.initial();
-  // }
+  else if (action is LogoutAction) {
+    return AuthState.initial().copyWith(isLoading: true);
+  } else if (action is LogoutSuccessAction || action is LogoutFailureAction) {
+    return AuthState.initial();
+  }
+
+  if (action is CompleteProfileAction) {
+    return state.copyWith(isLoading: true, errorMessage: null);
+  } else if (action is CompleteProfileSuccessAction) {
+    return state.copyWith(
+      isLoading: false,
+      isLoggedIn: true, // After completing profile, user is fully logged in
+      isProfileComplete: true,
+      errorMessage: null,
+    );
+  } else if (action is CompleteProfileFailureAction) {
+    return state.copyWith(isLoading: false, errorMessage: action.error);
+  }
 
   return state;
 }

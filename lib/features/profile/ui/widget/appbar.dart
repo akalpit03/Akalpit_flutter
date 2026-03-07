@@ -5,6 +5,7 @@ import 'package:akalpit/features/profile/services/viewmodels/profileviewmodel.da
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:akalpit/features/auth/services/auth_actions.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// 👇 true when viewing someone else’s profile
@@ -110,21 +111,12 @@ void _showLogoutDialog(BuildContext context) {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () async {
-            // 1. Clear local storage
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.clear(); 
-
-            // 2. Navigate and prevent going back
-            if (context.mounted) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(), // Replace with your Login Widget name
-                ),
-                (route) => false, // This condition removes all previous routes
-              );
-            }
+          onPressed: () {
+            // Dismiss dialog
+            Navigator.pop(context);
+            
+            // 🔥 Dispatch LogoutAction to trigger global logic
+            StoreProvider.of<AppState>(context).dispatch(LogoutAction());
           },
           child: const Text(
             'Logout',

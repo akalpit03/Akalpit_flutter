@@ -10,6 +10,7 @@ import '../../../../../core/store/app_state.dart';
 import '../../../../../core/utils/responsive_utils.dart';
 import '../widgets/custom_text_field.dart';
 import 'forgot_password_screen.dart';
+import '../../../../../core/utils/navigation_service.dart';
 import '../viewmodel/login_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,6 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleRedirect() {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    final authState = store.state.authState;
+
+    if (authState.isLoggedIn) {
+      if (authState.isProfileComplete) {
+        NavigationService.pushReplacementNamed('/home');
+      } else {
+        NavigationService.pushReplacementNamed('/completeProfile');
+      }
+    }
   }
 
   Future<void> _onLogin() async {
@@ -92,15 +106,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (!mounted) return;
 
-        // Navigate to Home
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const EntryPointUI()),
-        );
+        // Fetch final state after tokens are saved and user is updated
+        final userState = StoreProvider.of<AppState>(context).state.authState;
+
+        if (userState.isProfileComplete) {
+          // Navigate to Home
+          Future.microtask(() {
+            if (mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => EntryPointUI()),
+              );
+            }
+          });
+        } else {
+          // Navigate to Complete Profile
+          Future.microtask(() {
+            if (mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => EnterNameUsernameScreen()),
+              );
+            }
+          });
+        }
       } else if (finalState.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid Login Credentials"),
+          SnackBar(
+            content: Text(finalState.errorMessage!),
             backgroundColor: Colors.red,
           ),
         );
@@ -119,7 +152,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.authState.isLoggedIn,
+      distinct: true,
+      onInitialBuild: (isLoggedIn) {
+        if (isLoggedIn) {
+          _handleRedirect();
+        }
+      },
+      onWillChange: (prev, curr) {
+        if (curr == true && prev != true) {
+          _handleRedirect();
+        }
+      },
+      builder: (context, isLoggedIn) {
+        // 🔒 PROTECT: If logged in, show nothing/loading while redirecting
+        if (isLoggedIn) {
+          return const Scaffold(
+            backgroundColor: AppColors.scaffoldBackground,
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final screenWidth = MediaQuery.of(context).size.width;
+        // ... rest of build
 
     double baseFontSize(double size) {
       if (screenWidth < 350) return size * 0.85;
@@ -202,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const EnterNameUsernameScreen(),
+                                  const ForgotPasswordScreen(),
                             ),
                           );
                         },
@@ -277,5 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
+  },
+);
+}
 }

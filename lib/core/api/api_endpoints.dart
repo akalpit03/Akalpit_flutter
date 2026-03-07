@@ -1,7 +1,7 @@
 class ApiEndpoints {
   // ===================== BASE URL =====================
-  static const String baseUrl ="https://am-34kc.onrender.com/api/v1";
-  // static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl = "https://akalpit.penverse.in/api/v1";
+  //static const String baseUrl = "http://localhost:8000/api/v1";
 // 
   // ===================== IMAGE UPLOAD =====================
   //// Cloudinary Image Upload URL
@@ -23,8 +23,8 @@ static String getClubStories({
   static const verifyOtp = "$baseUrl/auth/verifyOtp";
   static const resendOtp = "$baseUrl/auth/resendOtp";
   static const updateFcmToken = "$baseUrl/auth/deviceToken";
-   static String checkusernameAvailability(String userId) =>
-      "$baseUrl/auth/checkusername/$userId";
+   static String checkusernameAvailability(String username) =>
+      "$baseUrl/auth/checkusername/$username";
 
 // 🔐 Protected (JWT required)
   static const String completeProfile = "$baseUrl/auth/completeprofile";
@@ -33,6 +33,10 @@ static String getClubStories({
 // ===================== FUTURE AUTH (COMMENTED) =====================
 static const String sendResetPasswordOtp = "$baseUrl/auth/resendOtp";
 static const String resetPassword = "$baseUrl/auth/reset-password";
+static const String logoutUser = "$baseUrl/auth/logout";
+static const String changeCurrentPassword = "$baseUrl/auth/change-password";
+static const String updateAvatar = "$baseUrl/auth/avatar";
+static const String updateCoverImage = "$baseUrl/auth/cover-image";
   static const String fetchCategories = "$baseUrl/categories/root";
 // ===================== PROFILE =====================
 

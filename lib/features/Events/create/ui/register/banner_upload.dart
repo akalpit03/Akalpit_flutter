@@ -1,22 +1,16 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class RegisterEventHeader extends StatefulWidget {
-  final VoidCallback onRegister;
-
-  const RegisterEventHeader({
-    super.key,
-    required this.onRegister,
-  });
+class CreateEventScreen extends StatefulWidget {
+  const CreateEventScreen({super.key});
 
   @override
-  State<RegisterEventHeader> createState() => _RegisterEventHeaderState();
+  State<CreateEventScreen> createState() => _CreateEventScreenState();
 }
 
-class _RegisterEventHeaderState extends State<RegisterEventHeader> {
+class _CreateEventScreenState extends State<CreateEventScreen> {
   final _eventNameController = TextEditingController();
   final _venueController = TextEditingController();
   final _feesController = TextEditingController();
@@ -54,7 +48,8 @@ class _RegisterEventHeaderState extends State<RegisterEventHeader> {
 
   /// ================= DATE PICKER =================
   Future<void> _pickDate({required bool isStart}) async {
-    final initialDate = isStart ? DateTime.now() : (_startDate ?? DateTime.now());
+    final initialDate =
+        isStart ? DateTime.now() : (_startDate ?? DateTime.now());
 
     final picked = await showDatePicker(
       context: context,
@@ -92,7 +87,6 @@ class _RegisterEventHeaderState extends State<RegisterEventHeader> {
     });
   }
 
-  /// ================= VALIDATION =================
   bool _isFormValid() {
     return _eventNameController.text.isNotEmpty &&
         _venueController.text.isNotEmpty &&
@@ -105,162 +99,209 @@ class _RegisterEventHeaderState extends State<RegisterEventHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// ================= BANNER =================
-        GestureDetector(
-          onTap: _pickImage,
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(16),
-                image: _bannerImage != null
-                    ? DecorationImage(
-                        image: FileImage(_bannerImage!),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-              child: _bannerImage == null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.add_photo_alternate_outlined, size: 40),
-                        SizedBox(height: 8),
-                        Text("Upload Event Banner"),
-                      ],
-                    )
-                  : null,
-            ),
-          ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Create Event",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
         ),
-
-        const SizedBox(height: 24),
-
-        /// ================= EVENT NAME =================
-        _buildTextField("Event Name", _eventNameController),
-
-        const SizedBox(height: 16),
-
-        /// ================= VENUE =================
-        _buildTextField("Venue", _venueController),
-
-        const SizedBox(height: 16),
-
-        /// ================= FEES =================
-        _buildTextField(
-          "Participation Fees",
-          _feesController,
-          keyboardType: TextInputType.number,
-        ),
-
-        const SizedBox(height: 16),
-
-        /// ================= EVENT TYPE =================
-        DropdownButtonFormField<String>(
-          value: _eventType,
-          items: _eventTypes
-              .map(
-                (type) => DropdownMenuItem(
-                  value: type,
-                  child: Text(type),
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(22),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
                 ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              _eventType = value!;
-            });
-          },
-          decoration: _inputDecoration("Event Type"),
-        ),
-
-        const SizedBox(height: 16),
-
-        /// ================= ABOUT =================
-        TextField(
-          controller: _aboutController,
-          maxLines: 2,
-          maxLength: 200,
-          decoration: _inputDecoration("About Event"),
-        ),
-
-        const SizedBox(height: 16),
-
-        /// ================= DAYS =================
-        Text("Days for Event"),
-        Row(
-          children: [
-            IconButton(
-              onPressed: _decreaseDays,
-              icon: const Icon(Icons.remove_circle_outline),
+              ],
             ),
-            SizedBox(
-              width: 60,
-              child: TextField(
-                controller: _daysController,
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  final parsed = int.tryParse(value);
-                  if (parsed != null && parsed > 0) _days = parsed;
-                },
-                decoration: const InputDecoration(border: OutlineInputBorder()),
-              ),
-            ),
-            IconButton(
-              onPressed: _increaseDays,
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-          ],
-        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
 
-        const SizedBox(height: 20),
+                /// ================= BANNER =================
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF4F46E5), Color(0xFF3B82F6)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        image: _bannerImage != null
+                            ? DecorationImage(
+                                image: FileImage(_bannerImage!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                      child: _bannerImage == null
+                          ? const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.add_photo_alternate,
+                                      size: 40, color: Colors.white),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Upload Event Banner",
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
+                              ),
+                            )
+                          : null,
+                    ),
+                  ),
+                ),
 
-        /// ================= DATE RANGE =================
-        Row(
-          children: [
-            Expanded(
-              child: _dateTile(
-                label: "Start Date",
-                date: _startDate,
-                onTap: () => _pickDate(isStart: true),
-              ),
+                const SizedBox(height: 24),
+
+                _buildTextField("Event Name", _eventNameController),
+                const SizedBox(height: 16),
+
+                _buildTextField("Venue", _venueController),
+                const SizedBox(height: 16),
+
+                _buildTextField(
+                  "Participation Fees",
+                  _feesController,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+
+                /// EVENT TYPE
+                DropdownButtonFormField<String>(
+                  value: _eventType,
+                  decoration: _inputDecoration("Event Type"),
+                  items: _eventTypes
+                      .map((type) =>
+                          DropdownMenuItem(value: type, child: Text(type)))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _eventType = value!;
+                    });
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                TextField(
+                  controller: _aboutController,
+                  maxLines: 3,
+                  maxLength: 200,
+                  decoration: _inputDecoration("About Event"),
+                ),
+
+                const SizedBox(height: 20),
+
+                const Text("Days for Event",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: _decreaseDays,
+                      icon: const Icon(Icons.remove_circle_outline),
+                    ),
+                    SizedBox(
+                      width: 60,
+                      child: TextField(
+                        controller: _daysController,
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          final parsed = int.tryParse(value);
+                          if (parsed != null && parsed > 0) _days = parsed;
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _increaseDays,
+                      icon: const Icon(Icons.add_circle_outline),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: _dateTile(
+                        label: "Start Date",
+                        date: _startDate,
+                        onTap: () => _pickDate(isStart: true),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _dateTile(
+                        label: "End Date",
+                        date: _endDate,
+                        onTap: () => _pickDate(isStart: false),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 30),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 5,
+                      backgroundColor: const Color(0xFF4F46E5),
+                    ),
+                    onPressed: _isFormValid()
+                        ? () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Event Created Successfully"),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: const Text(
+                      "Create Event",
+                      style: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _dateTile(
-                label: "End Date",
-                date: _endDate,
-                onTap: () => _pickDate(isStart: false),
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 30),
-
-        /// ================= SUBMIT =================
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: _isFormValid()
-                ? () {
-                    widget.onRegister();
-                  }
-                : null,
-            child: const Text("Create Event"),
           ),
         ),
-      ],
+      ),
     );
   }
 
-  /// ================= HELPERS =================
   Widget _buildTextField(
     String label,
     TextEditingController controller, {
@@ -276,7 +317,18 @@ class _RegisterEventHeaderState extends State<RegisterEventHeader> {
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      filled: true,
+      fillColor: const Color(0xFFF2F4F7),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Colors.blue, width: 1.5),
+      ),
     );
   }
 
@@ -290,7 +342,9 @@ class _RegisterEventHeaderState extends State<RegisterEventHeader> {
       child: InputDecorator(
         decoration: _inputDecoration(label),
         child: Text(
-          date == null ? "Select date" : DateFormat("dd MMM yyyy").format(date),
+          date == null
+              ? "Select date"
+              : DateFormat("dd MMM yyyy").format(date),
         ),
       ),
     );

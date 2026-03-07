@@ -1,5 +1,4 @@
-// features/profile/viewmodels/profile_viewmodel.dart
-
+import 'package:image_picker/image_picker.dart';
 import 'package:akalpit/core/store/app_state.dart';
 import 'package:akalpit/features/profile/services/models/userProfileModel.dart';
 import 'package:akalpit/features/profile/services/profileActions.dart';
@@ -10,17 +9,19 @@ class ProfileViewModel {
   final bool isLoading;
   final String? error;
   final UserProfileModel? profile;
+  final UserProfileModel? publicProfile;
 
   /// Actions
   final VoidCallback getMyProfile;
   final Function(String userId) getPublicProfile;
-  final Function(Map<String, dynamic>) createProfile;
-  final Function(Map<String, dynamic>) updateProfile;
+  final Function(Map<String, dynamic>, {XFile? imageFile}) createProfile;
+  final Function(Map<String, dynamic>, {XFile? imageFile}) updateProfile;
 
   ProfileViewModel({
     required this.isLoading,
     this.error,
     this.profile,
+    this.publicProfile,
     required this.getMyProfile,
     required this.getPublicProfile,
     required this.createProfile,
@@ -35,6 +36,7 @@ class ProfileViewModel {
       isLoading: profileState.isLoading,
       error: profileState.error,
       profile: profileState.profile,
+      publicProfile: profileState.publicProfile,
 
       getMyProfile: () =>
           store.dispatch(GetMyProfileAction()),
@@ -42,11 +44,11 @@ class ProfileViewModel {
       getPublicProfile: (String userId) =>
           store.dispatch(GetPublicProfileAction(userId)),
 
-      createProfile: (Map<String, dynamic> data) =>
-          store.dispatch(CreateProfileAction(data)),
+      createProfile: (Map<String, dynamic> data, {XFile? imageFile}) =>
+          store.dispatch(CreateProfileAction(data, imageFile: imageFile)),
 
-      updateProfile: (Map<String, dynamic> data) =>
-          store.dispatch(UpdateProfileAction(data)),
+      updateProfile: (Map<String, dynamic> data, {XFile? imageFile}) =>
+          store.dispatch(UpdateProfileAction(data, imageFile: imageFile)),
     );
   }
 
@@ -57,10 +59,11 @@ class ProfileViewModel {
         other is ProfileViewModel &&
             isLoading == other.isLoading &&
             error == other.error &&
-            profile == other.profile;
+            profile == other.profile &&
+            publicProfile == other.publicProfile;
   }
 
   @override
   int get hashCode =>
-      Object.hash(isLoading, error, profile);
+      Object.hash(isLoading, error, profile, publicProfile);
 }

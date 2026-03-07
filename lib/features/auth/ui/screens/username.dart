@@ -7,6 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../../../../../core/utils/responsive_utils.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/store/app_state.dart';
+import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
  
 import '../widgets/custom_text_field.dart';
 
@@ -63,10 +64,7 @@ class _EnterNameUsernameScreenState
       final name = _nameController.text.trim();
       final username = _usernameController.text.trim();
 
-      // Dispatch profile update here
-      // store.dispatch(UpdateProfileAction({...}));
-
-      Navigator.pop(context);
+      vm.onCompleteProfile(name, username);
     }
   }
 
@@ -75,6 +73,33 @@ class _EnterNameUsernameScreenState
     return StoreConnector<AppState, UsernameAvailabilityViewModel>(
       distinct: true,
       converter: UsernameAvailabilityViewModel.fromStore,
+      onDidChange: (prev, vm) {
+        final wasComplete = prev?.isProfileComplete ?? false;
+        final isComplete = vm.isProfileComplete;
+
+        // Redirect if profile just completed OR if they just logged in and profile is already complete
+        if ((isComplete && !wasComplete) || (vm.isLoggedIn && !(prev?.isLoggedIn ?? false) && vm.isProfileComplete)) {
+          Future.microtask(() {
+            if (mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const EntryPointUI(initialIndex: 4)),
+                (route) => false,
+              );
+            }
+          });
+        }
+
+        if (vm.authErrorMessage != null &&
+            vm.authErrorMessage != prev?.authErrorMessage) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(vm.authErrorMessage!),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
       builder: (context, vm) {
         return Scaffold(
           backgroundColor: AppColors.scaffoldBackground,
@@ -99,15 +124,12 @@ class _EnterNameUsernameScreenState
                       children: [
                         Text(
                           'Tell us about you',
-                          style: Theme.of(context)
-                              .textTheme
-                              .displayLarge,
+                          style: Theme.of(context).textTheme.displayLarge,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Enter your name and choose a username',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         const SizedBox(height: 32),
 
@@ -117,8 +139,7 @@ class _EnterNameUsernameScreenState
                           controller: _nameController,
                           keyboardType: TextInputType.name,
                           validator: (value) {
-                            if (value == null ||
-                                value.trim().isEmpty) {
+                            if (value == null || value.trim().isEmpty) {
                               return 'Please enter your name';
                             }
                             if (value.trim().length < 2) {
@@ -135,19 +156,15 @@ class _EnterNameUsernameScreenState
                           label: 'Username',
                           controller: _usernameController,
                           keyboardType: TextInputType.text,
-                          onChanged: (value) =>
-                              _onUsernameChanged(value, vm),
+                          onChanged: (value) => _onUsernameChanged(value, vm),
                           validator: (value) {
-                            if (value == null ||
-                                value.trim().isEmpty) {
+                            if (value == null || value.trim().isEmpty) {
                               return 'Please enter a username';
                             }
                             if (value.contains(' ')) {
                               return 'Username cannot contain spaces';
                             }
-                            if (!RegExp(
-                                    r'^[a-zA-Z0-9_.]+$')
-                                .hasMatch(value)) {
+                            if (!RegExp(r'^[a-zA-Z0-9_.]+$').hasMatch(value)) {
                               return 'Only letters, numbers, _ and . allowed';
                             }
                             if (value.length < 3) {
@@ -163,27 +180,30 @@ class _EnterNameUsernameScreenState
                         if (vm.isChecking)
                           const Text(
                             "Checking availability...",
-                            style: TextStyle(
-                                color: Colors.grey),
+                            style: TextStyle(color: Colors.grey),
                           )
                         else if (vm.available == true)
                           const Text(
                             "Username is available ✓",
-                            style: TextStyle(
-                                color: Colors.green),
+                            style: TextStyle(color: Colors.green),
                           )
                         else if (vm.available == false)
                           const Text(
                             "Username already taken ✕",
-                            style: TextStyle(
-                                color: Colors.red),
+                            style: TextStyle(color: Colors.red),
                           ),
 
                         const SizedBox(height: 32),
 
-                        CustomButton(
-                          text: 'Continue',
-                          onPressed: () => _onContinue(vm),
+                        SizedBox(
+                          width: double.infinity,
+                          child: CustomButton(
+                            text: 'Continue',
+                            onPressed: vm.isLoading || vm.isChecking
+                                ? null
+                                : () => _onContinue(vm),
+                            isLoading: vm.isLoading,
+                          ),
                         ),
                       ],
                     ),

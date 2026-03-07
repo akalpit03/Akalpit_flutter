@@ -7,7 +7,7 @@ class RegisterAction {
   RegisterAction(this.email, this.password,this.role);
 }
 
-class RegisterSuccessAction {
+class RegisterSuccessAction  {
   final Map<String, dynamic> response;
   RegisterSuccessAction(this.response);
 }
@@ -73,3 +73,27 @@ class ResendOtpFailureAction {
 }
 
 class ClearAuthErrorAction {}
+
+class CompleteProfileAction {
+  final String userId;
+  final String username;
+  final String displayName;
+  CompleteProfileAction(this.userId, this.username, this.displayName);
+}
+
+class CompleteProfileSuccessAction {
+  final Map<String, dynamic> response;
+  CompleteProfileSuccessAction(this.response);
+}
+
+class CompleteProfileFailureAction {
+  final String error;
+  CompleteProfileFailureAction(this.error);
+}
+
+class LogoutAction {}
+class LogoutSuccessAction {}
+class LogoutFailureAction {
+  final String error;
+  LogoutFailureAction(this.error);
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +11,10 @@ class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
 
-  Future<void> init({required String baseUrl, String? token}) async {
+  VoidCallback? onUnauthorized;
+
+  Future<void> init({required String baseUrl, String? token, VoidCallback? onUnauthorized}) async {
+    this.onUnauthorized = onUnauthorized;
     if (token != null) {
       _token = token;
       await _saveToken(token);
@@ -60,6 +64,15 @@ class ApiClient {
           print("❗ MESSAGE: ${e.message}");
           print("📥 ERROR DATA: ${e.response?.data}");
 
+          // 🚨 HANDLE UNAUTHORIZED / NOT FOUND (404/401)
+          if (e.response?.statusCode == 404 || e.response?.statusCode == 401) {
+            // Avoid loop if the logout request itself fails
+            if (onUnauthorized != null && !e.requestOptions.path.contains('logout')) {
+              print("🚨 404/401 detected on ${e.requestOptions.path}! Triggering global logout.");
+              onUnauthorized!();
+            }
+          }
+
           return handler.next(e);
         },
       ),
@@ -71,6 +84,13 @@ class ApiClient {
     _dio.options.headers['Authorization'] = 'Bearer $_token';
 
     await _saveToken(token);
+  }
+
+  Future<void> clearToken() async {
+    _token = null;
+    _dio.options.headers.remove('Authorization');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 
   /// Save token to SharedPreferences

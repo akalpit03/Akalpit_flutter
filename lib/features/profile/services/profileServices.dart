@@ -5,25 +5,57 @@ import 'package:dio/dio.dart';
 
 import '../../../../core/api/api_client.dart';
 
+import 'package:image_picker/image_picker.dart';
+
 class ProfileService {
   final ApiClient client;
 
   ProfileService(this.client);
 
-  Future<Map<String, dynamic>> getMyProfile() async {
-    // Note: Ensure ApiEndpoints.myProfile exists in your constants
-    final response = await client.get(ApiEndpoints.myProfile());
+  Future<String> uploadProfileImage(XFile imageFile) async {
+    final fileName = imageFile.name;
+    final bytes = await imageFile.readAsBytes();
+
+    final formData = FormData.fromMap({
+      "image": MultipartFile.fromBytes(
+        bytes,
+        filename: fileName,
+      ),
+    });
+
+    final response = await client.postFormData(
+      ApiEndpoints.UploadUrl,
+      formData: formData,
+    );
 
     final body = response.data;
 
-    if (body is Map<String, dynamic> && body["success"] == true) {
-      return {
-        "success": true,
-        "data": body["data"], // This contains the actual profile object
-      };
+    // Check both 'url' and 'data' depending on API response format
+    if (body is Map<String, dynamic>) {
+      final url = body["url"] ?? body["data"];
+      if (url != null) return url;
     }
 
-    throw Exception(body["message"] ?? "Failed to fetch profile");
+    throw Exception("Image upload failed");
+  }
+
+  Future<Map<String, dynamic>?> getMyProfile() async {
+    try {
+      final response = await client.get(ApiEndpoints.myProfile());
+      final body = response.data;
+
+      if (body is Map<String, dynamic> && body["success"] == true) {
+        return body;
+      }
+      return null;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return null; // Profile not created yet
+      }
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
   }
   Future<Map<String, dynamic>> getIncomingRequests() async {
   final response =
@@ -152,6 +184,23 @@ Future<Map<String, dynamic>> getMyFriends() async {
         ? body["message"] ?? "Failed to fetch friends list"
         : "Unexpected response format",
   );
+}
+
+Future<Map<String, dynamic>> updateMyProfile(Map<String, dynamic> updates) async {
+  final response = await client.patch(
+    ApiEndpoints.updateMyProfile(),
+    data: updates,
+  );
+
+  final body = response.data;
+  if (body is Map<String, dynamic> && body["success"] == true) {
+    return {
+      "success": true,
+      "data": body["data"],
+    };
+  }
+
+  throw Exception(body["message"] ?? "Failed to update profile");
 }
 
 }

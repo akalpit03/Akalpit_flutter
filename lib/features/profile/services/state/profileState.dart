@@ -10,7 +10,8 @@ class ProfileState {
   final bool isLoading;
   final bool isSuccess;
   final String? error;
-  final UserProfileModel? profile;
+  final UserProfileModel? profile; // This is the logged-in user's profile
+  final UserProfileModel? publicProfile; // This is the currently viewed public profile
 
   /// ---------------- Incoming Friend Requests ----------------
   final bool isRequestLoading;
@@ -29,6 +30,7 @@ class ProfileState {
     this.isSuccess = false,
     this.error,
     this.profile,
+    this.publicProfile,
 
     this.isRequestLoading = false,
     this.isRequestSuccess = false,
@@ -49,6 +51,7 @@ class ProfileState {
     bool? isSuccess,
     String? error,
     UserProfileModel? profile,
+    UserProfileModel? publicProfile,
 
     bool? isRequestLoading,
     bool? isRequestSuccess,
@@ -65,6 +68,7 @@ class ProfileState {
       isSuccess: isSuccess ?? false,
       error: error,
       profile: profile ?? this.profile,
+      publicProfile: publicProfile ?? this.publicProfile,
 
       isRequestLoading: isRequestLoading ?? this.isRequestLoading,
       isRequestSuccess: isRequestSuccess ?? false,
@@ -86,6 +90,7 @@ class ProfileState {
       'isSuccess': isSuccess,
       'error': error,
       'profile': profile?.toJson(),
+      'publicProfile': publicProfile?.toJson(),
 
       /// Incoming Requests
       'isRequestLoading': isRequestLoading,
@@ -110,6 +115,9 @@ class ProfileState {
       error: json['error'],
       profile: json['profile'] != null
           ? UserProfileModel.fromJson(json['profile'])
+          : null,
+      publicProfile: json['publicProfile'] != null
+          ? UserProfileModel.fromJson(json['publicProfile'])
           : null,
 
       /// Incoming Requests
