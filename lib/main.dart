@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:akalpit/features/entrypoint/router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:akalpit/features/auth/ui/screens/create_account_screen.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const AuthWrapper(),
           '/login': (context) => const LoginScreen(),
-          '/home': (context) => const EntryPointUI(),
+          '/home': (context) => const RoleBasedRouter(),
           '/completeProfile': (context) => const EnterNameUsernameScreen(),
           '/createAccount': (context) => const CreateAccountScreen(),
         },

@@ -1,7 +1,8 @@
 import 'package:akalpit/core/api/api_client.dart';
 import 'package:akalpit/core/constants/app_colors.dart';
 import 'package:akalpit/features/auth/ui/screens/username.dart';
-import 'package:akalpit/features/entrypoint/entrypoint_ui.dart';
+ 
+import 'package:akalpit/features/entrypoint/router.dart';
 import 'package:akalpit/features/notifications/notification_bootstrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -114,9 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
           Future.microtask(() {
             if (mounted) {
               Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => EntryPointUI()),
-              );
+  context,
+  MaterialPageRoute(builder: (_) => const RoleBasedRouter()),
+);
             }
           });
         } else {

@@ -34,44 +34,44 @@ class AuthService {
   throw Exception("Unexpected register response: $body");
 }
 
- Future<Map<String, dynamic>> login({
-    required String email,
-    required String password,
-  }) async {
-    final response = await client.post(
-      ApiEndpoints.loginUser,
-      data: {
-        "email": email,
-        "password": password,
-      },
-    );
+Future<Map<String, dynamic>> login({
+  required String email,
+  required String password,
+}) async {
+  final response = await client.post(
+    ApiEndpoints.loginUser,
+    data: {
+      "email": email,
+      "password": password,
+    },
+  );
 
-    final body = response.data;
+  final body = response.data;
 
-    if (body == null ||
-        body["data"] == null ||
-        body["data"]["accessToken"] == null ||
-        body["data"]["refreshToken"] == null ||
-        body["data"]["user"] == null) {
-      throw Exception("Invalid login response format");
-    }
-
-    final token = body["data"]["accessToken"];
-    final refreshToken = body["data"]["refreshToken"];
-    final user = body["data"]["user"]; // full user object
-
-    // Save tokens & user in SharedPreferences
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token); // use real token here
-    await prefs.setString('refreshToken', refreshToken);
-    await prefs.setString('user', jsonEncode(user)); // ✅ store user as JSON
-
-    // Update API client with access token
-    ApiClient().updateToken(token);
-
-    return body as Map<String, dynamic>;
+  if (body == null ||
+      body["data"] == null ||
+      body["data"]["accessToken"] == null ||
+      body["data"]["refreshToken"] == null ||
+      body["data"]["user"] == null) {
+    throw Exception("Invalid login response format");
   }
 
+  final token = body["data"]["accessToken"];
+  final refreshToken = body["data"]["refreshToken"];
+  final user = body["data"]["user"];
+
+  // Save tokens & user in SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('token', token);
+  await prefs.setString('refreshToken', refreshToken);
+  await prefs.setString('user', jsonEncode(user));
+  await prefs.setString('role', user["role"] ?? 'user'); // ✅ save role
+
+  // Update API client with access token
+  ApiClient().updateToken(token);
+
+  return body as Map<String, dynamic>;
+}
   
 Future<Map<String, dynamic>> resendOtp({
     required String email,

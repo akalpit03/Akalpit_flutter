@@ -1,28 +1,28 @@
-import 'package:akalpit/features/institutions/UI/userside/homepage/services.dart';
- 
-import 'package:akalpit/features/profile/ui/profile_page.dart';
+import 'package:akalpit/features/entrypoint/component/institution_navigation.dart';
+import 'package:akalpit/features/entrypoint/instittutions.dart';
+import 'package:akalpit/features/institutions/UI/adminside/bookings/adminBookingsPage.dart';
+import 'package:akalpit/features/institutions/UI/adminside/councils/councils_List.dart';
+import 'package:akalpit/features/institutions/UI/adminside/postUpdates/admin_post_page.dart';
+import 'package:akalpit/features/institutions/UI/adminside/profile/profilePage.dart';
+import 'package:akalpit/features/institutions/UI/adminside/services/servicesPage.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:akalpit/features/Events/layout/ui/events.dart';
- 
-import 'package:akalpit/features/Feed/ui/feed.dart';
- 
-
-import 'package:akalpit/features/clubsection/ui/clubpage.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_defaults.dart';
-import 'component/app_navigation_bar.dart';
+ 
+ 
 
-class EntryPointUI extends StatefulWidget {
+class InstitutionEntryPointUI extends StatefulWidget {
   final int initialIndex;
-  const EntryPointUI({super.key, this.initialIndex = 0});
+  const InstitutionEntryPointUI({super.key, this.initialIndex = 0});
 
   @override
-  State<EntryPointUI> createState() => _EntryPointUIState();
+  State<InstitutionEntryPointUI> createState() =>
+      _InstitutionEntryPointUIState();
 }
 
-class _EntryPointUIState extends State<EntryPointUI> {
+class _InstitutionEntryPointUIState extends State<InstitutionEntryPointUI> {
   late int currentIndex;
 
   @override
@@ -31,17 +31,16 @@ class _EntryPointUIState extends State<EntryPointUI> {
     currentIndex = widget.initialIndex;
   }
 
-  List<Widget> get _pages => [
-    const FeedPage(), // Home
-    const ClubPage(),
-    const EventPage(), // Events
-    const ServicesPage(), // Services
-    const ProfilePage(), // Profile
+  final List<Widget> _pages = const [
+    InstitutionHomePage(),
+    AdminBookingsPage(),
+    AdminPostsPage(),
+    CouncilsPage(),
+    InstitutionProfilePage(),
   ];
 
   void onBottomNavigationTap(int index) {
     if (index == currentIndex) return;
-
     setState(() => currentIndex = index);
   }
 
@@ -61,7 +60,7 @@ class _EntryPointUIState extends State<EntryPointUI> {
         },
         child: _pages[currentIndex],
       ),
-      bottomNavigationBar: AppBottomNavigationBar(
+      bottomNavigationBar: InstitutionBottomNavigationBar(
         currentIndex: currentIndex,
         onNavTap: onBottomNavigationTap,
       ),
